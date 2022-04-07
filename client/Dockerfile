@@ -1,0 +1,9 @@
+FROM node:14-alpine3.10
+
+WROKDIR/app
+
+COPY ./package.json ./
+RUN npm install 
+COPY . .
+
+CMD ["npm", "run","start"]
