@@ -26,7 +26,7 @@ function Card() {
             requireHeader : ['origin', 'x-requested-with']
         };
 
-        fetch("http://localhost:3001/artist", requestOptions)
+        fetch("http://localhost:5000/artist", requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
