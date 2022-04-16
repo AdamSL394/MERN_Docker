@@ -1,6 +1,7 @@
 version: '3.9'
 
 services:
+
    library-api:
      restart: always
      build:
@@ -15,7 +16,6 @@ services:
       - mongo
      environment:
        NODE_ENV: development
-
 
    mongo:
      container_name: mongo

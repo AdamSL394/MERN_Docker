@@ -6,7 +6,7 @@ import logo from './volk.jpg'
 function Card() {
 
     const [text, setText] = useState("Current Artist")
-    const [song, setSong] = useState("Current Song")
+    const [date, setDate] = useState(1)
 
     const storeNewSong = () => {
 
@@ -15,18 +15,19 @@ function Card() {
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
         myHeaders.append("Content-Type", "application/json");
         var raw = JSON.stringify({
-            "artist": text,
-            "song":song
+            "text": text,
+            "date":date
         });
 
         var requestOptions = {
-            method: 'GET',
+            method: 'POST',
             headers: myHeaders,
             redirect: 'follow',
-            requireHeader : ['origin', 'x-requested-with']
+            requireHeader : ['origin', 'x-requested-with'],
+            body: raw
         };
 
-        fetch("http://localhost:5000/artist", requestOptions)
+        fetch("http://localhost:5000/note", requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
@@ -41,7 +42,7 @@ function Card() {
             Artist
             <input placeholder="Song Name" defaultValue={text} onChange={e => setText(e.target.value)}>
             </input>
-            <input placeholder="Artist Name" defaultValue={song} onChange={e => setSong(e.target.value)}>
+            <input placeholder="Artist Name" defaultValue={date} onChange={e => setDate(e.target.value)}>
             </input>
             <button onClick={() => storeNewSong()}>
                 Submit
