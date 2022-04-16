@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import logo from './volk.jpg'
+import './card.css'
 
 
 
 function Card() {
 
-    const [text, setText] = useState("Current Artist")
+    const [text, setText] = useState("What Happened today ?")
     const [date, setDate] = useState(1)
 
     const storeNewSong = () => {
@@ -16,14 +17,14 @@ function Card() {
         myHeaders.append("Content-Type", "application/json");
         var raw = JSON.stringify({
             "text": text,
-            "date":date
+            "date": date
         });
 
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
             redirect: 'follow',
-            requireHeader : ['origin', 'x-requested-with'],
+            requireHeader: ['origin', 'x-requested-with'],
             body: raw
         };
 
@@ -35,16 +36,19 @@ function Card() {
 
 
     return (
-        <div>
-            <div id="albumCover">
-                <img src={logo} alt="Album Cover" />
-            </div>
-            Artist
-            <input placeholder="Song Name" defaultValue={text} onChange={e => setText(e.target.value)}>
+        <div id="grid">
+            {/* <div id="albumCover">
+                <img src={logo} alt="Album Cover"/>
+            </div> */}
+            <input id="date" placeholder="Date" defaultValue={date} onChange={e => setDate(e.target.value)}>
             </input>
-            <input placeholder="Artist Name" defaultValue={date} onChange={e => setDate(e.target.value)}>
-            </input>
-            <button onClick={() => storeNewSong()}>
+            <textarea id="note" placeholder="Note" defaultValue={text} onChange={e => setText(e.target.value)}>
+            </textarea>
+            <select name="star" id="star">
+                <option value="false"></option>
+                <option value="true">🌟</option>
+            </select>
+            <button id="save" onClick={() => storeNewSong()}>
                 Submit
             </button>
         </div>

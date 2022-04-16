@@ -1,0 +1,33 @@
+#navbar{
+    border-bottom: 1px solid  lightgrey;
+    height: 5rem;
+    width: 100vw;
+    background: white;
+    position: relative;
+    
+}
+.header{
+    position: absolute;
+    top: 0%;
+    right:0%;
+    margin:0 auto;
+    height:5rem;
+    border-bottom: 1px solid  lightgrey;
+}
+.header:hover{
+    cursor: pointer;
+}
+.tabs{
+    margin-left: 3px;
+    cursor: pointer;
+    color:black;
+    margin-top: 115px;
+    font-size: 100%;
+}
+.tabs:hover{
+    text-decoration: underline;
+}
+
+
+
+

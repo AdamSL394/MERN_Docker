@@ -1,0 +1,31 @@
+#grid{
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    text-align: center;
+    margin: auto;
+    background-color: white;
+}
+#date{
+    position: absolute;
+    background-color: white;
+    
+}
+#note{
+    position: absolute;
+    justify-content: center;
+    background-color: white;
+    margin-top: 1.9rem;
+    border-radius: 15px;
+    align-items: center;
+    text-align: center;
+}
+#star{
+    position: absolute;
+    margin-top: 7rem;
+}
+#save{
+    justify-content: center;
+    position: relative; 
+    margin-top: 9rem;
+}
