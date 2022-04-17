@@ -23,7 +23,7 @@ class Navbar extends Component {
     render(){
         return (
             <div className='xl12 l12 m12 s12 xs12' id ='navbar'>
-                <img className="header" onClick={this.homepageReload} src={"./CertifiedAtmsLogo.png"} alt="Certified Atms Logo"/>
+                {/* <img className="header" onClick={this.homepageReload} src={"./CertifiedAtmsLogo.png"} alt="Certified Atms Logo"/> */}
                 <span className="tabs" id="home" onClick={() => console.log("clicked")} > Home |</span>
                 <span className="tabs" id="email" onClick={() => console.log("clicked")}>Email Us |</span>
                 <span className="tabs" id="aboutUs" onClick={() => console.log("clicked")}> About Us </span>

@@ -45,9 +45,9 @@ app.get('/data',(req,res) => {
 
 app.post("/note", async (req,res)=> {
 
-    const {text, date} = req.body
+    const {text, date, star} = req.body
 
-    let a = new Note({text: text,date: date})
+    let a = new Note({text: text,date: date, star:star})
    a.save(function (err) {
     console.log(err)
    })
