@@ -23,7 +23,7 @@
     cursor: pointer;
 }
 .tabs{
-    margin-left: 3px;
+    margin: .3% !important;
     cursor: pointer;
     color:black;
     margin-top: 115px;

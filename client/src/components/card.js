@@ -49,11 +49,13 @@ function Card() {
         <Container id="container">
             <TextField  multiline rows={3} defaultValue={""} fullWidth label="Note" id="fullWidth" color="primary" placeholder="Note" value={text} onChange={e => setText(e.target.value)}
             ></TextField>
-            <input id="date" type="date" placeholder="Date" defaultValue={date} onChange={e => setDate(e.target.value)}>
+            <span className="formButtons">
+            <input id="date" type="date" placeholder="Date" defaultValue={date} onChange={e => setDate(e.target.value)} style={{alignSelf: "center"}}>
             </input>
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="medium">
-                <InputLabel id="demo-select-small">Star</InputLabel>
+            <FormControl sx={{ m: 1, minWidth: 120 }} size="medium" style={{alignSelf: "center"}}>
+                <InputLabel id="demo-select-small" style={{alignSelf: "center"}}>Star</InputLabel>
                 <Select
+                    
                     defaultValue="false"
                     labelId="demo-select-small"
                     id="demo-select-small"
@@ -68,12 +70,14 @@ function Card() {
                 </Select>
             </FormControl>
             <Button
+             style={{alignSelf: "center"}}
                 variant="contained"
                 value="save"
                 color="primary"
                 onClick={() => storeNewNote()}>
                 Save Note
             </Button>
+            </span>
         </Container>
     )
 }

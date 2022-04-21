@@ -7,7 +7,7 @@ const LoginButton = () => {
 
     return (
         !isAuthenticated &&(
-            <Button  onClick={() => loginWithRedirect()} style={{color:"#e9d8c2", fontStyle``:"bold"}}>
+            <Button  onClick={() => loginWithRedirect()} style={{color:"#000000",float:"right",background:"#e9d8c2",margin:".5%",font:"300 normal 1.5em 'tahoma'", fontFamily:"cursive"}}>
             Sign In
             </Button>  
         ) 

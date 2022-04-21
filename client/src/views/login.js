@@ -51,7 +51,9 @@ function Login() {
       }
       setText(part);
       count++
-      if (count === 37) {
+      //37 script disappears
+      //25 keeps text on screen
+      if (count === 25) {
         clearInterval(a)
       }
     }, speed);
@@ -64,9 +66,9 @@ function Login() {
 
 
   return (
-    <div  >
+    <div>
       <div className="word container">{text}</div>
-      <LoginButton></LoginButton>
+      {/* <LoginButton></LoginButton> */}
     </div>
   )
 

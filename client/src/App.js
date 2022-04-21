@@ -23,9 +23,12 @@ let theme = createTheme({
 
 
 function App() {
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, isLoading } = useAuth0();
 
+  if (isLoading) {
+    return<img id="loading" src="https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/200w.gif?cid=82a1493bihnamtzyz8vki1lhaho1d71gyhbf1cg4ay7wurdj&rid=200w.gif&ct=g" alt="Loading Gif"/>
 
+  }
 
   return (
     isAuthenticated ? (
@@ -33,17 +36,18 @@ function App() {
         <div className="App">
           <Navbar></Navbar>
           <Card></Card>
-          <LogOut></LogOut>
         </div>
       </ThemeProvider>
     ) : (
-      <div className="background">
-        {/* <ThemeProvider theme={theme}> */}
-          {/* <div className='container'> */}
-            <Login></Login>
-          {/* </div> */}
-        {/* </ThemeProvider> */}
-      </div >
+      <>
+        <div className='appBubble'>
+          <span className="icon">
+            NS
+          </span>
+        </div>
+        <LoginButton></LoginButton>
+        <Login></Login>
+      </>
     )
   )
 }
