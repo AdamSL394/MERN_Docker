@@ -16,9 +16,10 @@ function Card() {
     const [text, setText] = useState()
     const [date, setDate] = useState()
     const [star, setStar] = useState(false)
+    const val = "Line1\nLine2";
 
     const storeNewNote = () => {
-        console.log(text,date,star)
+        console.log(text, date, star)
         var myHeaders = new Headers();
         myHeaders.append("origin", "");
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
@@ -37,38 +38,33 @@ function Card() {
             body: raw
         };
 
-        fetch("http://localhost:5000/note", requestOptions)
+        fetch("http://localhost:5000/users/note", requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
     }
 
-    const onKeyDown = (e) => {
-        console.log(e.code)
-        if (e.code === "ShiftRight") {
-            console.log(e.code)
-            e.preventDefault();
-            setText("hello ");
-        }
-    }
 
     return (
         <Container id="container">
-            <TextField onKeyDown={onKeyDown} fullWidth label="Note" id="fullWidth" color="primary" placeholder="Note" defaultValue={text} onChange={e => setText(e.target.value)}
+            <TextField  multiline rows={3} defaultValue={""} fullWidth label="Note" id="fullWidth" color="primary" placeholder="Note" value={text} onChange={e => setText(e.target.value)}
             ></TextField>
             <input id="date" type="date" placeholder="Date" defaultValue={date} onChange={e => setDate(e.target.value)}>
             </input>
             <FormControl sx={{ m: 1, minWidth: 120 }} size="medium">
                 <InputLabel id="demo-select-small">Star</InputLabel>
                 <Select
+                    defaultValue="false"
                     labelId="demo-select-small"
                     id="demo-select-small"
+                    onChange={e => setStar(e.target.value)}
                 >
-                    <MenuItem value={star}>
+                    <MenuItem value={"None"} >
                         <em>None</em>
                     </MenuItem>
-                    <MenuItem value={false}></MenuItem>
-                    <MenuItem value={true}>🌟</MenuItem>
+                    <MenuItem value={"1"}>🌟</MenuItem>
+                    <MenuItem value={"2"}>🌟🌟</MenuItem>
+                    <MenuItem value={"3"}>🌟🌟🌟</MenuItem>
                 </Select>
             </FormControl>
             <Button

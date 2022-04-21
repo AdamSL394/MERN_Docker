@@ -1,0 +1,8 @@
+{
+    "local":{
+        "mongoose_uri":"localhost"
+    },
+    "development":{
+        "mongoose_uri":"mongo"
+    }
+} 

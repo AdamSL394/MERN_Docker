@@ -1,0 +1,8 @@
+{
+    "local":{
+        "api_url":"http://localhost:5000"
+    },
+    "development":{
+        "api_url":"http://localhost:5000"
+    }
+}

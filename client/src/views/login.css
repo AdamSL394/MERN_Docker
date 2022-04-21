@@ -1,0 +1,17 @@
+html{
+    /* background-color: #e9d8c2  !important; */
+}
+
+.word {
+    top:-50%;
+    margin: auto;
+    color: #e9d8c2 ;
+    font: 800 normal 5.5em 'tahoma';
+    text-shadow: 4px 3px #222324, 2px 4px #222324, 3px 5px #222324;
+    font-family: URW Chancery L, cursive;
+  }
+  .container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    }

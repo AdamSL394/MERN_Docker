@@ -1,3 +1,15 @@
 html, body, #app, #app>div {
     height: 100%
   }
+.background{
+/* background-color: #e9d8c2; */
+justify-content: center;
+align-items: center;
+align-content: center;
+text-align:center;
+}
+.container{
+position: absolute;
+top: 50%;
+left: 50%;
+}
