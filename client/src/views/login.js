@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./login.css"
 import LoginButton from '../components/loginButton';
 import Footer from "../components/footer";
+import {Navigate, useNavigate} from 'react-router-dom'
 
 function Login() {
 
@@ -65,15 +66,21 @@ function Login() {
     wordflick()
   }, [])
 
+  const navigate = useNavigate();
+
+    const home = () => {
+        navigate('/')
+    }
+
 
   return (
     <div>
       <LoginButton></LoginButton>
-      <div className='appBubble'>
+      <button className='appBubble' onClick={home}>
         <span className="icon">
           NS
         </span>
-      </div>
+      </button>
       <div className="word container">{text}</div>
       <Footer></Footer>
     </div>

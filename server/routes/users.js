@@ -11,7 +11,7 @@ router.get('/note:id', async (req, res) => {
     console.log("Get Single Note")
  });
 
-router.delete('/delete',(req,res) => {
+router.delete('/delete:id',(req,res) => {
     res.json('Delete Notes') 
 })
 

@@ -6,7 +6,6 @@ const postMessage = (text, date, star) => {
     newNote.save(function (err) {
         if(err) {console.log("err",err)}
    })
-
     console.log("New Note",newNote)
     return ('Note Saved!')
 }
