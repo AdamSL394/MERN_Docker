@@ -5,4 +5,4 @@
     "development":{
         "mongoose_uri":"mongo"
     }
-} 
+}
