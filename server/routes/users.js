@@ -3,7 +3,6 @@ const noteController = require("../controller/noteController")
 const router = express.Router();
 
 router.get('/all', async (req, res) => {
-    console.log("here")
     let response = await noteController.getAllMessages()
     res.send(response);
  });
@@ -13,7 +12,7 @@ router.get('/note:id', async (req, res) => {
  });
 
 router.delete('/delete',(req,res) => {
-    res.json('Delete Notes')
+    res.json('Delete Notes') 
 })
 
 router.put('/update',(req,res)=> {

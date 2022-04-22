@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./login.css"
 import LoginButton from '../components/loginButton';
+import Footer from "../components/footer";
 
 function Login() {
 
@@ -67,8 +68,14 @@ function Login() {
 
   return (
     <div>
+      <LoginButton></LoginButton>
+      <div className='appBubble'>
+        <span className="icon">
+          NS
+        </span>
+      </div>
       <div className="word container">{text}</div>
-      {/* <LoginButton></LoginButton> */}
+      <Footer></Footer>
     </div>
   )
 

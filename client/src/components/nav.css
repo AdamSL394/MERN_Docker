@@ -2,13 +2,13 @@
     font-family: sans-serif
 
 }
-
 #navbar{
     border-bottom: 1px solid  lightgrey;
     height: 5rem;
     width: 100vw;
     background: white;
     position: relative;
+   
     
 }
 .header{
@@ -28,6 +28,7 @@
     color:black;
     margin-top: 115px;
     font-size: 100%;
+
 }
 .tabs:hover{
     text-decoration: underline;

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import logo from './volk.jpg'
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -8,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import './card.css'
 import { Container } from "@mui/material";
+import Alert from '@mui/material/Alert';
 
 
 
@@ -16,6 +16,8 @@ function Card() {
     const [text, setText] = useState()
     const [date, setDate] = useState()
     const [star, setStar] = useState(false)
+    const [successFlag, setSuccessFlag] = useState("hidden")
+    const [errorFlag, setErrorFlag] = useState("hidden")
     const val = "Line1\nLine2";
 
     const storeNewNote = () => {
@@ -40,8 +42,19 @@ function Card() {
 
         fetch("http://localhost:5000/users/note", requestOptions)
             .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));
+            .then(result => {
+                console.log(result);
+                console.log("here",result);
+                setText(" ");
+                setDate();
+                setStar("None")
+                setSuccessFlag("visible")
+            })
+            .catch(error => {
+                setErrorFlag("visible")
+                console.log('error', error)
+        
+        });
     }
 
 
@@ -53,9 +66,9 @@ function Card() {
             <input id="date" type="date" placeholder="Date" defaultValue={date} onChange={e => setDate(e.target.value)} style={{alignSelf: "center"}}>
             </input>
             <FormControl sx={{ m: 1, minWidth: 120 }} size="medium" style={{alignSelf: "center"}}>
-                <InputLabel id="demo-select-small" style={{alignSelf: "center"}}>Star</InputLabel>
+                <span style={{position: "absolute", margin:"2px"}}><i>Star</i></span>
+                <InputLabel id="demo-select-small" style={{alignSelf: "center"}}></InputLabel>
                 <Select
-                    
                     defaultValue="false"
                     labelId="demo-select-small"
                     id="demo-select-small"
@@ -78,7 +91,10 @@ function Card() {
                 Save Note
             </Button>
             </span>
+            <Alert severity="success"  style={{visibility:successFlag}} open={false} >Success</Alert>
+            <Alert severity="error"  style={{visibility:errorFlag}} open={false}>Error</Alert>
         </Container>
+
     )
 }
 
