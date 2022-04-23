@@ -4,7 +4,9 @@ import Button from '@mui/material/Button'
 import React from 'react';
 
 const LoginButton = () => {
-    const {loginWithRedirect , isAuthenticated} = useAuth0();
+    const {loginWithRedirect , isAuthenticated, user} = useAuth0();
+
+    
 
     return (
         !isAuthenticated &&(

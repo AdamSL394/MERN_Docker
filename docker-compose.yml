@@ -6,7 +6,7 @@ services:
      restart: always
      build:
        context: ./server
-       dockerfile: Dockerfile.dev
+       dockerfile: Dockerfile
      container_name: new_music_mern
      volumes:
       - /app/node_modules
