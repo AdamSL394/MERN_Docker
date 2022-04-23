@@ -1,11 +1,9 @@
 import './App.css';
 import React from 'react';
-import { Card } from "./components/card"
-import Navbar from './components/nav';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-
-import { makeStyles, ThemeProvider, createTheme } from '@mui/material'
+import { ThemeProvider, createTheme } from '@mui/material'
+import { useAuth0 } from '@auth0/auth0-react'
+import { BrowserRouter } from "react-router-dom"
+import Router from "./router"
 
 
 let theme = createTheme({
@@ -19,17 +17,23 @@ let theme = createTheme({
   },
 });
 
-
 function App() {
+  const { isLoading } = useAuth0();
+
+  if (isLoading) {
+    return <img id="loading" src="https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/200w.gif?cid=82a1493bihnamtzyz8vki1lhaho1d71gyhbf1cg4ay7wurdj&rid=200w.gif&ct=g" alt="Loading Gif" />
+
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        {/* <Container maxWidth="lrg"> */}
-        <Navbar ></Navbar>
-       <Card></Card>
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
       </div>
     </ThemeProvider>
-  );
+  )
 }
 
 export default App;

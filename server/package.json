@@ -6,6 +6,7 @@
     "author": "Alpha",
     "license": "MIT",
     "dependencies": {
+        "concurrently": "^7.1.0",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
@@ -33,6 +34,7 @@
     },
     "scripts": {
         "start": "node server.js",
-        "dev": "nodemon server.js"
+        "client": "cd ../client && npm start",
+        "dev": "concurrently -n 'server,client' \"nodemon server.js\" \"npm run client\""
     }
 }
