@@ -15,7 +15,14 @@ const getAllMessages = async () => {
     return notes
 }
 
+const deleteMessage = async (id) => {
+    const deleted = await Note.deleteOne({_id:id})
+    console.log(deleted)
+    return "note deleted"
+}
+
 module.exports = {
     postMessage,
-    getAllMessages
+    getAllMessages,
+    deleteMessage
 }

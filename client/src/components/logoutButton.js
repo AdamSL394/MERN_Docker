@@ -4,7 +4,8 @@ import React from 'react';
 import './logout.css'
 
 const LogOut = () => {
-    const {logout,isAuthenticated} = useAuth0();
+    const {logout,isAuthenticated, user} = useAuth0();
+    console.log("Adam",user)
 
     return (
         isAuthenticated &&(

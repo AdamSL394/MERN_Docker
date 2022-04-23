@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/nav";
+import { Card, Button, Grid } from "@mui/material/"
+
+
 
 export default function AllNotes() {
 
     const [notes, setNotes] = useState([])
 
-    useEffect( ()  => {
+    useEffect(() => {
+        getAllNotes()
+    }, [])
+
+    const getAllNotes = () => {
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
         myHeaders.append("origin", "http://localhost:3000/");
@@ -19,32 +26,65 @@ export default function AllNotes() {
             redirect: 'follow'
         };
 
-         fetch("http://localhost:5000/users/all", requestOptions)
+        fetch("http://localhost:5000/users/all", requestOptions)
             .then(response => response.text())
             .then(async results => {
-                await setNotes(results)
-                let cast = JSON.parse(notes)    
-                console.log(cast)
-
+                let cast = JSON.parse(results)
+                setNotes(cast)
             })
             .catch(error => console.log('error', error));
-    }, [])
-    
+    }
 
-    // const list = (notes).map((result,i)=>{
-    //     console.log(result)
-    //     return<div></div>
-    // })
+    const deleteNote = (note) => {
+        var myHeaders = new Headers();
+        myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        myHeaders.append("origin", "http://localhost:3000/");
 
-    // function createNotes(results){
-    //     return<p>{results.text}</p>
-    // }
+        var requestOptions = {
+            method: 'DELETE',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        fetch(`http://localhost:5000/users/delete/${note._id}`, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                console.log(result)
+                getAllNotes()
+            })
+            .catch(error => console.log('error', error));
+    }
 
     return (
-
-        <div>
+        <>
             <Navbar></Navbar>
-            {/* {results.text} */}
-        </div>
+            <Grid container spacing={2}
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+            >
+                {(notes).map((note, i) => {
+                    return (
+                        <Grid item xs={12} sm={6} md={4} lg={3}>
+                            <Card key={i}
+                                value={note.id}
+                                variant="outlined"
+                            >
+                                <span>{note.text}</span>
+                                <div>{note.date}</div>
+                                <div>{note.star}</div>
+                                <button
+                                    onClick={() => deleteNote(note)}
+                                    color="primary"
+                                >
+                                    Delete me
+                                </button>
+                            </Card>
+                        </Grid>
+                    )
+                })}
+
+            </Grid>
+        </>
     )
 }
