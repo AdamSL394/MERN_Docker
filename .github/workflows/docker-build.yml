@@ -2,9 +2,8 @@ name: Docker Image Build
 
 on:
   push:
-    branches:
-      -master
-      -develop
+    branches: [master]
+    
 jobs:
   build:
     runs-on: ubuntu-latest
