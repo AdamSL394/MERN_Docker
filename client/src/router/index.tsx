@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import React, { Component } from 'react';
+import React from 'react';
 import { Routes, Route } from 'react-router-dom'
 import Login from '../views/login'
 import Home from '../views/home'

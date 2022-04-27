@@ -7,7 +7,7 @@ const mongoose = require("mongoose")
 const connectToDB = require("./database/db");
 const userRouter = require("./routes/users");
 const config = require("./config/config.json")
- 
+
 
 if (process.env.NODE_ENV === "local") {
     main().catch(err => console.log(err));

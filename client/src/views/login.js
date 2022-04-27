@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./login.css"
 import LoginButton from '../components/loginButton';
 import Footer from "../components/footer";
-import {Navigate, useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 
 function Login() {
 
@@ -26,14 +26,14 @@ function Login() {
 
         if (offset >= words[i].length) {
           ++skip_count;
-          if (skip_count == skip_delay) {
+          if (skip_count === skip_delay) {
             forwards = false;
             skip_count = 0;
           }
         }
       }
       else {
-        if (offset == 0) {
+        if (offset === 0) {
           forwards = true;
           i++;
           offset = 0;
@@ -43,7 +43,7 @@ function Login() {
         }
       }
       part = words[i].substr(0, offset);
-      if (skip_count == 0) {
+      if (skip_count === 0) {
         if (forwards) {
           offset++;
         }
@@ -62,7 +62,7 @@ function Login() {
 
   };
 
-  useEffect((a) => {
+  useEffect(() => {
     wordflick()
   }, [])
 
