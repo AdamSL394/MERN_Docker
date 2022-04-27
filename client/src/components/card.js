@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
@@ -22,13 +22,11 @@ function Card() {
     const [errorFlag, setErrorFlag] = useState("hidden")
     const userId = user.sub.split("|")[1]
     const [disabled, setDisabled] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
+    const [successMessage, setSuccessMessage] = useState("")
 
     const storeNewNote = (userId) => {
         setDisabled(true)
-        if(date === " "){
-            console.log(new Date)
-            setDate(new Date)
-        }
         var myHeaders = new Headers();
         myHeaders.append("origin", "");
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
@@ -51,18 +49,25 @@ function Card() {
         fetch("http://localhost:5000/users/note", requestOptions)
             .then(response => response.text())
             .then(result => {
-                console.log("post result",result)
-                setText(" ");
-                setDate();
-                setStar("None")
-                setSuccessFlag("visible")
-                setTimeout(() => {setSuccessFlag("hidden")}, 1500);
-                setTimeout(() => {setDisabled(false) }, 1500);
+                if (result.toString().includes("failed")) {
+                    setErrorMessage(result) 
+                    setErrorFlag("visible")
+                    setTimeout(() => { setErrorFlag("hidden") }, 1500);
+                    setTimeout(() => { setDisabled(false) }, 1500);
+                } else {
+                    setText(" ");
+                    setStar("None")
+                    setSuccessMessage(result)
+                    setSuccessFlag("visible")
+                    setTimeout(() => { setSuccessFlag("hidden") }, 1500);
+                    setTimeout(() => { setDisabled(false) }, 1500);
+                }
             })
             .catch(error => {
+                setErrorMessage(error)
                 setErrorFlag("visible")
-                setTimeout(() => {setErrorFlag("hidden")}, 1500);
-                setTimeout(() => {setDisabled(false) }, 1500);
+                setTimeout(() => { setErrorFlag("hidden") }, 1500);
+                setTimeout(() => { setDisabled(false) }, 1500);
             });
     }
 
@@ -92,7 +97,7 @@ function Card() {
                     </Select>
                 </FormControl>
                 <Button
-                    disabled = {disabled}
+                    disabled={disabled}
                     style={{ alignSelf: "center" }}
                     variant="contained"
                     value="save"
@@ -100,9 +105,9 @@ function Card() {
                     onClick={() => storeNewNote(userId)}>
                     Save Note
                 </Button>
-            </span> 
-            <Alert severity="success" style={{ visibility: successFlag }} id="successFlag" open={false} >Success</Alert>
-            <Alert severity="error" style={{ visibility: errorFlag }} open={false}>Error</Alert>
+            </span>
+            <Alert severity="success" style={{ visibility: successFlag }} id="successFlag" open={false} >{successMessage}</Alert>
+            <Alert severity="error" style={{ visibility: errorFlag }} open={false}>{errorMessage}</Alert>
         </Container>
 
     )

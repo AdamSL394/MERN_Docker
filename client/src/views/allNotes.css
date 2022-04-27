@@ -23,3 +23,7 @@
     width: 1%;
     min-width: 0px;
 }
+.modalButtons{
+    margin:5% !important;
+    color: red !important;
+}

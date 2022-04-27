@@ -18,30 +18,39 @@ export default function AllNotes() {
         border: '2px solid #000',
         boxShadow: 24,
         p: 4,
+        textAlign:"center"
     };
 
     const { user } = useAuth0();
     const [notes, setNotes] = useState([])
     const [text, setText] = useState("")
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const [modelNoteId, setModelNoteId] = useState()
     const userId = user.sub.split("|")[1]
+
+    const handleOpen = (noteId) => {
+        setModelNoteId(noteId._id)
+        setOpen(true)
+    };
+    const handleClose = (id) => {
+        if(id){
+            setOpen(false)
+            deleteNote(id)
+        }
+        setOpen(false)
+    };
+
 
     useEffect(() => {
         getAllNotes(userId)
     }, [])
-
+ 
     const getAllNotes = (userId) => {
-
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
         myHeaders.append("origin", "http://localhost:3000/");
         myHeaders.append("Content-Type", "application/json");
 
-        var raw = JSON.stringify({
-            "userId": userId,
-        });
 
         var requestOptions = {
             method: 'GET',
@@ -58,8 +67,7 @@ export default function AllNotes() {
             .catch(error => console.log('error', error));
     }
 
-    const deleteNote = (note) => {
-        handleClose()
+    const deleteNote = (noteId) => {
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
         myHeaders.append("origin", "http://localhost:3000/");
@@ -70,11 +78,10 @@ export default function AllNotes() {
             redirect: 'follow'
         };
 
-        fetch(`http://localhost:5000/users/delete/${note._id}`, requestOptions)
+        fetch(`http://localhost:5000/users/delete/${noteId}`, requestOptions)
             .then(response => response.text())
             .then(result => {
-                console.log(result)
-                getAllNotes()
+                getAllNotes(userId)
             })
             .catch(error => console.log('error', error));
     }
@@ -122,7 +129,7 @@ export default function AllNotes() {
             .then(result => {
                 console.log(result);
                 console.log("here", result);
-                getAllNotes()
+                getAllNotes(userId)
             })
             .catch(error => {
                 //setErrorFlag("visible")
@@ -131,8 +138,9 @@ export default function AllNotes() {
             });
     }
 
+
     return (
-        <>
+        <> 
             <Navbar></Navbar>
             {/* style={{ backgroundColor: "lightgray" }} */}
             <Box >
@@ -143,23 +151,24 @@ export default function AllNotes() {
                     justifyContent="center"
                     alignItems="center"
                 >
+
+                    <Modal
+                        open={open}
+                        aria-labelledby="parent-modal-title"
+                        aria-describedby="parent-modal-description"
+                    >
+                        <Box sx={style}>
+                            <div>
+                                Are you sure you'd like to delete?
+                            </div>
+                            <Button style={{color:"red"}} onClick={()=>handleClose()}>Close</Button>
+                            <Button style={{color:"red"}} onClick={() => handleClose(modelNoteId)}>Delete</Button>
+                        </Box>
+                    </Modal>
                     {(notes).map((note, i) => {
                         if (!note.edit) {
                             return (
                                 <Grid key={i + 100} item xs={12} sm={6} md={4} lg={3}>
-                                    <Modal
-                                        open={open}
-                                        aria-labelledby="parent-modal-title"
-                                        aria-describedby="parent-modal-description"
-                                    >
-                                        <Box sx={style}>
-                                            <div>
-                                                Are you sure you'd like to delete?
-                                            </div>
-                                            <Button onClick={handleClose}>Close</Button>
-                                            <Button onClick={() => { deleteNote(note) }}>Yes</Button>
-                                        </Box>
-                                    </Modal>
                                     <Card key={i + 110}
                                         id="Card"
                                         value={note.id}
@@ -168,7 +177,8 @@ export default function AllNotes() {
                                         <Button
                                             key={i + 102}
                                             id="deleteButton"
-                                            onClick={handleOpen}
+                                            value = {note.id}
+                                            onClick={()=>handleOpen(note)}
                                         >
                                             X
                                         </Button>
@@ -180,18 +190,18 @@ export default function AllNotes() {
                                             {note.text}
                                         </h3>
                                         <div
-                                            key={i + 104}
+                                        key={i+104}
                                         >
                                             {note.date}
                                         </div>
                                         <div
-                                            key={i + 105}
+                                        key={i+105}
                                         >
                                             {note.star}
                                         </div>
 
                                         <Button
-                                            key={i + 106}
+                                            key={i+106}
                                             onClick={() => editNote(note)}>
                                             Edit Me
                                         </Button>
@@ -206,22 +216,9 @@ export default function AllNotes() {
                                     variant="outlined"
                                     id="Card"
                                 >
-                                    <Modal
-                                        open={open}
-                                        aria-labelledby="parent-modal-title"
-                                        aria-describedby="parent-modal-description"
-                                    >
-                                        <Box sx={style}>
-                                            <div>
-                                                Are you sure you'd like to delete?
-                                            </div>
-                                            <Button onClick={handleClose}>Close</Button>
-                                            <Button onClick={() => { deleteNote(note) }}>Yes</Button>
-                                        </Box>
-                                    </Modal>
                                     <Button
                                         key={i + 3}
-                                        onClick={handleOpen}
+                                        onClick={()=>handleOpen(note)}
                                         color="primary"
                                         id="deleteButton"
                                     >
