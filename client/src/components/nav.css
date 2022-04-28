@@ -33,7 +33,11 @@
 .tabs:hover{
     text-decoration: underline;
 }
-
+.userInfo{
+    position:absolute;
+    float:right;
+    
+}
 
 
 

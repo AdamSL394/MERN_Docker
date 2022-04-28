@@ -27,6 +27,10 @@ export default function AllNotes() {
     const [open, setOpen] = useState(false);
     const [modelNoteId, setModelNoteId] = useState()
     const userId = user.sub.split("|")[1]
+    const [editNoteId,setEditNoteId] = useState()
+    let currentNoteEdit;
+    let editingNewCardText = false;
+
 
     const handleOpen = (noteId) => {
         setModelNoteId(noteId._id)
@@ -87,21 +91,45 @@ export default function AllNotes() {
     }
 
     const editNote = (note) => {
+        if(!editNoteId){
+            currentNoteEdit = note._id
+            setEditNoteId(note._id)
+        }
+        if(note._id != editNoteId ){
+            editingNewCardText = true
+            setEditNoteId(note._id)
+            sessionStorage.setItem(editNoteId, text);
+            let pastText = sessionStorage.getItem(note._id);
+            if(pastText != null && pastText != ""){
+                note.text = pastText
+            }
+        }if(note._id === editNoteId){
+            let pastText = sessionStorage.getItem(note._id);
+            setText(pastText)
+        }
         if (!note.edit) {
             note.edit = true
-            note.text = note.text
         }
         else {
             note.edit = false
-            if (text === "")
-                note.text = note.text
-            else {
-                note.text = text
-                setText("")
-            }
         }
-        console.log(note)
-        updateNote(note)
+        if(!text){
+            updateNote(note)
+        }else if(text){
+            if(editingNewCardText){
+                sessionStorage.setItem(editNoteId, text);
+                updateNote(note)
+                return
+            }
+            note.text = text
+            updateNote(note)
+        }
+    }
+
+    const onChangeTextArea = (e,note) => {
+        setEditNoteId(note._id)
+        setText(e.target.value)
+        sessionStorage.setItem(note._id, e.target.value);
     }
 
     const updateNote = (note) => {
@@ -110,7 +138,7 @@ export default function AllNotes() {
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
         myHeaders.append("Content-Type", "application/json");
         var raw = JSON.stringify({
-            "text": text,
+            "text": note.text,
             "date": note.date,
             "star": note.star,
             "edit": note.edit
@@ -127,9 +155,9 @@ export default function AllNotes() {
         fetch(`http://localhost:5000/users/update/${note._id}`, requestOptions)
             .then(response => response.text())
             .then(result => {
-                console.log(result);
-                console.log("here", result);
+                setText("")
                 getAllNotes(userId)
+                //sessionStorage.removeItem(note.id);
             })
             .catch(error => {
                 //setErrorFlag("visible")
@@ -227,9 +255,11 @@ export default function AllNotes() {
                                     <textarea
                                         key={i + 4}
                                         id="editCard"
-                                        onChange={(e) => setText(e.target.value)}
-                                        value={note.text}
+                                        onChange={
+                                            (e) => onChangeTextArea(e,note)
+                                        }
                                     >
+                                        {note.text}
                                     </textarea>
                                     <input
                                         key={i + 5}

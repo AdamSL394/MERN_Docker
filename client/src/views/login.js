@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./login.css"
 import LoginButton from '../components/loginButton';
 import Footer from "../components/footer";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function Login() {
 
@@ -68,13 +68,14 @@ function Login() {
 
   const navigate = useNavigate();
 
-    const home = () => {
-        navigate('/')
-    }
+  const home = () => {
+    navigate('/')
+  }
 
 
   return (
     <div>
+      <Footer></Footer>
       <LoginButton></LoginButton>
       <button className='appBubble' onClick={home}>
         <span className="icon">
@@ -82,7 +83,7 @@ function Login() {
         </span>
       </button>
       <div className="word container">{text}</div>
-      <Footer></Footer>
+
     </div>
   )
 
