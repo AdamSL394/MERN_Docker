@@ -3,13 +3,23 @@ const noteController = require("../controller/noteController")
 const router = express.Router();
 
 router.get('/all/:id', async (req, res) => {
-    let correctlength = req.params.id + "000"
+    let correctlength;
+    if(req.params.id.length != 24){
+        correctlength = req.params.id +"000"
+    }
+    else correctlength = req.params.id
     let response = await noteController.getAllNotes(correctlength)
     res.send(response);
  });
 
-router.get('/note:id', async (req, res) => {
-    console.log("Get Single Note")
+router.post('/noterange', async (req, res) => {
+    let correctlength;
+    if(req.body.userId.length != 24){
+        correctlength = req.body.userId +"000"
+    }
+    let {start, end} = req.body
+    let response = await noteController.getRangeNotes(correctlength,start,end)
+    res.send(response);
  });
 
 router.delete('/delete/:id', async (req,res) => {
@@ -26,7 +36,6 @@ router.patch('/update/:id', async (req,res)=> {
 router.post("/note", async (req,res)=> {
     const {text, date, star, edit, userId} = req.body
     let response = await noteController.postNotes(text, date, star, edit, userId)
-    console.log("response", response)
     res.send(response)
 })
 

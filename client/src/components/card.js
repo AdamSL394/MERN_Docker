@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
@@ -6,13 +6,13 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import './card.css'
-import { Container } from "@mui/material";
+import { Container, Card, Grid } from "@mui/material";
 import Alert from '@mui/material/Alert';
 import { useAuth0 } from '@auth0/auth0-react'
 
 
 
-function Card() {
+function Face() {
 
     const { user } = useAuth0();
     const [text, setText] = useState()
@@ -24,6 +24,7 @@ function Card() {
     const [disabled, setDisabled] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
     const [successMessage, setSuccessMessage] = useState("")
+    const [notes, setNotes] = useState([])
 
     const storeNewNote = (userId) => {
         setDisabled(true)
@@ -50,7 +51,7 @@ function Card() {
             .then(response => response.text())
             .then(result => {
                 if (result.toString().includes("failed")) {
-                    setErrorMessage(result) 
+                    setErrorMessage(result)
                     setErrorFlag("visible")
                     setTimeout(() => { setErrorFlag("hidden") }, 1500);
                     setTimeout(() => { setDisabled(false) }, 1500);
@@ -71,6 +72,43 @@ function Card() {
             });
     }
 
+    useEffect(() => {
+        const userid = (user.sub.split("|")[1])
+        let todaysDate = new Date().toISOString().split("T")[0]
+
+        var myCurrentDate = new Date();
+        var myPastDate = new Date(myCurrentDate);
+        myPastDate.setDate(myPastDate.getDate() - 7)
+
+        let lastWeeksDate = myPastDate.toISOString().split("T")[0]
+
+        var myHeaders = new Headers();
+        myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        myHeaders.append("origin", "http://localhost:3000/");
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            "userId": userid,
+            "start": todaysDate,
+            "end": lastWeeksDate
+        });
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:5000/users/noterange", requestOptions)
+            .then(response => response.text())
+            .then(results => {
+                let cast = JSON.parse(results)
+                setNotes(cast)
+            })
+            .catch(error => console.log('error', error));
+
+    }, [])
 
     return (
         <Container id="container">
@@ -108,10 +146,46 @@ function Card() {
             </span>
             <Alert severity="success" style={{ visibility: successFlag }} id="successFlag" open={false} >{successMessage}</Alert>
             <Alert severity="error" style={{ visibility: errorFlag }} open={false}>{errorMessage}</Alert>
-        </Container>
+            <h2>Last Weeks Notes</h2>
+            <Grid
+                container spacing={2}
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+            >
+               
+                {(notes).map((note, i) => {
+                    return (
+                        <Grid
+                            item xs={12} sm={6} md={4} lg={3}>
+
+                            <Card>
+                                <h3
+                                    key={i + 103}
+                                    style={{ margin: "1%"}}
+                                >
+                                    {note.text}
+                                </h3>
+                                <div
+                                    key={i + 104}
+                                >
+                                    {note.date}
+                                </div>
+                                <div
+                                    key={i + 105}
+                                >
+                                    {note.star}
+                                </div>
+                            </Card>
+                        </Grid>
+                    )
+                }
+                )}
+            </Grid>
+        </Container >
 
     )
 }
 
 
-export { Card };
+export { Face };

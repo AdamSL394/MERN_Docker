@@ -14,8 +14,6 @@ function Navbar() {
     const home = () => {
         navigate('/')
     }
-    console.log(user)
-
     return (
         <div className='xl12 l12 m12 s12 xs12' id='navbar'>
 
@@ -24,7 +22,7 @@ function Navbar() {
             <span className="tabs" id="aboutUs" onClick={() => console.log("clicked")}> About Us </span>
 
             <p className='userInfo'>Hi <span role="img" aria-label="Star">👋🏼</span> {user.name ? user.name : ""}</p>
-            <img className='userInfo' style={{ height: "25px", width: "25px" }} src={user.picture ? user.picture : ""}></img>
+            <img className='userInfo' style={{ height: "25px", width: "25px" }} src={user.picture}referrerPolicy="no-referrer" alt="User Profile"></img>
             <LogOut></LogOut>
         </div>
     )

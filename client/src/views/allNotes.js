@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/nav";
 import { Card, Button, Grid, Box, Modal } from "@mui/material/"
 import Footer from "../components/footer";
-import styles from "./allNotes.css"
+import "./allNotes.css"
 import { useAuth0 } from '@auth0/auth0-react'
+import { styled, alpha } from '@mui/material/styles';
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
 
 
 export default function AllNotes() {
@@ -18,7 +21,7 @@ export default function AllNotes() {
         border: '2px solid #000',
         boxShadow: 24,
         p: 4,
-        textAlign:"center"
+        textAlign: "center"
     };
 
     const { user } = useAuth0();
@@ -27,8 +30,7 @@ export default function AllNotes() {
     const [open, setOpen] = useState(false);
     const [modelNoteId, setModelNoteId] = useState()
     const userId = user.sub.split("|")[1]
-    const [editNoteId,setEditNoteId] = useState()
-    let currentNoteEdit;
+    const [editNoteId, setEditNoteId] = useState()
     let editingNewCardText = false;
 
 
@@ -37,7 +39,7 @@ export default function AllNotes() {
         setOpen(true)
     };
     const handleClose = (id) => {
-        if(id){
+        if (id) {
             setOpen(false)
             deleteNote(id)
         }
@@ -46,9 +48,10 @@ export default function AllNotes() {
 
 
     useEffect(() => {
+        const userId = user.sub.split("|")[1]
         getAllNotes(userId)
     }, [])
- 
+
     const getAllNotes = (userId) => {
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
@@ -91,19 +94,18 @@ export default function AllNotes() {
     }
 
     const editNote = (note) => {
-        if(!editNoteId){
-            currentNoteEdit = note._id
+        if (!editNoteId) {
             setEditNoteId(note._id)
         }
-        if(note._id != editNoteId ){
+        if (note._id !== editNoteId) {
             editingNewCardText = true
             setEditNoteId(note._id)
             sessionStorage.setItem(editNoteId, text);
             let pastText = sessionStorage.getItem(note._id);
-            if(pastText != null && pastText != ""){
+            if (pastText !== null && pastText !== "") {
                 note.text = pastText
             }
-        }if(note._id === editNoteId){
+        } if (note._id === editNoteId) {
             let pastText = sessionStorage.getItem(note._id);
             setText(pastText)
         }
@@ -113,10 +115,10 @@ export default function AllNotes() {
         else {
             note.edit = false
         }
-        if(!text){
+        if (!text) {
             updateNote(note)
-        }else if(text){
-            if(editingNewCardText){
+        } else if (text) {
+            if (editingNewCardText) {
                 sessionStorage.setItem(editNoteId, text);
                 updateNote(note)
                 return
@@ -126,7 +128,7 @@ export default function AllNotes() {
         }
     }
 
-    const onChangeTextArea = (e,note) => {
+    const onChangeTextArea = (e, note) => {
         setEditNoteId(note._id)
         setText(e.target.value)
         sessionStorage.setItem(note._id, e.target.value);
@@ -165,13 +167,68 @@ export default function AllNotes() {
 
             });
     }
+    const Search = styled('div')(({ theme }) => ({
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: alpha(theme.palette.common.white, 0.15),
+        '&:hover': {
+          backgroundColor: alpha(theme.palette.common.white, 0.25),
+        },
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+          marginLeft: theme.spacing(1),
+          width: '50%',
+        },
+        border: "solid .5px",
+        borderColor: "lightgray",
+        alignItems: 'center',
+        textAlign:"center",
+        justifyContent: 'center',
+      }));
+
+      const SearchIconWrapper = styled('div')(({ theme }) => ({
+        padding: theme.spacing(0, 2),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }));
+      
+      const StyledInputBase = styled(InputBase)(({ theme }) => ({
+        color: 'inherit',
+        '& .MuiInputBase-input': {
+          padding: theme.spacing(1, 1, 1, 0),
+          // vertical padding + font size from searchIcon
+          paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+          transition: theme.transitions.create('width'),
+          width: '100%',
+          [theme.breakpoints.up('sm')]: {
+            width: '12ch',
+            '&:focus': {
+              width: '20ch',
+            },
+          },
+        },
+      }));
 
 
     return (
-        <> 
+        <>
             <Navbar></Navbar>
             {/* style={{ backgroundColor: "lightgray" }} */}
             <Box >
+            <Search>
+                        <SearchIconWrapper>
+                            <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            placeholder="Search…"
+                            inputProps={{ 'aria-label': 'search' }}
+                        />
+                    </Search>
                 <Grid
                     style={{ width: "90% !important" }}
                     container spacing={2}
@@ -179,6 +236,7 @@ export default function AllNotes() {
                     justifyContent="center"
                     alignItems="center"
                 >
+
 
                     <Modal
                         open={open}
@@ -189,8 +247,8 @@ export default function AllNotes() {
                             <div>
                                 Are you sure you'd like to delete?
                             </div>
-                            <Button style={{color:"red"}} onClick={()=>handleClose()}>Close</Button>
-                            <Button style={{color:"red"}} onClick={() => handleClose(modelNoteId)}>Delete</Button>
+                            <Button style={{ color: "red" }} onClick={() => handleClose()}>Close</Button>
+                            <Button style={{ color: "red" }} onClick={() => handleClose(modelNoteId)}>Delete</Button>
                         </Box>
                     </Modal>
                     {(notes).map((note, i) => {
@@ -205,8 +263,8 @@ export default function AllNotes() {
                                         <Button
                                             key={i + 102}
                                             id="deleteButton"
-                                            value = {note.id}
-                                            onClick={()=>handleOpen(note)}
+                                            value={note.id}
+                                            onClick={() => handleOpen(note)}
                                         >
                                             X
                                         </Button>
@@ -218,18 +276,18 @@ export default function AllNotes() {
                                             {note.text}
                                         </h3>
                                         <div
-                                        key={i+104}
+                                            key={i + 104}
                                         >
                                             {note.date}
                                         </div>
                                         <div
-                                        key={i+105}
+                                            key={i + 105}
                                         >
                                             {note.star}
                                         </div>
 
                                         <Button
-                                            key={i+106}
+                                            key={i + 106}
                                             onClick={() => editNote(note)}>
                                             Edit Me
                                         </Button>
@@ -246,7 +304,7 @@ export default function AllNotes() {
                                 >
                                     <Button
                                         key={i + 3}
-                                        onClick={()=>handleOpen(note)}
+                                        onClick={() => handleOpen(note)}
                                         color="primary"
                                         id="deleteButton"
                                     >
@@ -256,7 +314,7 @@ export default function AllNotes() {
                                         key={i + 4}
                                         id="editCard"
                                         onChange={
-                                            (e) => onChangeTextArea(e,note)
+                                            (e) => onChangeTextArea(e, note)
                                         }
                                     >
                                         {note.text}
