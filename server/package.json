@@ -31,10 +31,10 @@
     },
     "engines": {
         "node": ">=14.13.0"
-    },
+    }, 
     "scripts": {
         "start": "node server.js",
         "client": "cd ../client && npm start",
         "dev": "concurrently -n 'server,client' \"nodemon server.js\" \"npm run client\""
-    }
+    }  
 }

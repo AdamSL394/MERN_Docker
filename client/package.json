@@ -1,7 +1,7 @@
 {
   "name": "new_music",
   "version": "0.1.0",
-  "type": "module",
+  "type":"module",
   "private": true,
   "dependencies": {
     "@auth0/auth0-react": "^1.10.0",
@@ -25,7 +25,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "node ./src/index.js",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
