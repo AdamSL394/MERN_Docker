@@ -1,5 +1,6 @@
 html, body, #app, #app>div {
     height: 100%;
+    font-family: Times, Times New Roman, serif !important;
   }
 .appBubble{
   top:"-10px";

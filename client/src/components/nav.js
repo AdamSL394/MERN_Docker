@@ -16,18 +16,14 @@ function Navbar() {
     }
     return (
         <div className='xl12 l12 m12 s12 xs12' id='navbar'>
-
             <span className="tabs" id="home" onClick={home} > Home |</span>
             <span className="tabs" id="getall" onClick={getAllNotes}>View All Notes |</span>
-            <span className="tabs" id="aboutUs" onClick={() => console.log("clicked")}> About Us </span>
-
-            <p className='userInfo'>Hi <span role="img" aria-label="Star">👋🏼</span> {user.name ? user.name : ""}</p>
-            <img className='userInfo' style={{ height: "25px", width: "25px" }} src={user.picture}referrerPolicy="no-referrer" alt="User Profile"></img>
+            <i className="tabs" id="userName"onClick={() => console.log("clicked")}>  <i className='userInfo' style={{fontFamily:"font-family:Times, Times New Roman, serif !important"}} >Hi <span role="img" aria-label="Star">👋🏼 &nbsp;</span> {user.name ? user.name : ""}</i> </i>
+            <img id='userInfo' style={{ height: "25px", width: "25px" }} src={user.picture} referrerPolicy="no-referrer" alt="User Profile"></img>
             <LogOut></LogOut>
         </div>
     )
 }
-
 
 
 export default Navbar;

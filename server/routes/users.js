@@ -12,6 +12,28 @@ router.get('/all/:id', async (req, res) => {
     res.send(response);
  });
 
+router.get('/note/:id',async (req,res)=> {
+     console.log(req.params.id)
+     let response = await noteController.getSingleNote(req.params.id)
+     res.send(response)
+ })
+
+router.get('/all/order/:id', async (req, res) => {
+    let correctlength;
+    if(req.params.id.length != 24){
+        correctlength = req.params.id +"000"
+    }
+    else correctlength = req.params.id
+    let response = await noteController.getAllNotesOrdered(correctlength)
+    res.send(response);
+ });
+
+router.get('/search/:id',async (req,res)=> {
+    let searchTerms = req.params.id
+    let response = await noteController.searchNotes(searchTerms);
+    res.send(response)
+})
+
 router.post('/noterange', async (req, res) => {
     let correctlength;
     if(req.body.userId.length != 24){
@@ -28,8 +50,9 @@ router.delete('/delete/:id', async (req,res) => {
 })
 
 router.patch('/update/:id', async (req,res)=> {
-    let {edit, text} = req.body
-    let response = await noteController.updateNote(req.params.id, edit,text,res)
+    console.log(req.params.id)
+    let {edit, text, date, star} = req.body
+    let response = await noteController.updateNote(req.params.id, edit,text,date,star,res)
     res.json(response)
 })
 

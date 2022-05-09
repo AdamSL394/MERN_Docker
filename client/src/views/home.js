@@ -1,6 +1,6 @@
 import React from 'react'
 import Nav from '../components/nav'
-import { Face } from '../components/card'
+import { HomeView } from '../components/homeView'
 import Footer from '../components/footer'
 
 export default function Home() {
@@ -8,7 +8,7 @@ export default function Home() {
     return (
         <div>
             <Nav></Nav>
-            <Face></Face>
+            <HomeView></HomeView>
             <Footer></Footer>
         </div>
     )

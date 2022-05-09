@@ -5,15 +5,12 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
-import './card.css'
+import './homeView.css'
 import { Container, Card, Grid } from "@mui/material";
 import Alert from '@mui/material/Alert';
 import { useAuth0 } from '@auth0/auth0-react'
 
-
-
-function Face() {
-
+function HomeView() {
     const { user } = useAuth0();
     const [text, setText] = useState()
     const [date, setDate] = useState()
@@ -73,7 +70,7 @@ function Face() {
     }
 
     useEffect(() => {
-        const userid = (user.sub.split("|")[1])
+        const userid = user.sub.split("|")[1]
         let todaysDate = new Date().toISOString().split("T")[0]
 
         var myCurrentDate = new Date();
@@ -146,7 +143,7 @@ function Face() {
             </span>
             <Alert severity="success" style={{ visibility: successFlag }} id="successFlag" open={false} >{successMessage}</Alert>
             <Alert severity="error" style={{ visibility: errorFlag }} open={false}>{errorMessage}</Alert>
-            <h2>Last Weeks Notes</h2>
+            <h2 id="pastNoteHeader">Last Weeks Notes</h2>
             <Grid
                 container spacing={2}
                 direction="row"
@@ -158,7 +155,6 @@ function Face() {
                     return (
                         <Grid
                             item xs={12} sm={6} md={4} lg={3}>
-
                             <Card>
                                 <h3
                                     key={i + 103}
@@ -188,4 +184,4 @@ function Face() {
 }
 
 
-export { Face };
+export { HomeView };

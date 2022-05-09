@@ -5,7 +5,7 @@
 #navbar{
     border-bottom: 1px solid  lightgrey;
     height: 5rem;
-    width: 100vw;
+    width: 100%;
     background: white;
     position: relative;
    
@@ -28,15 +28,19 @@
     color:black;
     margin-top: 115px;
     font-size: 100%;
-
+    font-family:Times, Times New Roman, serif;
 }
 .tabs:hover{
     text-decoration: underline;
 }
-.userInfo{
-    position:absolute;
-    float:right;
-    
+
+#userName{
+    position: relative;
+    font-family:Times, Times New Roman, serif;
+}
+#userInfo{
+    position: absolute;
+    font-family:Times, Times New Roman, serif !important;
 }
 
 

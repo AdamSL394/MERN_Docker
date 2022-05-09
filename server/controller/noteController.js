@@ -16,12 +16,18 @@ const postNotes = async (text, date, star, edit, userId) => {
         return `${errorMessage}` 
     } 
     return "Success"
-}
+} 
+
+const getAllNotesOrdered = async (ids) => {
+    const id = mongoose.Types.ObjectId(ids.trim());
+    const notes = await Note.find({ userId: id }).sort({date:-1}).exec()
+    return notes 
+} 
 
 const getAllNotes = async (ids) => {
     const id = mongoose.Types.ObjectId(ids.trim());
-    const notes = await Note.find({ userId: id }).sort({date:-1}).exec()
-    return notes
+    const notes = await Note.find({ userId: id }).exec()
+    return notes 
 } 
 
 const getRangeNotes = async(ids,start,end) => {
@@ -37,17 +43,32 @@ const getRangeNotes = async(ids,start,end) => {
 const deleteNotes = async (id) => {
     const deleted = await Note.deleteOne({ _id: id })
     return "note deleted"
-} 
+}     
 
-const updateNote = async (id, edit, text) => {
-    const updated = await Note.findByIdAndUpdate(id, { $set: { edit: edit, text: text } }, { new: true })
-    return (updated)
+const updateNote = async (id,edit,text,date,star,) => {
+    const updated = await Note.findByIdAndUpdate(id, { $set: { edit: edit, text: text, date:date, star:star } }, { new: true })
+    return (updated) 
 }
+  
+const searchNotes = async (id) => {
+    // const ids = mongoose.Types.ObjectId(id.trim());
+    const notes = await Note.find({"text" : {$regex : id}})
+    return(notes)
+}
+
+const getSingleNote = async (id) => {
+    const note = await Note.find({_id:id}).exec()
+    console.log(note)
+    return note
+} 
 
 module.exports = {
     postNotes,
     getAllNotes,
     deleteNotes,
     updateNote,
-    getRangeNotes
+    getRangeNotes,
+    searchNotes,
+    getAllNotesOrdered,
+    getSingleNote
 }
