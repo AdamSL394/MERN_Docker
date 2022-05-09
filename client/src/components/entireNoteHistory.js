@@ -4,7 +4,6 @@ import { useAuth0 } from '@auth0/auth0-react'
 import NoteRoutes from "../router/noteRoutes";
 import Search from './search'
 import Tooltip from '@mui/material/Tooltip';
-import { ConnectedTvOutlined } from "@mui/icons-material";
 
 function NoteHistory() {
 

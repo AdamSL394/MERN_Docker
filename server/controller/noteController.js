@@ -25,6 +25,7 @@ const getAllNotesOrdered = async (ids) => {
 } 
 
 const getAllNotes = async (ids) => {
+    console.log("Here",ids)
     const id = mongoose.Types.ObjectId(ids.trim());
     const notes = await Note.find({ userId: id }).exec()
     return notes 

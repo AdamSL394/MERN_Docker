@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === "local") {
     }
 } 
 
-if (process.env.NODE_ENV === "staging") {
+if (process.env.NODE_ENV === "development") {
     main().catch(err => console.log(err));
     async function main() {
         const connect = await mongoose.connect(`mongoose.connect("mongodb://${config.development.mongoose_uri}:27017/test`, {
