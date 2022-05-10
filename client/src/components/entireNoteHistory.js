@@ -3,7 +3,7 @@ import { Card, Button, Grid, Box, Modal, FormControl, Select, InputLabel, MenuIt
 import { useAuth0 } from '@auth0/auth0-react'
 import NoteRoutes from "../router/noteRoutes.js";
 import Search from './search.js'
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from '@mui/material/Tooltip/index.js';
 
 function NoteHistory() {
 
