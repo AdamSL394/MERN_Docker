@@ -44,7 +44,7 @@ function HomeView() {
             body: raw
         };
 
-        fetch("http://localhost:5000/users/note", requestOptions)
+        fetch("https://note-script-dev.herokuapp.com/users/note", requestOptions)
             .then(response => response.text())
             .then(result => {
                 if (result.toString().includes("failed")) {

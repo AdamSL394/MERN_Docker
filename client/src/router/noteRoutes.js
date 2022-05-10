@@ -2,7 +2,7 @@ export default {
     deleteNote: (noteId) => {
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        myHeaders.append("origin", "http://localhost:3000/");
+        myHeaders.append("origin", "https://note-script-dev.herokuapp.com/");
 
         var requestOptions = {
             method: 'DELETE',
@@ -10,7 +10,7 @@ export default {
             redirect: 'follow'
         };
 
-        return fetch(`http://localhost:5000/users/delete/${noteId}`, requestOptions)
+        return fetch(`https://note-script-dev.herokuapp.com/users/delete/${noteId}`, requestOptions)
             .then(response => response.text())
             .then(result => {
                 return result
@@ -21,7 +21,7 @@ export default {
     getAllNotes: (userId) => {
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        myHeaders.append("origin", "http://localhost:3000/");
+        myHeaders.append("origin", "https://note-script-dev.herokuapp.com/");
         myHeaders.append("Content-Type", "application/json");
 
 
@@ -31,7 +31,7 @@ export default {
             redirect: 'follow',
         };
 
-        return fetch(`http://localhost:5000/users/all/${userId}`, requestOptions)
+        return fetch(`https://note-script-dev.herokuapp.com/users/all/${userId}`, requestOptions)
             .then(response => response.text())
             .then(results => {
                 return  JSON.parse(results)
@@ -59,7 +59,7 @@ export default {
             body: raw
         };
 
-        return fetch(`http://localhost:5000/users/update/${note._id}`, requestOptions)
+        return fetch(`https://note-script-dev.herokuapp.com/users/update/${note._id}`, requestOptions)
             .then(response => response.text())
             .then(result => {
                 return result
@@ -78,7 +78,7 @@ export default {
     getNotesOrdered: (userId) => {
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        myHeaders.append("origin", "http://localhost:3000/");
+        myHeaders.append("origin", "https://note-script-dev.herokuapp.com/");
         myHeaders.append("Content-Type", "application/json");
 
 
@@ -88,7 +88,7 @@ export default {
             redirect: 'follow',
         };
 
-        return fetch(`http://localhost:5000/users/all/order/${userId}`, requestOptions)
+        return fetch(`https://note-script-dev.herokuapp.com/${userId}`, requestOptions)
             .then(response => response.text())
             .then(results => {
                 return  JSON.parse(results)
@@ -99,7 +99,7 @@ export default {
     getNote: (noteId) => {
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        myHeaders.append("origin", "http://localhost:3000/");
+        myHeaders.append("origin", "https://note-script-dev.herokuapp.com/");
         myHeaders.append("Content-Type", "application/json");
 
 
@@ -109,7 +109,7 @@ export default {
             redirect: 'follow',
         };
 
-        return fetch(`http://localhost:5000/users/note/${noteId}`, requestOptions)
+        return fetch(`https://note-script-dev.herokuapp.com/${noteId}`, requestOptions)
             .then(response => response.text())
             .then(results => {
                 return(results)

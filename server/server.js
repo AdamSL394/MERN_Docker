@@ -28,7 +28,7 @@ if (process.env.NODE_ENV === "local") {
 if (process.env.NODE_ENV === "development") {
     main().catch(err => console.log(err));
     async function main() {
-        const connect = await mongoose.connect(`mongoose.connect("mongodb://${config.development.mongoose_uri}:27017/test`, {
+        const connect = await mongoose.connect(`mongoose.connect("mongodb+srv://adam:notescript@cluster0.fepd2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
             dbName: process.env.DB_NAME,
             useNewUrlParser: true,
             useCreateIndex: true,
