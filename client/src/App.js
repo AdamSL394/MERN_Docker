@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import { ThemeProvider, createTheme } from '@mui/material'
+import { ThemeProvider, createTheme } from '@mui/material/index.js'
 import { useAuth0 } from '@auth0/auth0-react'
 import { BrowserRouter } from "react-router-dom"
 import Router from "./router/index.tsx"

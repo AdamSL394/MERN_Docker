@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import TextField from '@mui/material/TextField'
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField/index.js'
+import FormControl from '@mui/material/FormControl/index.js';
+import Select from '@mui/material/Select/index.js';
+import InputLabel from '@mui/material/InputLabel/index.js';
+import MenuItem from '@mui/material/MenuItem/index.js';
+import Button from '@mui/material/Button/index.js';
 import './homeView.css'
-import { Container, Card, Grid } from "@mui/material";
-import Alert from '@mui/material/Alert';
+import { Container, Card, Grid } from "@mui/material/index.js";
+import Alert from '@mui/material/Alert/index.js';
 import { useAuth0 } from '@auth0/auth0-react'
 
 function HomeView() {

@@ -1,7 +1,7 @@
 const Note = require("../models/notes")
 const mongoose = require('mongoose')
 var ObjectId = require("mongodb").ObjectId
-
+  
 const postNotes = async (text, date, star, edit, userId) => {
     let correctlength = userId + "000";
     let newNote = new Note({ text: text, date: date, star: star, edit: edit, userId: correctlength })

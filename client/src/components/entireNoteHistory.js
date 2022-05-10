@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Button, Grid, Box, Modal, FormControl, Select, InputLabel, MenuItem, Container } from "@mui/material/"
+import { Card, Button, Grid, Box, Modal, FormControl, Select, InputLabel, MenuItem, Container } from "@mui/material/index.js"
 import { useAuth0 } from '@auth0/auth0-react'
 import NoteRoutes from "../router/noteRoutes.js";
 import Search from './search.js'
