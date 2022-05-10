@@ -81,7 +81,7 @@ function HomeView() {
 
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        myHeaders.append("origin", "http://localhost:3000/");
+        myHeaders.append("origin", "https://note-script-dev.herokuapp.com/");
         myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify({
@@ -97,7 +97,7 @@ function HomeView() {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:5000/users/noterange", requestOptions)
+        fetch("https://note-script-dev.herokuapp.com/users/noterange", requestOptions)
             .then(response => response.text())
             .then(results => {
                 let cast = JSON.parse(results)
