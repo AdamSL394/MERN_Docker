@@ -1,6 +1,7 @@
 {
   "name": "new_music",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "dependencies": {
     "@auth0/auth0-react": "^1.10.0",
