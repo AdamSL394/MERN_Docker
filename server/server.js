@@ -48,17 +48,14 @@ app.use(bodyParser.json())
 app.use(cors());
 
 
-app.get('/', (req, res) => {
-    res.json('Hello World 1')
-})
-
-app.use(express.static(path.join(__dirname, '../client/build')));
-
-app.get('/', function (req, res) {
-    const index = path.join(__dirname, '../client/public')
-    console.log(index)
-    res.sendFile(index);
-}); 
+if(process.env.NODE_ENV === "development"){
+    console.log("here fefe")
+    app.use(express.static(path.resolve(__dirname, '../client/build')));
+    app.get('/*', function (req, res) {
+        res.sendFile(path.resolve(__dirname, '../client/build',"index.html"));
+    });
+}
+ 
  
 app.use("/users", userRouter); 
 
