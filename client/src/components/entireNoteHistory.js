@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Card, Button, Grid, Box, Modal, FormControl, Select, InputLabel, MenuItem, Container } from "@mui/material/"
 import { useAuth0 } from '@auth0/auth0-react'
-import NoteRoutes from "../router/noteRoutes";
-import Search from './search'
+import NoteRoutes from "../router/noteRoutes.js";
+import Search from './search.js'
 import Tooltip from '@mui/material/Tooltip';
 
 function NoteHistory() {

@@ -1,5 +1,5 @@
 import React from 'react'
-import LogOut from '../components/logoutButton';
+import LogOut from '../components/logoutButton.js';
 import './nav.css'
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react'
