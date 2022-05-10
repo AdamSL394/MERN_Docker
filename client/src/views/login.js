@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./login.css"
-import LoginButton from '../components/loginButton';
-import Footer from "../components/footer";
+import LoginButton from '../components/loginButton.js';
+import Footer from "../components/footer.js";
 import { useNavigate } from 'react-router-dom'
 
 function Login() {
