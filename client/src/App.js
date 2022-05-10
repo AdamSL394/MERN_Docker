@@ -3,7 +3,7 @@ import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material'
 import { useAuth0 } from '@auth0/auth0-react'
 import { BrowserRouter } from "react-router-dom"
-import Router from "./router"
+import Router from "./router/index.tsx"
 
 let theme = createTheme({
   palette: {
