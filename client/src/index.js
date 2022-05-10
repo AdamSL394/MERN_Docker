@@ -6,12 +6,14 @@ import reportWebVitals from './reportWebVitals.js';
 import { Auth0Provider } from "@auth0/auth0-react";
 import config from './auth_config.json'
 
+const result = dotenv.config();
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <Auth0Provider
-    domain={config.domain}
-    clientId={config.clientId}
+    domain={result.domain}
+    clientId={result.clientId}
     redirectUri={window.location.origin}
     user
   >
