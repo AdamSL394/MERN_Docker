@@ -7,6 +7,7 @@ const mongoose = require("mongoose")
 const connectToDB = require("./database/db");
 const userRouter = require("./routes/users");
 const config = require("./config/config.json")
+const path = require("path")
 
 
 if (process.env.NODE_ENV === "local") {
@@ -22,14 +23,14 @@ if (process.env.NODE_ENV === "local") {
         })
         console.log(`MongoDB connected: ${(connect.connection.host)}`);
     }
-} 
+}
 
 if (process.env.NODE_ENV === "development") {
     main().catch(err => console.log(err));
     async function main() {
         const connect = await mongoose.connect(`mongoose.connect("mongodb://${config.development.mongoose_uri}:27017/test`, {
             dbName: process.env.DB_NAME,
-            useNewUrlParser: true, 
+            useNewUrlParser: true,
             useCreateIndex: true,
             useUnifiedTopology: true,
             useFindAndModify: true,
@@ -37,7 +38,7 @@ if (process.env.NODE_ENV === "development") {
         console.log(`Staging MongoDB connected: ${(connect.connection.host)}`);
     }
 }
- 
+
 //Research 
 const bodyParser = require('body-parser');
 const { response } = require("express");
@@ -51,7 +52,15 @@ app.get('/', (req, res) => {
     res.json('Hello World 1')
 })
 
-app.use("/users", userRouter);
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+app.get('/', function (req, res) {
+    const index = path.join(__dirname, '../client/public')
+    console.log(index)
+    res.sendFile(index);
+}); 
+ 
+app.use("/users", userRouter); 
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`)
