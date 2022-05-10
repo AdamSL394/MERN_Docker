@@ -4,16 +4,16 @@ import './index.css';
 import App from './App.js';
 import reportWebVitals from './reportWebVitals.js';
 import { Auth0Provider } from "@auth0/auth0-react";
-import config from './auth_config.json'
+// import config from './auth_config.json'
 
-const result = dotenv.config();
+// const result = dotenv.config();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <Auth0Provider
-    domain={result.domain}
-    clientId={result.clientId}
+    domain={"dev-07j15n0p.us.auth0.com"}
+    clientId={"p9eT1rMY70S9ALx8jTH4s9WDi4QBHaRy"}
     redirectUri={window.location.origin}
     user
   >
