@@ -46,10 +46,10 @@ app.use(cors());
 
 
 if (process.env.NODE_ENV === "development") {
-    //app.use('/static',express.static(path.resolve(__dirname, '../client/build')));
-    app.get('/*', function (req, res) {
-        res.sendFile(path.join(__dirname, '../client/build', "index.html"));
-    });
+    app.use('/static',express.static(path.resolve(__dirname, '../client/build')));
+    // app.get('/*', function (req, res) {
+    //     res.sendFile(path.join(__dirname, '../client/build', "index.html"));
+    // });
 }
 
 app.use("/users", userRouter);
