@@ -25,52 +25,51 @@ function HomeView() {
     const [successMessage, setSuccessMessage] = useState("")
     const [notes, setNotes] = useState([])
 
-    console.log("process.env.REACT_APP_HOST",enviromentAPI.api_url)
 
     const storeNewNote = (userId) => {
         setDisabled(true)
-        var myHeaders = new Headers();
-        myHeaders.append("origin", "http://localhost:3000");
-        myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        myHeaders.append("Content-Type", "application/json");
-        var raw = JSON.stringify({
-            "text": text,
-            "date": date,
-            "star": star,
-            "userId": userId
-        });
+        // var myHeaders = new Headers();
+        // myHeaders.append("origin", "http://localhost:3000");
+        // myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        // myHeaders.append("Content-Type", "application/json");
+        // var raw = JSON.stringify({
+        //     "text": text,
+        //     "date": date,
+        //     "star": star,
+        //     "userId": userId
+        // });
 
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            redirect: 'follow',
-            requireHeader: ['origin', 'x-requested-with'],
-            body: raw
-        };
+        // var requestOptions = {
+        //     method: 'POST',
+        //     headers: myHeaders,
+        //     redirect: 'follow',
+        //     requireHeader: ['origin', 'x-requested-with'],
+        //     body: raw
+        // };
 
-        fetch(`${enviromentAPI.api_url}/users/note`, requestOptions)
-            .then(response => response.text())
-            .then(result => {
-                if (result.toString().includes("failed")) {
-                    setErrorMessage(result)
-                    setErrorFlag("visible")
-                    setTimeout(() => { setErrorFlag("hidden") }, 1500);
-                    setTimeout(() => { setDisabled(false) }, 1500);
-                } else {
-                    setText(" ");
-                    setStar("None")
-                    setSuccessMessage(result)
-                    setSuccessFlag("visible")
-                    setTimeout(() => { setSuccessFlag("hidden") }, 1500);
-                    setTimeout(() => { setDisabled(false) }, 1500);
-                }
-            })
-            .catch(error => {
-                setErrorMessage(error)
-                setErrorFlag("visible")
-                setTimeout(() => { setErrorFlag("hidden") }, 1500);
-                setTimeout(() => { setDisabled(false) }, 1500);
-            });
+        // fetch(`${enviromentAPI.api_url}/users/note`, requestOptions)
+        //     .then(response => response.text())
+        //     .then(result => {
+        //         if (result.toString().includes("failed")) {
+        //             setErrorMessage(result)
+        //             setErrorFlag("visible")
+        //             setTimeout(() => { setErrorFlag("hidden") }, 1500);
+        //             setTimeout(() => { setDisabled(false) }, 1500);
+        //         } else {
+        //             setText(" ");
+        //             setStar("None")
+        //             setSuccessMessage(result)
+        //             setSuccessFlag("visible")
+        //             setTimeout(() => { setSuccessFlag("hidden") }, 1500);
+        //             setTimeout(() => { setDisabled(false) }, 1500);
+        //         }
+        //     })
+        //     .catch(error => {
+        //         setErrorMessage(error)
+        //         setErrorFlag("visible")
+        //         setTimeout(() => { setErrorFlag("hidden") }, 1500);
+        //         setTimeout(() => { setDisabled(false) }, 1500);
+        //     });
     }
 
     useEffect(() => {
