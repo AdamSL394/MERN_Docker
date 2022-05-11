@@ -10,12 +10,14 @@ router.get('/all/:id', async (req, res) => {
     else correctlength = req.params.id
     let response = await noteController.getAllNotes(correctlength)
     res.send(response);
+    return
  });
 
 router.get('/note/:id',async (req,res)=> {
      console.log(req.params.id)
      let response = await noteController.getSingleNote(req.params.id)
      res.send(response)
+     return
  })
 
 router.get('/all/order/:id', async (req, res) => {
@@ -26,12 +28,14 @@ router.get('/all/order/:id', async (req, res) => {
     else correctlength = req.params.id
     let response = await noteController.getAllNotesOrdered(correctlength)
     res.send(response);
+    return
  });
 
 router.get('/search/:id',async (req,res)=> {
     let searchTerms = req.params.id
     let response = await noteController.searchNotes(searchTerms);
     res.send(response)
+    return
 })
 
 router.post('/noterange', async (req, res) => {
@@ -42,11 +46,13 @@ router.post('/noterange', async (req, res) => {
     let {start, end} = req.body
     let response = await noteController.getRangeNotes(correctlength,start,end)
     res.send(response);
+    return
  });
 
 router.delete('/delete/:id', async (req,res) => {
     let response = await noteController.deleteNotes(req.params.id)
     res.json('Delete Notes') 
+    return
 })
 
 router.patch('/update/:id', async (req,res)=> {
@@ -54,12 +60,14 @@ router.patch('/update/:id', async (req,res)=> {
     let {edit, text, date, star} = req.body
     let response = await noteController.updateNote(req.params.id, edit,text,date,star,res)
     res.json(response)
+    return
 })
 
 router.post("/note", async (req,res)=> {
     const {text, date, star, edit, userId} = req.body
     let response = await noteController.postNotes(text, date, star, edit, userId)
     res.send(response)
+    return
 })
 
  module.exports = router;

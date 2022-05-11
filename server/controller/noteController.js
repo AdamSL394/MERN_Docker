@@ -1,6 +1,5 @@
 const Note = require("../models/notes")
 const mongoose = require('mongoose')
-var ObjectId = require("mongodb").ObjectId
     
 const postNotes = async (text, date, star, edit, userId) => {
     let correctlength = userId + "000";
@@ -40,7 +39,7 @@ const getRangeNotes = async(ids,start,end) => {
 }
 
 const deleteNotes = async (id) => {
-    const deleted = await Note.deleteOne({ _id: id })
+    await Note.deleteOne({ _id: id })
     return "note deleted"
 }     
 
