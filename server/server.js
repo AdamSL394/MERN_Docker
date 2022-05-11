@@ -17,11 +17,13 @@ setInterval(() => {
 }, 5000)
 
 
+let enviorment = process.env.NODE_ENV || "development"
 
 console.log("Host Enviorment", process.env.NODE_ENV)
+
 main().catch(err => console.log(err));
 async function main() {
-    const connect = await mongoose.connect(config[process.env.NODE_ENV].mongodb, {
+    const connect = await mongoose.connect(config[enviorment].mongodb, {
         dbName: process.env.DB_NAME,
         useNewUrlParser: true,
         useCreateIndex: true,

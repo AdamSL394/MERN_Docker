@@ -5,7 +5,7 @@
     },
     "development":{
         "mongoose_uri":"mongo",
-        "mongodb" :"mongoose.connect(mongodb+srv://adam:notescript@cluster0.fepd2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+        "mongodb" :"mongodb+srv://adam:notescript@cluster0.fepd2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
     },
     "production":{
         "mongoose_uri":"mongo",
