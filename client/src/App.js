@@ -24,13 +24,12 @@ function App() {
 
   }
 
-  return ( 
+  return (
     <ThemeProvider theme={theme}>
       <div className="App">
         {/* <BrowserRouter>
           <Router />
         </BrowserRouter> */}
-        HI
       </div>
     </ThemeProvider>
   )
