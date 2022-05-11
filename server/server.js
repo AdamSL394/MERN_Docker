@@ -11,10 +11,10 @@ const path = require("path")
 
   
 if (process.env.NODE_ENV === "local") {
-    console.log("Host", process.env.NODE_ENV )
+    console.log("Host Local", process.env.NODE_ENV )
     main().catch(err => console.log(err));
     async function main() {
-        const connect = await mongoose.connect(`mongoose.connect("mongodb://${config.local.mongoose_uri}:27017/test`, {
+        const connect = await mongoose.connect(`mongodb://${config.local.mongoose_uri}:27017/test`, {
             dbName: process.env.DB_NAME,
             useNewUrlParser: true,
             useCreateIndex: true,
@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === "local") {
 }
 
 if (process.env.NODE_ENV === "development") {
-    console.log("Host", process.env.NODE_ENV )
+    console.log("Host Development", process.env.NODE_ENV )
     main().catch(err => console.log(err));
     async function main() {
         const connect = await mongoose.connect(`mongoose.connect("mongodb://${config.local.mongoose_uri}:27017/test`, {
@@ -57,17 +57,17 @@ if (process.env.NODE_ENV === "staging") {
 
 if (process.env.NODE_ENV === "production") {
     console.log("Host", process.env.NODE_ENV )
-    // main().catch(err => console.log(err));
-    // async function main() {
-    //     const connect = await mongoose.connect(`mongoose.connect("mongodb+srv://adam:notescript@cluster0.fepd2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
-    //         dbName: process.env.DB_NAME,
-    //         useNewUrlParser: true,
-    //         useCreateIndex: true,
-    //         useUnifiedTopology: true,
-    //         useFindAndModify: true,
-    //     })
-    //     console.log(`Staging MongoDB connected: ${(connect.connection.host)}`);
-    // }
+    main().catch(err => console.log(err));
+    async function main() {
+        const connect = await mongoose.connect("mongodb+srv://adam:notescript@cluster0.fepd2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
+            dbName: process.env.DB_NAME,
+            useNewUrlParser: true,
+            useCreateIndex: true,
+            useUnifiedTopology: true,
+            useFindAndModify: true,
+        })
+        console.log(`Local MongoDB connected: ${(connect.connection.host)}`);
+    }
 }
 
 //Research 
