@@ -32,13 +32,13 @@ async function main() {
         useFindAndModify: true,
     })
     console.log(`MongoDB connected: ${(connect.connection.host)}`);
+    return
 }
 
 
 
 //Research 
 const bodyParser = require('body-parser');
-const { response } = require("express");
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 //research
