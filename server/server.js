@@ -2,18 +2,18 @@ require("dotenv").config();
 const express = require('express')
 const app = express()
 const PORT = process.env.PORT || 5000;
-const cors = require("cors");
-const mongoose = require("mongoose")
-const userRouter = require("./routes/users");
-const config = require("./config/config.json")
+// const cors = require("cors");
+// const mongoose = require("mongoose")
+// const userRouter = require("./routes/users");
+// const config = require("./config/config.json")
 const path = require("path")
-const numeral = require('numeral')
+// const numeral = require('numeral')
 
-setInterval(() => {
-    console.log("hi")
-    const { rss, heapTotal } = process.memoryUsage();
-    console.log('rss', numeral(rss).format('0.0 ib'), 'heapTotal', numeral(heapTotal).format('0.0 ib'))
-}, 5000)
+// setInterval(() => {
+//     console.log("hi")
+//     const { rss, heapTotal } = process.memoryUsage();
+//     console.log('rss', numeral(rss).format('0.0 ib'), 'heapTotal', numeral(heapTotal).format('0.0 ib'))
+// }, 5000)
 
 
 // let enviorment = process.env.NODE_ENV || "development"
@@ -37,11 +37,11 @@ setInterval(() => {
 
 
 //Research 
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+// const bodyParser = require('body-parser');
+// app.use(bodyParser.urlencoded({ extended: false }))
+// app.use(bodyParser.json())
 //research
-app.use(cors());
+// app.use(cors());
 
 
 if (process.env.NODE_ENV === "development") {
