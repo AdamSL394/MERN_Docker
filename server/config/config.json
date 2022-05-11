@@ -1,8 +1,14 @@
 {
     "local":{
-        "mongoose_uri":"localhost"
+        "mongoose_uri":"localhost",
+        "mongodb" :"mongodb://localhost:27017/test"
     },
     "development":{
-        "mongoose_uri":"mongo"
+        "mongoose_uri":"mongo",
+        "mongodb" :"mongoose.connect(mongodb+srv://adam:notescript@cluster0.fepd2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+    },
+    "production":{
+        "mongoose_uri":"mongo",
+        "mongodb" :"mongodb+srv://adam:notescript@cluster0.fepd2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
     }
 }

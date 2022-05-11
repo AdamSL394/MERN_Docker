@@ -10,73 +10,28 @@ const config = require("./config/config.json")
 const path = require("path")
 const numeral = require('numeral')
 
-setInterval(()=> {
+setInterval(() => {
     console.log("hi")
-    const {rss, heapTotal} = process.memoryUsage();
-    console.log('rss',numeral(rss).format('0.0 ib'),'heapTotal',numeral(heapTotal).format('0.0 ib'))
-},5000)
+    const { rss, heapTotal } = process.memoryUsage();
+    console.log('rss', numeral(rss).format('0.0 ib'), 'heapTotal', numeral(heapTotal).format('0.0 ib'))
+}, 5000)
 
 
-  
-if (process.env.NODE_ENV === "local") {
-    console.log("Host Local", process.env.NODE_ENV )
-    main().catch(err => console.log(err));
-    async function main() {
-        const connect = await mongoose.connect(`mongodb://${config.local.mongoose_uri}:27017/test`, {
-            dbName: process.env.DB_NAME,
-            useNewUrlParser: true,
-            useCreateIndex: true,
-            useUnifiedTopology: true,
-            useFindAndModify: true,
-        })
-        console.log(`Local MongoDB connected: ${(connect.connection.host)}`);
-    }
+
+console.log("Host Enviorment", process.env.NODE_ENV)
+main().catch(err => console.log(err));
+async function main() {
+    const connect = await mongoose.connect(config[process.env.NODE_ENV].mongodb, {
+        dbName: process.env.DB_NAME,
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useUnifiedTopology: true,
+        useFindAndModify: true,
+    })
+    console.log(`MongoDB connected: ${(connect.connection.host)}`);
 }
 
-if (process.env.NODE_ENV === "development") {
-    console.log("Host Development", process.env.NODE_ENV )
-    main().catch(err => console.log(err));
-    async function main() {
-        const connect = await mongoose.connect(`mongoose.connect("mongodb://${config.local.mongoose_uri}:27017/test`, {
-            dbName: process.env.DB_NAME,
-            useNewUrlParser: true,
-            useCreateIndex: true,
-            useUnifiedTopology: true,
-            useFindAndModify: true,
-        })
-        console.log(`Development MongoDB connected: ${(connect.connection.host)}`);
-    }
-}
 
-if (process.env.NODE_ENV === "staging") {
-    console.log("Host", process.env.NODE_ENV )
-    main().catch(err => console.log(err));
-    async function main() {
-        const connect = await mongoose.connect(`mongoose.connect("mongodb+srv://adam:notescript@cluster0.fepd2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
-            dbName: process.env.DB_NAME,
-            useNewUrlParser: true,
-            useCreateIndex: true,
-            useUnifiedTopology: true,
-            useFindAndModify: true,
-        })
-        console.log(`Staging MongoDB connected: ${(connect.connection.host)}`);
-    }
-}
-
-if (process.env.NODE_ENV === "production") {
-    console.log("Host", process.env.NODE_ENV )
-    main().catch(err => console.log(err));
-    async function main() {
-        const connect = await mongoose.connect("mongodb+srv://adam:notescript@cluster0.fepd2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
-            dbName: process.env.DB_NAME,
-            useNewUrlParser: true,
-            useCreateIndex: true,
-            useUnifiedTopology: true,
-            useFindAndModify: true,
-        })
-        console.log(`Local MongoDB connected: ${(connect.connection.host)}`);
-    }
-}
 
 //Research 
 const bodyParser = require('body-parser');
@@ -87,14 +42,14 @@ app.use(bodyParser.json())
 app.use(cors());
 
 
-if(process.env.NODE_ENV === "development"){
+if (process.env.NODE_ENV === "development") {
     //app.use('/static',express.static(path.resolve(__dirname, '../client/build')));
     app.get('/*', function (req, res) {
-        res.sendFile(path.join(__dirname, '../client/build',"index.html"));
+        res.sendFile(path.join(__dirname, '../client/build', "index.html"));
     });
-} 
-  
-app.use("/users", userRouter); 
+}
+
+app.use("/users", userRouter);
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`)
