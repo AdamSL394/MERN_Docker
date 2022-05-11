@@ -12,6 +12,7 @@
         "express": "^4.17.1",
         "mongodb": "^4.5.0",
         "mongoose": "^5.11.15",
+        "numeral": "^2.0.6",
         "slugify": "^1.4.6"
     },
     "devDependencies": {
@@ -31,9 +32,9 @@
     },
     "engines": {
         "node": ">=14.13.0"
-    }, 
+    },
     "scripts": {
         "start": "node /server.js",
         "dev": "concurrently -n 'server,client' \"nodemon server.js\" \"npm run client\""
-    }  
+    }
 }

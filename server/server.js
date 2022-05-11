@@ -8,6 +8,14 @@ const connectToDB = require("./database/db");
 const userRouter = require("./routes/users");
 const config = require("./config/config.json")
 const path = require("path")
+const numeral = require('numeral')
+
+setInterval(()=> {
+    console.log("hi")
+    const {rss, heapTotal} = process.memoryUsage();
+    console.log('rss',numeral(rss).format('0.0 ib'),'heapTotal',numeral(heapTotal).format('0.0 ib'))
+},5000)
+
 
   
 if (process.env.NODE_ENV === "local") {
@@ -86,7 +94,6 @@ if(process.env.NODE_ENV === "development"){
     });
 } 
   
- 
 app.use("/users", userRouter); 
 
 app.listen(PORT, () => {
