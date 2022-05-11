@@ -1,4 +1,4 @@
-const config = require('../config.json')
+import config from '../config.json'
 const enviroment = process.env.REACT_APP_NODE_ENV || 'development'
 export const enviromentAPI = config[enviroment]
 
