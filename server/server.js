@@ -9,23 +9,36 @@ const userRouter = require("./routes/users");
 const config = require("./config/config.json")
 const path = require("path")
 
-
+  
 if (process.env.NODE_ENV === "local") {
     main().catch(err => console.log(err));
     async function main() {
         const connect = await mongoose.connect(`mongoose.connect("mongodb://${config.local.mongoose_uri}:27017/test`, {
-            // `mongodb://${process.env.DB_NAME}:27017/test`, {
             dbName: process.env.DB_NAME,
             useNewUrlParser: true,
             useCreateIndex: true,
             useUnifiedTopology: true,
             useFindAndModify: true,
         })
-        console.log(`MongoDB connected: ${(connect.connection.host)}`);
+        console.log(`Local MongoDB connected: ${(connect.connection.host)}`);
     }
 }
 
 if (process.env.NODE_ENV === "development") {
+    main().catch(err => console.log(err));
+    async function main() {
+        const connect = await mongoose.connect(`mongoose.connect("mongodb://${config.local.mongoose_uri}:27017/test`, {
+            dbName: process.env.DB_NAME,
+            useNewUrlParser: true,
+            useCreateIndex: true,
+            useUnifiedTopology: true,
+            useFindAndModify: true,
+        })
+        console.log(`Development MongoDB connected: ${(connect.connection.host)}`);
+    }
+}
+
+if (process.env.NODE_ENV === "staging") {
     main().catch(err => console.log(err));
     async function main() {
         const connect = await mongoose.connect(`mongoose.connect("mongodb+srv://adam:notescript@cluster0.fepd2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {

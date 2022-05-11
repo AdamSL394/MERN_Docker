@@ -8,7 +8,9 @@ import Button from '@mui/material/Button/index.js';
 import './homeView.css'
 import { Container, Card, Grid } from "@mui/material/index.js";
 import Alert from '@mui/material/Alert/index.js';
+import NoteRoutes from "../router/noteRoutes.js";
 import { useAuth0 } from '@auth0/auth0-react'
+import {enviromentAPI} from '../router/noteRoutes.js'
 
 function HomeView() {
     const { user } = useAuth0();
@@ -23,10 +25,12 @@ function HomeView() {
     const [successMessage, setSuccessMessage] = useState("")
     const [notes, setNotes] = useState([])
 
+    console.log("process.env.REACT_APP_HOST",enviromentAPI.api_url)
+
     const storeNewNote = (userId) => {
         setDisabled(true)
         var myHeaders = new Headers();
-        myHeaders.append("origin", "");
+        myHeaders.append("origin", "http://localhost:3000");
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
         myHeaders.append("Content-Type", "application/json");
         var raw = JSON.stringify({
@@ -44,7 +48,7 @@ function HomeView() {
             body: raw
         };
 
-        fetch("https://note-script-dev.herokuapp.com/users/note", requestOptions)
+        fetch(`${enviromentAPI.api_url}/users/note`, requestOptions)
             .then(response => response.text())
             .then(result => {
                 if (result.toString().includes("failed")) {
@@ -78,35 +82,22 @@ function HomeView() {
         myPastDate.setDate(myPastDate.getDate() - 7)
 
         let lastWeeksDate = myPastDate.toISOString().split("T")[0]
-
-        var myHeaders = new Headers();
-        myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        myHeaders.append("origin", "https://note-script-dev.herokuapp.com/");
-        myHeaders.append("Content-Type", "application/json");
-
-        var raw = JSON.stringify({
-            "userId": userid,
-            "start": todaysDate,
-            "end": lastWeeksDate
-        });
-
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: raw,
-            redirect: 'follow'
-        };
-
-        fetch("https://note-script-dev.herokuapp.com/users/noterange", requestOptions)
-            .then(response => response.text())
-            .then(results => {
-                let cast = JSON.parse(results)
-                setNotes(cast)
-            })
-            .catch(error => console.log('error', error));
+        getNoteRanges(userid, todaysDate, lastWeeksDate)
 
     }, [])
 
+    const getNoteRanges = (userid, todaysDate, lastWeeksDate) => {
+        try {
+            NoteRoutes.getNoteRange(userid, todaysDate, lastWeeksDate).then((res) => {
+                let cast = JSON.parse(res)
+                console.log(cast)
+                setNotes(cast)
+            })
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
     return (
         <Container id="container">
             <TextField multiline rows={3} defaultValue={""} fullWidth label="Note" id="fullWidth" color="primary" placeholder="Note" value={text} onChange={e => setText(e.target.value)}
@@ -150,7 +141,7 @@ function HomeView() {
                 justifyContent="center"
                 alignItems="center"
             >
-               
+
                 {(notes).map((note, i) => {
                     return (
                         <Grid
@@ -158,7 +149,7 @@ function HomeView() {
                             <Card>
                                 <h3
                                     key={i + 103}
-                                    style={{ margin: "1%"}}
+                                    style={{ margin: "1%" }}
                                 >
                                     {note.text}
                                 </h3>

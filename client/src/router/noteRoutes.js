@@ -1,8 +1,13 @@
+const config = require('../config.json')
+const enviroment = process.env.REACT_APP_HOST || 'development'
+export const enviromentAPI = config[enviroment]
+const dotenv = require('dotenv');
+
 export default {
     deleteNote: (noteId) => {
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        myHeaders.append("origin", "https://note-script-dev.herokuapp.com/");
+        myHeaders.append("origin", enviromentAPI.api_url);
 
         var requestOptions = {
             method: 'DELETE',
@@ -10,7 +15,7 @@ export default {
             redirect: 'follow'
         };
 
-        return fetch(`https://note-script-dev.herokuapp.com/users/delete/${noteId}`, requestOptions)
+        return fetch(`${enviromentAPI.api_url}/users/delete/${noteId}`, requestOptions)
             .then(response => response.text())
             .then(result => {
                 return result
@@ -21,7 +26,7 @@ export default {
     getAllNotes: (userId) => {
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        myHeaders.append("origin", "https://note-script-dev.herokuapp.com/");
+        myHeaders.append("origin",enviromentAPI.api_url);
         myHeaders.append("Content-Type", "application/json");
 
 
@@ -31,7 +36,7 @@ export default {
             redirect: 'follow',
         };
 
-        return fetch(`https://note-script-dev.herokuapp.com/users/all/${userId}`, requestOptions)
+        return fetch(`${enviromentAPI.api_url}/users/all/${userId}`, requestOptions)
             .then(response => response.text())
             .then(results => {
                 return  JSON.parse(results)
@@ -41,7 +46,7 @@ export default {
 
     updateNote: (note) => {
         var myHeaders = new Headers();
-        myHeaders.append("origin", "");
+        myHeaders.append("origin", enviromentAPI.api_url);
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
         myHeaders.append("Content-Type", "application/json");
         var raw = JSON.stringify({
@@ -59,7 +64,7 @@ export default {
             body: raw
         };
 
-        return fetch(`https://note-script-dev.herokuapp.com/users/update/${note._id}`, requestOptions)
+        return fetch(`${enviromentAPI.api_url}/users/update/${note._id}`, requestOptions)
             .then(response => response.text())
             .then(result => {
                 return result
@@ -78,7 +83,7 @@ export default {
     getNotesOrdered: (userId) => {
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        myHeaders.append("origin", "https://note-script-dev.herokuapp.com/");
+        myHeaders.append("origin", enviromentAPI.api_url);
         myHeaders.append("Content-Type", "application/json");
 
 
@@ -88,9 +93,10 @@ export default {
             redirect: 'follow',
         };
 
-        return fetch(`https://note-script-dev.herokuapp.com/${userId}`, requestOptions)
+        return fetch(`${enviromentAPI.api_url}/users/all/order/${userId}`, requestOptions)
             .then(response => response.text())
             .then(results => {
+                console.log(results)
                 return  JSON.parse(results)
             })
             .catch(error => console.log('error', error));
@@ -99,7 +105,7 @@ export default {
     getNote: (noteId) => {
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        myHeaders.append("origin", "https://note-script-dev.herokuapp.com/");
+        myHeaders.append("origin", enviromentAPI.api_url);
         myHeaders.append("Content-Type", "application/json");
 
 
@@ -109,11 +115,46 @@ export default {
             redirect: 'follow',
         };
 
-        return fetch(`https://note-script-dev.herokuapp.com/${noteId}`, requestOptions)
+        return fetch(`${enviromentAPI.api_url}/users/note/${noteId}`, requestOptions)
             .then(response => response.text())
             .then(results => {
                 return(results)
             })
             .catch(error => console.log('error', error));
+    },
+
+    getNoteRange: (userId,todaysDate,lastWeeksDate) => {
+        var myHeaders = new Headers();
+        myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        myHeaders.append("origin", enviromentAPI.api_url);
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            "userId": userId,
+            "start": todaysDate,
+            "end": lastWeeksDate
+        });
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch(`${enviromentAPI.api_url}/users/noterange`, requestOptions)
+            .then(response => response.text())
+            .then(results => {
+                if(results.length > 0){
+                    console.log(results)
+                    return(results)
+                }
+                else{
+
+
+                }
+            })
+            .catch(error => console.log('error', error));
+
     }
 }

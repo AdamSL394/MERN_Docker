@@ -1,7 +1,7 @@
 const Note = require("../models/notes")
 const mongoose = require('mongoose')
 var ObjectId = require("mongodb").ObjectId
-  
+    
 const postNotes = async (text, date, star, edit, userId) => {
     let correctlength = userId + "000";
     let newNote = new Note({ text: text, date: date, star: star, edit: edit, userId: correctlength })
@@ -10,7 +10,7 @@ const postNotes = async (text, date, star, edit, userId) => {
         if (err) {
             errorMessage = err.message
             return err
-        }
+        } 
     })
     if (errorMessage) {
         return `${errorMessage}` 
@@ -25,7 +25,6 @@ const getAllNotesOrdered = async (ids) => {
 } 
 
 const getAllNotes = async (ids) => {
-    console.log("Here",ids)
     const id = mongoose.Types.ObjectId(ids.trim());
     const notes = await Note.find({ userId: id }).exec()
     return notes 
@@ -37,7 +36,6 @@ const getRangeNotes = async(ids,start,end) => {
         "$gte": end,
         "$lt": start
       }})
-    
     return notes
 }
 
