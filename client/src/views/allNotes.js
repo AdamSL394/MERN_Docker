@@ -9,9 +9,9 @@ export default function AllNotes() {
 
     return (
         <>
-            <Navbar></Navbar>
+            {/* <Navbar></Navbar>
             <NoteHistory></NoteHistory>
-            <Footer></Footer>
+            <Footer></Footer> */}
         </>
     )
 }

@@ -20,6 +20,7 @@ setInterval(() => {
 let enviorment = process.env.NODE_ENV || "development"
 
 console.log("Host Enviorment", process.env.NODE_ENV)
+console.log(enviorment)
 
 main().catch(err => console.log(err));
 async function main() {
