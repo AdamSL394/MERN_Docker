@@ -10,5 +10,9 @@
     "staging":{
         "origin":"https://note-script-dev.herokuapp.com/",
         "api_url":"https://note-script-dev.herokuapp.com/"
+    },
+    "production":{
+        "origin":"https://note-script-dev.herokuapp.com/",
+        "api_url":"https://note-script-dev.herokuapp.com/"
     }
 }

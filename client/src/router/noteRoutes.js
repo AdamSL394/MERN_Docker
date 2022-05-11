@@ -1,5 +1,5 @@
 const config = require('../config.json')
-const enviroment = process.env.REACT_APP_HOST || 'development'
+const enviroment = process.env.REACT_APP_NODE_ENV || 'development'
 export const enviromentAPI = config[enviroment]
 const dotenv = require('dotenv');
 
