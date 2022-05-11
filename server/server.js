@@ -51,7 +51,7 @@ if (process.env.NODE_ENV === "development") {
     // });
 }
 
-// app.use("/users", userRouter);
+app.use("/users", userRouter);
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`)
