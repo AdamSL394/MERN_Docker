@@ -16,23 +16,23 @@ setInterval(() => {
 }, 5000)
 
 
-let enviorment = process.env.NODE_ENV || "development"
+// let enviorment = process.env.NODE_ENV || "development"
 
-console.log("Host Enviorment", process.env.NODE_ENV)
-console.log(enviorment)
+// console.log("Host Enviorment", process.env.NODE_ENV)
+// console.log(enviorment)
 
-main().catch(err => console.log(err));
-async function main() {
-    const connect = await mongoose.connect(config[enviorment].mongodb, {
-        dbName: process.env.DB_NAME,
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useUnifiedTopology: true,
-        useFindAndModify: true,
-    })
-    console.log(`MongoDB connected: ${(connect.connection.host)}`);
-    return
-}
+// main().catch(err => console.log(err));
+// async function main() {
+//     const connect = await mongoose.connect(config[enviorment].mongodb, {
+//         dbName: process.env.DB_NAME,
+//         useNewUrlParser: true,
+//         useCreateIndex: true,
+//         useUnifiedTopology: true,
+//         useFindAndModify: true,
+//     })
+//     console.log(`MongoDB connected: ${(connect.connection.host)}`);
+//     return
+// }
 
 
 
