@@ -21,7 +21,7 @@
         "node": ">=14.13.0"
     },
     "scripts": {
-        "start": "node /server.js npm run build",
+        "start": "node /server.js",
         "dev": "concurrently -n 'server,client' \"nodemon server.js\" \"npm run client\""
     }
 }
