@@ -5,9 +5,9 @@
         "logoutURL":"http://localhost:3000"
     },
     "development":{
-        "origin":"https://note-script-dev.herokuapp.com/",
-        "api_url":"https://note-script-dev.herokuapp.com/",
-        "logoutURL":"https://note-script-dev.herokuapp.com/"
+        "origin":"http://localhost:3000",
+        "api_url":"http://localhost:5000",
+        "logoutURL":"http://localhost:3000"
     },
     "staging":{
         "origin":"https://note-script-dev.herokuapp.com/",

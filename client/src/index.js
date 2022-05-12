@@ -3,15 +3,20 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App.js';
 import { Auth0Provider } from "@auth0/auth0-react";
+import config from './config/config.json'
+const enviroment = process.env.REACT_APP_NODE_ENV || 'development'
+
+console.log(config[enviroment].logoutURL)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-
+console.log('window.location.origin',window.location.origin)
 
 root.render(
   <Auth0Provider
     domain={"dev-07j15n0p.us.auth0.com"}
     clientId={"p9eT1rMY70S9ALx8jTH4s9WDi4QBHaRy"}
-    returnTo={"https://note-script-dev.herokuapp.com"}
+    redirectUri={config[enviroment].logoutURL}
+    returnTo={config[enviroment].logoutURL}
   >
     <App/>
   </Auth0Provider>
