@@ -1,7 +1,4 @@
-import config from '../config.json'
-const enviroment = process.env.REACT_APP_NODE_ENV || 'development'
-export const enviromentAPI = config[enviroment]
-
+import enviromentAPI from '../config/config'
 
 export default {
     deleteNote: (noteId) => {
