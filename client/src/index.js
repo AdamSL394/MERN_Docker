@@ -8,12 +8,14 @@ import { Auth0Provider } from "@auth0/auth0-react";
 // const result = dotenv.config();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+console.log('window.location.origin',window.location.origin)
 
 root.render(
   <Auth0Provider
     domain={"dev-07j15n0p.us.auth0.com"}
     clientId={"p9eT1rMY70S9ALx8jTH4s9WDi4QBHaRy"}
     redirectUri={window.location.origin}
+    returnTo={window.location.origin}
   >
     <App/>
   </Auth0Provider>

@@ -124,37 +124,37 @@ export default {
     },
 
     getNoteRange: (userId,todaysDate,lastWeeksDate) => {
-        // var myHeaders = new Headers();
-        // myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        // myHeaders.append("origin", enviromentAPI.api_url);
-        // myHeaders.append("Content-Type", "application/json");
+        var myHeaders = new Headers();
+        myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        myHeaders.append("origin", enviromentAPI.api_url);
+        myHeaders.append("Content-Type", "application/json");
 
-        // var raw = JSON.stringify({
-        //     "userId": userId,
-        //     "start": todaysDate,
-        //     "end": lastWeeksDate
-        // });
+        var raw = JSON.stringify({
+            "userId": userId,
+            "start": todaysDate,
+            "end": lastWeeksDate
+        });
 
-        // var requestOptions = {
-        //     method: 'POST',
-        //     headers: myHeaders,
-        //     body: raw,
-        //     redirect: 'follow'
-        // };
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
 
-        // fetch(`${enviromentAPI.api_url}/users/noterange`, requestOptions)
-        //     .then(response => response.text())
-        //     .then(results => {
-        //         if(results.length > 0){
-        //             console.log(results)
-        //             return(results)
-        //         }
-        //         else{
+        fetch(`${enviromentAPI.api_url}/users/noterange`, requestOptions)
+            .then(response => response.text())
+            .then(results => {
+                if(results.length > 0){
+                    console.log(results)
+                    return(results)
+                }
+                else{
 
 
-        //         }
-        //     })
-        //     .catch(error => console.log('error', error));
+                }
+            })
+            .catch(error => console.log('error', error));
 
     }
 }

@@ -87,13 +87,14 @@ function HomeView() {
 
     }, [])
 
-    const getNoteRanges = (userid, todaysDate, lastWeeksDate) => {
+    const getNoteRanges = async (userid, todaysDate, lastWeeksDate) => {
         try {
-            NoteRoutes.getNoteRange(userid, todaysDate, lastWeeksDate).then((res) => {
+            const res = await NoteRoutes.getNoteRange(userid, todaysDate, lastWeeksDate)
+            console.log(res)
                 let cast = JSON.parse(res)
                 console.log(cast)
                 setNotes(cast)
-            })
+
         }
         catch (error) {
             console.log(error)
