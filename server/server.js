@@ -44,7 +44,7 @@ app.use(bodyParser.json())
 app.use(cors());
 app.use('/static',express.static(path.resolve(__dirname, '../client/build')));
 
-if (process.env.NODE_ENV === "development") {
+if (enviorment === "development") {
     app.get('/*', function (req, res) {
         res.sendFile(path.join(__dirname, '../client/build', "index.html"));
     });
