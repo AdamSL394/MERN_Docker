@@ -45,6 +45,7 @@ app.use(cors());
 app.use('/static',express.static(path.resolve(__dirname, '../client/build')));
 
 if (enviorment === "development") {
+    console.log("build")
     app.get('/*', function (req, res) {
         res.sendFile(path.join(__dirname, '../client/build', "index.html"));
     });
