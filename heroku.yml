@@ -1,6 +1,5 @@
 build:
   docker:
-    web: client/Dockerfile
     server: server/Dockerfile
   config: 
     NODE_ENV: development
