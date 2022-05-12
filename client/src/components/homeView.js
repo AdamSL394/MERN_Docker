@@ -48,7 +48,7 @@ function HomeView() {
             requireHeader: ['origin', 'x-requested-with'],
             body: raw
         };
-
+        console.log("api call",`${enviromentAPI.api_url}/users/note`)
         fetch(`${enviromentAPI.api_url}/users/note`, requestOptions)
             .then(response => response.text())
             .then(result => {

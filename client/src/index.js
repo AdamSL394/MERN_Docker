@@ -6,10 +6,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import config from './config/config.json'
 const enviroment = process.env.REACT_APP_NODE_ENV || 'development'
 
-console.log(config[enviroment].logoutURL)
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
-console.log('window.location.origin',window.location.origin)
 
 root.render(
   <Auth0Provider
