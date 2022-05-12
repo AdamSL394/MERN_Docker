@@ -17,18 +17,18 @@ services:
      environment:
        NODE_ENV: development
 
-  #  mongo:
-  #    container_name: mongo
-  #    image: mongo
-  #    ports:
-  #     - "27017:27017"
-  #  mongo-express:
-  #    image: mongo-express
-  #    restart: always 
-  #    depends_on:
-  #     - mongo
-  #    ports:
-  #      - "8080:8081"
+   mongo:
+     container_name: mongo
+     image: mongo
+     ports:
+      - "27017:27017"
+   mongo-express:
+     image: mongo-express
+     restart: always 
+     depends_on:
+      - mongo
+     ports:
+       - "8080:8081"
 
    client:
       restart: always
