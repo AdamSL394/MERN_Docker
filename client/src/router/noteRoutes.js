@@ -24,24 +24,24 @@ export default {
     },
 
     getAllNotes: (userId) => {
-        // var myHeaders = new Headers();
-        // myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        // myHeaders.append("origin",enviromentAPI.api_url);
-        // myHeaders.append("Content-Type", "application/json");
+        var myHeaders = new Headers();
+        myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        myHeaders.append("origin",enviromentAPI.api_url);
+        myHeaders.append("Content-Type", "application/json");
 
 
-        // var requestOptions = {
-        //     method: 'GET',
-        //     headers: myHeaders,
-        //     redirect: 'follow',
-        // };
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow',
+        };
 
-        // return fetch(`${enviromentAPI.api_url}/users/all/${userId}`, requestOptions)
-        //     .then(response => response.text())
-        //     .then(results => {
-        //         return  JSON.parse(results)
-        //     })
-        //     .catch(error => console.log('error', error));
+        return fetch(`${enviromentAPI.api_url}/users/all/${userId}`, requestOptions)
+            .then(response => response.text())
+            .then(results => {
+                return  JSON.parse(results)
+            })
+            .catch(error => console.log('error', error));
     },
 
     updateNote: (note) => {

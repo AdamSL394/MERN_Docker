@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import  Card from "@mui/material/Card/index.js" 
+import Card from "@mui/material/Card/index.js"
 import Button from "@mui/material/Button/index.js"
 import Grid from "@mui/material/Grid/index.js"
 import Box from "@mui/material/Box/index.js"
@@ -72,7 +72,7 @@ function NoteHistory() {
                         note.text = cast[0].text
                         note.date = cast[0].date
                         note.star = cast[0].star
-                        note.edit = false 
+                        note.edit = false
                         setNotes([...notes])
                     }
                 }
@@ -87,17 +87,22 @@ function NoteHistory() {
     }, [])
 
     const getAllNotes = (userId) => {
-        NoteRoutes.getAllNotes(userId).then((res) => {
-            setNotes(res)
-            for (let key of res) {
-                if (key.edit === true) {
-                    setDisabled(true)
-                    return
+        try {
+            NoteRoutes.getAllNotes(userId).then((res) => {
+                setNotes(res)
+                for (let key of res) {
+                    if (key.edit === true) {
+                        setDisabled(true)
+                        return
+                    }
                 }
-            }
-            setDisabled(false)
-            return
-        })
+                setDisabled(false)
+                return
+            })
+        }
+        catch (e) {
+            console.log(e)
+        }
     }
 
     const updateNote = (note) => {
