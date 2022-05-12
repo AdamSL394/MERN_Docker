@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import  Card from "@mui/material/Card" 
-import Button from "@mui/material/Button"
-import Grid from "@mui/material/Grid"
-import Box from "@mui/material/Box"
-import Modal from "@mui/material/Modal"
-import FormControl from "@mui/material/FormControl"
-import Select from "@mui/material/Select"
-import InputLabel from "@mui/material/InputLabel"
-import MenuItem from "@mui/material/MenuItem"
-import Container from "@mui/material/Container"
+import  Card from "@mui/material/Card/index.js" 
+import Button from "@mui/material/Button/index.js"
+import Grid from "@mui/material/Grid/index.js"
+import Box from "@mui/material/Box/index.js"
+import Modal from "@mui/material/Modal/index.js"
+import FormControl from "@mui/material/FormControl/index.js"
+import Select from "@mui/material/Select/index.js"
+import InputLabel from "@mui/material/InputLabel/index.js"
+import MenuItem from "@mui/material/MenuItem/index.js"
+import Container from "@mui/material/Container/index.js"
 import { useAuth0 } from '@auth0/auth0-react'
 import NoteRoutes from "../router/noteRoutes.js";
 import Search from './search.js'
