@@ -64,6 +64,7 @@ router.patch('/update/:id', async (req,res)=> {
 })
 
 router.post("/note", async (req,res)=> {
+    console.log("Hi hi hi")
     const {text, date, star, edit, userId} = req.body
     let response = await noteController.postNotes(text, date, star, edit, userId)
     res.send(response)

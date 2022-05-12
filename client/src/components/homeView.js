@@ -6,7 +6,9 @@ import InputLabel from '@mui/material/InputLabel/index.js';
 import MenuItem from '@mui/material/MenuItem/index.js';
 import Button from '@mui/material/Button/index.js';
 import './homeView.css'
-import { Container, Card, Grid } from "@mui/material/index.js";
+import Container from "@mui/material/Container/index.js";
+import Card from "@mui/material/Card/index.js"
+import Grid from "@mui/material/Grid/index.js"
 import Alert from '@mui/material/Alert/index.js';
 import NoteRoutes from "../router/noteRoutes.js";
 import { useAuth0 } from '@auth0/auth0-react'
@@ -28,48 +30,48 @@ function HomeView() {
 
     const storeNewNote = (userId) => {
         setDisabled(true)
-        // var myHeaders = new Headers();
-        // myHeaders.append("origin", "http://localhost:3000");
-        // myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        // myHeaders.append("Content-Type", "application/json");
-        // var raw = JSON.stringify({
-        //     "text": text,
-        //     "date": date,
-        //     "star": star,
-        //     "userId": userId
-        // });
+        var myHeaders = new Headers();
+        myHeaders.append("origin", enviromentAPI.api_url);
+        myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        myHeaders.append("Content-Type", "application/json");
+        var raw = JSON.stringify({
+            "text": text,
+            "date": date,
+            "star": star,
+            "userId": userId
+        });
 
-        // var requestOptions = {
-        //     method: 'POST',
-        //     headers: myHeaders,
-        //     redirect: 'follow',
-        //     requireHeader: ['origin', 'x-requested-with'],
-        //     body: raw
-        // };
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            redirect: 'follow',
+            requireHeader: ['origin', 'x-requested-with'],
+            body: raw
+        };
 
-        // fetch(`${enviromentAPI.api_url}/users/note`, requestOptions)
-        //     .then(response => response.text())
-        //     .then(result => {
-        //         if (result.toString().includes("failed")) {
-        //             setErrorMessage(result)
-        //             setErrorFlag("visible")
-        //             setTimeout(() => { setErrorFlag("hidden") }, 1500);
-        //             setTimeout(() => { setDisabled(false) }, 1500);
-        //         } else {
-        //             setText(" ");
-        //             setStar("None")
-        //             setSuccessMessage(result)
-        //             setSuccessFlag("visible")
-        //             setTimeout(() => { setSuccessFlag("hidden") }, 1500);
-        //             setTimeout(() => { setDisabled(false) }, 1500);
-        //         }
-        //     })
-        //     .catch(error => {
-        //         setErrorMessage(error)
-        //         setErrorFlag("visible")
-        //         setTimeout(() => { setErrorFlag("hidden") }, 1500);
-        //         setTimeout(() => { setDisabled(false) }, 1500);
-        //     });
+        fetch(`${enviromentAPI.api_url}/users/note`, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                if (result.toString().includes("failed")) {
+                    setErrorMessage(result)
+                    setErrorFlag("visible")
+                    setTimeout(() => { setErrorFlag("hidden") }, 1500);
+                    setTimeout(() => { setDisabled(false) }, 1500);
+                } else {
+                    setText(" ");
+                    setStar("None")
+                    setSuccessMessage(result)
+                    setSuccessFlag("visible")
+                    setTimeout(() => { setSuccessFlag("hidden") }, 1500);
+                    setTimeout(() => { setDisabled(false) }, 1500);
+                }
+            })
+            .catch(error => {
+                setErrorMessage(error)
+                setErrorFlag("visible")
+                setTimeout(() => { setErrorFlag("hidden") }, 1500);
+                setTimeout(() => { setDisabled(false) }, 1500);
+            });
     }
 
     useEffect(() => {
