@@ -1,4 +1,4 @@
-import enviromentAPI from '../config/config'
+import enviromentAPI from '../config/config.js'
 
 export default {
     deleteNote: (noteId) => {
