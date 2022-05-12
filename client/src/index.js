@@ -7,10 +7,10 @@ import config from './config/config.json'
 const enviroment = process.env.REACT_APP_NODE_ENV || 'development'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-
+//clientId "dev-07j15n0p.us.auth0.com"
 root.render(
   <Auth0Provider
-    domain={"dev-07j15n0p.us.auth0.com"}
+    domain={process.env.domain}
     clientId={"p9eT1rMY70S9ALx8jTH4s9WDi4QBHaRy"}
     redirectUri={config[enviroment].logoutURL}
     returnTo={config[enviroment].logoutURL}
