@@ -19,4 +19,4 @@ COPY . .
 EXPOSE 5000
 
 # default dev command
-CMD [ "npm", "run", "dev" ]
+CMD [ "node", "server.js"]
