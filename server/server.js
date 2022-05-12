@@ -42,10 +42,12 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 // research
 app.use(cors());
-app.use('/static',express.static(path.resolve(__dirname, '../client/build')));
+
+
 
 if (enviorment === "development") {
     console.log("build")
+    app.use('/static',express.static(path.resolve(__dirname, '../client/build')));
     app.get('/*', function (req, res) {
         res.sendFile(path.join(__dirname, '../client/build', "index.html"));
     });
