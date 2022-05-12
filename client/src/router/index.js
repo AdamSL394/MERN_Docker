@@ -1,9 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom'
-import Login from '../views/login'
-import Home from '../views/home'
-import { ProtectedRoute } from '../hooks/protectedRoute';
-import AllNotes from '../views/allNotes';
+import Login from '../views/login.js'
+import Home from '../views/home.js'
+import { ProtectedRoute } from '../hooks/protectedRoute.js';
+import AllNotes from '../views/allNotes.js';
 
 const Router = () => {
     return (<div>
