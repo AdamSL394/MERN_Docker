@@ -1,5 +1,5 @@
 build:
-  docker:
+  docker: 
     web: client/Dockerfile
     server: server/Dockerfile
   config: 
