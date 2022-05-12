@@ -23,7 +23,7 @@
     },
     "scripts": {
         "start": "node /server.js",
-        "client":"npm start",
+        "client":"./ && npm start",
         "dev": "concurrently -n 'server,client' \"nodemon server.js\" \"npm run client\""
     }
 }
