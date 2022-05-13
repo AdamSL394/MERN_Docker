@@ -41,7 +41,7 @@ app.use(bodyParser.json())
 // research
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '/build')));
 console.log("__dirname",__dirname)
 if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "production" ) {
     console.log("build")
