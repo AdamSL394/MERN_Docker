@@ -45,10 +45,10 @@ app.use(express.static(path.join(__dirname, '/build', "index.html")));
 app.get('/*', function (req, res) {
     res.sendFile((__dirname, "./build", "index.html"));
 });
-console.log(res.sendFile(path.join(__dirname, "./build", "index.html")),"---------__S--------")
+
 if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "production" ) {
     console.log("build")
-
+    console.log(res.sendFile(path.join(__dirname, "./build", "index.html")),"---------__S--------")
     app.get('/*', function (req, res) {
         res.sendFile(path.join(__dirname, "./build", "index.html"));
     });
