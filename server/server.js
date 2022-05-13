@@ -48,8 +48,9 @@ app.get('/*', function (req, res) {
 
 if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "production" ) {
     console.log("build")
-    console.log(res.sendFile(path.join(__dirname, "./build", "index.html")),"---------__S--------")
+   
     app.get('/*', function (req, res) {
+        console.log(res.sendFile(path.join(__dirname, "./build", "index.html")),"---------__S--------")
         res.sendFile(path.join(__dirname, "./build", "index.html"));
     });
 }
