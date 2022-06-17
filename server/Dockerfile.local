@@ -1,3 +1,4 @@
+# specify base image from dockerhub
 FROM node:14-alpine3.10
 
 LABEL version="1.0"
@@ -7,7 +8,7 @@ LABEL description="Development image for the Library MERN API"
 # all commands executed relative to this directory
 WORKDIR /app
 
-COPY ["/server/package.json","/server/package-lock.json*","npm-shrinkwrap.json*", "./"]
+COPY ["package.json","package-lock.json*","npm-shrinkwrap.json*", "./"]
 
 # Install dependencies and clear npm cache
 RUN npm install && npm cache clean --force
@@ -20,12 +21,15 @@ EXPOSE 5000
 # default dev command
 CMD [ "npm", "run", "dev" ]
 
-FROM node:14-alpine3.10
+#DEV CONFIG
+# FROM prod as dev
 
-WORKDIR /app
+# EXPOSE 5000 3000
 
-COPY [ "/client/package.json", "./"]
-RUN npm install && npm cache clean --force
-COPY . .
+# ENV NODE_ENV=development
 
-CMD ["npm", "run","start"]
+# RUN npm install -g nodemon
+
+# RUN npm install --only=dev
+
+# CMD [ "npm", "run", "dev" ]

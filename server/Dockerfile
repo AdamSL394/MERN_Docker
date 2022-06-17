@@ -1,22 +1,39 @@
-# specify base image from dockerhub
-FROM node:14-alpine3.10
+# PROD CONFIG
+FROM node as prod
 
-LABEL version="1.0"
-LABEL description="Development image for the Library MERN API"
-
-# workdir is where our code shall live in the container
-# all commands executed relative to this directory
 WORKDIR /app
 
-COPY ["package.json","package-lock.json*","npm-shrinkwrap.json*", "./"]
+# COPY package*.json ./
 
-# Install dependencies and clear npm cache
-RUN npm install && npm cache clean --force
+# RUN npm install
 
-COPY . .
+# WORKDIR /app/client
 
-# use EXPOSE command to have our port mapped by the docker daemon
-EXPOSE 5000
+COPY ./package*.json ./
 
-# default dev command
-CMD [ "npm", "run", "dev" ]
+# WORKDIR /app/server
+
+# COPY ./package*.json ./
+
+# WORKDIR /app
+
+COPy . .
+
+RUN npm install
+
+ENV NODE_ENV=production
+
+CMD ["npm","start"]
+
+#DEV CONFIG
+# FROM prod as dev
+
+# EXPOSE 5000 3000
+
+# ENV NODE_ENV=development
+
+# RUN npm install -g nodemon
+
+# RUN npm install --only=dev
+
+# CMD [ "npm", "run", "dev" ]

@@ -1,40 +1,27 @@
-version: '3.9'
+version: "3.9"
 
 services:
+  app-dev:
+    build: 
+      context: .
+      target: dev
+    container_name: note_script-app-dev
+    restart: always
+    volumes: 
+      - .:/app
+    ports:
+      - "5000:5000"
+      - "3000:3000"
+    depends_on:
+      - note_script-dev
+    environment:
+      - MONGODB_URI=mongodb+srv://adam:notescript@cluster0.fepd2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 
-   library-api:
-     restart: always
-     build:
-       context: ./server
-       dockerfile: Dockerfile
-     container_name: new_music_mern
-     volumes:
-      - /app/node_modules
-     ports:
-       - 5000:5000
-     depends_on:
-      - mongo
-     environment:
-       NODE_ENV: development
+    
+  note_script-dev:
+    image: mongo
+    restart: always
+    container_name: mongo
+    ports:
+      - 27017:27017 
 
-   mongo:
-     container_name: mongo
-     image: mongo
-     ports:
-      - "27017:27017"
-   mongo-express:
-     image: mongo-express
-     restart: always 
-     depends_on:
-      - mongo
-     ports:
-       - "8080:8081"
-
-   client:
-      restart: always
-      build:
-        context: ./client
-        dockerfile: Dockerfile
-      ports:
-        - 3000:3000
-        

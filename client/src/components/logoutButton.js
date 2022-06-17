@@ -12,7 +12,7 @@ const LogOut = () => {
         return logout({
           returnTo: window.location.origin
         })
-      }
+     }
 
     return (
         isAuthenticated &&(

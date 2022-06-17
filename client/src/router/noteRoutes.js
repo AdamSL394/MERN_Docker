@@ -1,29 +1,30 @@
 import enviromentAPI from '../config/config.js'
 
+
 export default {
     deleteNote: (noteId) => {
-        // var myHeaders = new Headers();
-        // myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        // myHeaders.append("origin", enviromentAPI.api_url);
-
-        // var requestOptions = {
-        //     method: 'DELETE',
-        //     headers: myHeaders,
-        //     redirect: 'follow'
-        // };
-
-        // return fetch(`${enviromentAPI.api_url}/users/delete/${noteId}`, requestOptions)
-        //     .then(response => response.text())
-        //     .then(result => {
-        //         return result
-        //     })
-        //     .catch(error => console.log('error', error));
-    },
-
-    getAllNotes: (userId) => {
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        myHeaders.append("origin",enviromentAPI.api_url);
+        myHeaders.append("origin", enviromentAPI.api_url);
+
+        var requestOptions = {
+            method: 'DELETE',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        return fetch(`${enviromentAPI.api_url}/users/delete/${noteId}`, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                return result
+            })
+            .catch(error => console.log('error', error));
+    },
+
+    getAllNotes: (userid) => {
+        var myHeaders = new Headers();
+        myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        myHeaders.append("origin", enviromentAPI.api_url);
         myHeaders.append("Content-Type", "application/json");
 
 
@@ -33,94 +34,118 @@ export default {
             redirect: 'follow',
         };
 
-        return fetch(`${enviromentAPI.api_url}/users/all/${userId}`, requestOptions)
+        return fetch(`${enviromentAPI.api_url}/users/all?id=${userid}`, requestOptions)
             .then(response => response.text())
             .then(results => {
-                return  JSON.parse(results)
+
+                return JSON.parse(results)
             })
             .catch(error => console.log('error', error));
     },
 
     updateNote: (note) => {
-        // var myHeaders = new Headers();
-        // myHeaders.append("origin", enviromentAPI.api_url);
-        // myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        // myHeaders.append("Content-Type", "application/json");
-        // var raw = JSON.stringify({
-        //     "text": note.text,
-        //     "date": note.date,
-        //     "star": note.star,
-        //     "edit": note.edit
-        // });
 
-        // var requestOptions = {
-        //     method: 'PATCH',
-        //     headers: myHeaders,
-        //     redirect: 'follow',
-        //     requireHeader: ['origin', 'x-requested-with'],
-        //     body: raw
-        // };
+        var myHeaders = new Headers();
+        myHeaders.append("origin", enviromentAPI.api_url);
+        myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        myHeaders.append("Content-Type", "application/json");
+        var raw = JSON.stringify({
+            "text": note.text,
+            "date": note.date,
+            "star": note.star,
+            "edit": note.edit
+        });
 
-        // return fetch(`${enviromentAPI.api_url}/users/update/${note._id}`, requestOptions)
-        //     .then(response => response.text())
-        //     .then(result => {
-        //         return result
-        //     })
-        //     .catch(error => {
-        //         //setErrorFlag("visible")
-        //         console.log('error', error)
+        var requestOptions = {
+            method: 'PATCH',
+            headers: myHeaders,
+            redirect: 'follow',
+            requireHeader: ['origin', 'x-requested-with'],
+            body: raw
+        };
 
-        //     });
+        return fetch(`${enviromentAPI.api_url}/users/update/${note._id}`, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                return result
+            })
+            .catch(error => {
+                //setErrorFlag("visible")
+                console.log('error', error)
+
+            });
     },
 
-    saveNote:(userId) => {
+    searchNote: (searchValue, userId) => {
+        var myHeaders = new Headers();
+        myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        myHeaders.append("origin", enviromentAPI.api_url);
 
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        return fetch(`${enviromentAPI.api_url}/users/search/${searchValue}/${userId}`, requestOptions)
+            .then(response => response.text())
+            .then(results => {
+                let cast = JSON.parse(results)
+                return cast
+            })
+            .catch(error => console.log('error', error));
     },
 
     getNotesOrdered: (userId) => {
-        // var myHeaders = new Headers();
-        // myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        // myHeaders.append("origin", enviromentAPI.api_url);
-        // myHeaders.append("Content-Type", "application/json");
+        var myHeaders = new Headers();
+        myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        myHeaders.append("origin", enviromentAPI.api_url);
+        myHeaders.append("Content-Type", "application/json");
 
 
-        // var requestOptions = {
-        //     method: 'GET',
-        //     headers: myHeaders,
-        //     redirect: 'follow',
-        // };
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow',
+        };
 
-        // return fetch(`${enviromentAPI.api_url}/users/all/order/${userId}`, requestOptions)
-        //     .then(response => response.text())
-        //     .then(results => {
-        //         console.log(results)
-        //         return  JSON.parse(results)
-        //     })
-        //     .catch(error => console.log('error', error));
+        return fetch(`${enviromentAPI.api_url}/users/all/order/${userId}`, requestOptions)
+            .then(response => response.text())
+            .then(results => {
+                const orderedNotes = JSON.parse(results)
+                console.log((orderedNotes.length))
+                if (orderedNotes < 1) {
+                    return []
+                } else {
+                    return orderedNotes
+                }
+            })
+            .catch(error => console.log('error', error));
     },
-    
+
     getNote: (noteId) => {
-        // var myHeaders = new Headers();
-        // myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        // myHeaders.append("origin", enviromentAPI.api_url);
-        // myHeaders.append("Content-Type", "application/json");
+        var myHeaders = new Headers();
+        myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        myHeaders.append("origin", enviromentAPI.api_url);
+        myHeaders.append("Content-Type", "application/json");
 
 
-        // var requestOptions = {
-        //     method: 'GET',
-        //     headers: myHeaders,
-        //     redirect: 'follow',
-        // };
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow',
+        };
 
-        // return fetch(`${enviromentAPI.api_url}/users/note/${noteId}`, requestOptions)
-        //     .then(response => response.text())
-        //     .then(results => {
-        //         return(results)
-        //     })
-        //     .catch(error => console.log('error', error));
+        return fetch(`${enviromentAPI.api_url}/users/note/${noteId}`, requestOptions)
+            .then(response => response.text())
+            .then(results => {
+                return (results)
+            })
+            .catch(error => console.log('error', error));
     },
 
-    getNoteRange: (userId,todaysDate,lastWeeksDate) => {
+    getNoteRange: (userId, todaysDate, lastWeeksDate) => {
+        console.log(userId, todaysDate, lastWeeksDate)
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
         myHeaders.append("origin", enviromentAPI.api_url);
@@ -139,19 +164,70 @@ export default {
             redirect: 'follow'
         };
 
-        fetch(`${enviromentAPI.api_url}/users/noterange`, requestOptions)
+        return fetch(`${enviromentAPI.api_url}/users/noterange`, requestOptions)
             .then(response => response.text())
             .then(results => {
-                if(results.length > 0){
-                    console.log(results)
-                    return(results)
+
+                if (results.length > 0) {
+                    let dbresults = results
+                    return (dbresults)
                 }
-                else{
+                else {
 
 
                 }
             })
             .catch(error => console.log('error', error));
 
+    },
+
+    uploadNotes: (value,userId) => {
+        var myHeaders = new Headers();
+        myHeaders.append("origin", enviromentAPI.api_url);
+        myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        myHeaders.append("Content-Type", "application/json");
+        var raw = JSON.stringify({
+            "userId": userId,
+            "note": value
+        });
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            redirect: 'follow',
+            requireHeader: ['origin', 'x-requested-with'],
+            body: raw
+        };
+        return fetch(`${enviromentAPI.api_url}/users/upload`, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                console.log(result)
+                return result
+
+            })
+            .catch(error => {
+                console.log(error)
+            });
+    },
+
+    getNoteRangeYear :(userid, tdYearAgo, lwYearAgo) => {
+        var myHeaders = new Headers();
+        myHeaders.append("origin", enviromentAPI.api_url);
+        myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        myHeaders.append("Content-Type", "application/json");
+       
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow',
+            requireHeader: ['origin', 'x-requested-with'],
+        };
+        return fetch(`${enviromentAPI.api_url}/users/lastyear/${userid}/${tdYearAgo}/${lwYearAgo}`, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+             return result
+            })
+            .catch(error => {
+                console.log(error)
+            });
     }
 }

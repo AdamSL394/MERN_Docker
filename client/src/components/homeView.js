@@ -13,9 +13,12 @@ import Alert from '@mui/material/Alert/index.js';
 import NoteRoutes from "../router/noteRoutes.js";
 import { useAuth0 } from '@auth0/auth0-react'
 import enviromentAPI from '../config/config.js'
+import Switch from '@mui/material/Switch/index.js';
 
-function HomeView() {
+const HomeView = () => {
     const { user } = useAuth0();
+    const [noNotes, setnoNotes] = useState();
+    const [noteError, setNoteError] = useState();
     const [text, setText] = useState()
     const [date, setDate] = useState()
     const [star, setStar] = useState(false)
@@ -26,6 +29,8 @@ function HomeView() {
     const [errorMessage, setErrorMessage] = useState("")
     const [successMessage, setSuccessMessage] = useState("")
     const [notes, setNotes] = useState([])
+    const [checked, setChecked] = useState(true);
+    const [noteview, setNoteView] = useState("weeks")
 
 
     const storeNewNote = (userId) => {
@@ -48,7 +53,6 @@ function HomeView() {
             requireHeader: ['origin', 'x-requested-with'],
             body: raw
         };
-        console.log("api call",`${enviromentAPI.api_url}/users/note`)
         fetch(`${enviromentAPI.api_url}/users/note`, requestOptions)
             .then(response => response.text())
             .then(result => {
@@ -82,34 +86,114 @@ function HomeView() {
         var myPastDate = new Date(myCurrentDate);
         myPastDate.setDate(myPastDate.getDate() - 7)
 
-        let lastWeeksDate = myPastDate.toISOString().split("T")[0]
+        let lastWeeksDate = myPastDate.toISOString().split("T")[0];
         getNoteRanges(userid, todaysDate, lastWeeksDate)
-
     }, [])
+
+    const handleChange = (event) => {
+        setChecked(event.target.checked);
+        if (!checked) {
+            const userid = user.sub.split("|")[1]
+            let todaysDate = new Date().toISOString().split("T")[0]
+
+            var myCurrentDate = new Date();
+            var myPastDate = new Date(myCurrentDate);
+            myPastDate.setDate(myPastDate.getDate() - 7)
+
+            let lastWeeksDate = myPastDate.toISOString().split("T")[0];
+            getNoteRanges(userid, todaysDate, lastWeeksDate)
+            setNoteView("weeks")
+        }
+        if (checked) {
+            getNoteRangeYear()
+            setNoteView("year")
+        }
+    };
 
     const getNoteRanges = async (userid, todaysDate, lastWeeksDate) => {
         try {
             const res = await NoteRoutes.getNoteRange(userid, todaysDate, lastWeeksDate)
-            console.log(res)
-                let cast = JSON.parse(res)
-                console.log(cast)
-                setNotes(cast)
-
+            let cast = JSON.parse(res)
+            if (cast.length < 1) {
+                setnoNotes("No Notes for last week.")
+                return
+            }
+            setnoNotes("")
+            setNotes(cast)
         }
         catch (error) {
-            console.log(error)
+            console.log("herae", error)
+            setNoteError("Error Getting Notes")
         }
     }
+
+    const getNoteRangeYear = async () => {
+        const userid = user.sub.split("|")[1]
+        const date = new Date();
+        const futureDay = date.getDate() + 7;
+        const day = date.getDate()
+        const year = date.getFullYear() - 1;
+        let month = date.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month
+        }
+        const weekAheadLastYear = year + '-' + month + '-' + futureDay
+        const todayLastYear = year + '-' + month + '-' + day
+        try {
+
+
+            const res = await NoteRoutes.getNoteRangeYear(userid, weekAheadLastYear, todayLastYear)
+            if (res) {
+                const cast = JSON.parse(res)
+                // let a = cast.sort((a, b) => {
+                //     console.log(a.date,b.date)
+                //     return a.date < b.date
+                // })
+                // console.log(a)
+                setNotes(cast)
+            }
+        }
+        catch (error) {
+            setNoteError("Error Getting Notes")
+        }
+    }
+
     return (
         <Container id="container">
-            <TextField multiline rows={3} defaultValue={""} fullWidth label="Note" id="fullWidth" color="primary" placeholder="Note" value={text} onChange={e => setText(e.target.value)}
-            ></TextField>
             <span className="formButtons">
-                <input id="date" type="date" placeholder="Date" defaultValue={date} onChange={e => setDate(e.target.value)} style={{ alignSelf: "center" }}>
+
+
+                <TextField
+                    autoFocus={true}
+                    multiline rows={7}
+                    label="Note"
+                    id="fullWidth"
+                    color="primary"
+                    placeholder="Note"
+                    value={text}
+                    onChange={e => setText(e.target.value)}
+                    style={{ overflowY: "auto", overflow: "visible" }}
+                >
+                </TextField>
+
+                <input
+                    id="date"
+                    type="date" placeholder="Date" defaultValue={date} onChange={e => setDate(e.target.value)}
+                    style={{ alignSelf: "center" }}>
                 </input>
-                <FormControl sx={{ m: 1, minWidth: 120 }} size="medium" style={{ alignSelf: "center" }}>
-                    <span style={{ position: "absolute", margin: "2px" }}><i>Star</i></span>
-                    <InputLabel id="demo-select-small" style={{ alignSelf: "center" }}></InputLabel>
+                <FormControl
+                    sx={{ m: 1, minWidth: 120 }}
+                    size="medium"
+                    style={{ alignSelf: "center", borderRadius: "5px 5px 5px 5px" }}>
+                    <span
+                        style={{ position: "absolute", margin: "2px", }}>
+                        <i>Star</i>
+                    </span>
+                    <InputLabel
+                        id="demo-select-small"
+                        style={{ alignSelf: "center" }}
+                    >
+                    </InputLabel>
                     <Select
                         defaultValue=""
                         labelId="demo-select-small"
@@ -119,9 +203,33 @@ function HomeView() {
                         <MenuItem value={"None"} >
                             <em>None</em>
                         </MenuItem>
-                        <MenuItem value={"1"}><span role="img" aria-label="Star">🌟</span></MenuItem>
-                        <MenuItem value={"2"}><span role="img" aria-label="Star">🌟🌟</span></MenuItem>
-                        <MenuItem value={"3"}><span role="img" aria-label="Star">🌟🌟🌟 </span></MenuItem>
+                        <MenuItem
+                            value={"1"}>
+                            <span
+                                role="img"
+                                aria-label="Star"
+                            >
+                                🌟
+                            </span>
+                        </MenuItem>
+                        <MenuItem
+                            value={"2"}>
+                            <span
+                                role="img"
+                                aria-label="Star"
+                            >
+                                🌟🌟
+                            </span>
+                        </MenuItem>
+                        <MenuItem
+                            value={"3"}>
+                            <span
+                                role="img"
+                                aria-label="Star"
+                            >
+                                🌟🌟🌟
+                            </span>
+                        </MenuItem>
                     </Select>
                 </FormControl>
                 <Button
@@ -134,37 +242,71 @@ function HomeView() {
                     Save Note
                 </Button>
             </span>
-            <Alert severity="success" style={{ visibility: successFlag }} id="successFlag" open={false} >{successMessage}</Alert>
-            <Alert severity="error" style={{ visibility: errorFlag }} open={false}>{errorMessage}</Alert>
-            <h2 id="pastNoteHeader">Last Weeks Notes</h2>
+            <Alert
+                severity="success"
+                style={{ visibility: successFlag, marginTop: "1%" }}
+                id="successFlag"
+                open={false} >
+                {successMessage}
+            </Alert>
+            <Alert
+                severity="error"
+                style={{ visibility: errorFlag }}
+                open={false}>
+                {errorMessage}
+            </Alert>
+            <span style={{float:"right !important"}}>
+            <Switch
+                checked={checked}
+                onChange={handleChange}
+                inputProps={{ 'aria-label': 'controlled' }}
+                id="switch"
+                
+                label="Label"
+            />
+            </span>
+            <h2 id="pastNoteHeader">Last {noteview} notes</h2>
+            <h3 id="pastNoteHeader">{noNotes}</h3>
+            <h3 id="pastNoteError">{noteError}</h3>
             <Grid
                 container spacing={2}
                 direction="row"
                 justifyContent="center"
-                alignItems="center"
+                alignItems="flex-start"
             >
-
                 {(notes).map((note, i) => {
                     return (
                         <Grid
+                            alignItems="flex-start"
+                            key={i + 101}
                             item xs={12} sm={6} md={4} lg={3}>
-                            <Card>
-                                <h3
-                                    key={i + 103}
-                                    style={{ margin: "1%" }}
-                                >
-                                    {note.text}
-                                </h3>
+                            <Card
+                                key={i + 102}
+                                style={{ marginBottom: "2%" }}
+                                variant="outlined"
+                            >
                                 <div
                                     key={i + 104}
+                                    style={{ marginBottom: "5%", borderBottom: "1px solid #cbcbcb" }}
                                 >
-                                    {note.date}
+                                    <span style={{ marginRight: "12%" }}> <strong>{note.date}</strong></span>
+                                    <strong> ✨'s:&nbsp; {note.star}</strong>
                                 </div>
-                                <div
-                                    key={i + 105}
-                                >
-                                    {note.star}
-                                </div>
+                                {note.text.split("\n").map((i, key) => {
+                                    if (!i.length > 0) {
+                                        return
+                                    }
+                                    let firstLetter = i[0].toUpperCase()
+                                    let restOfsentence = i.slice(1, i.length)
+                                    return (
+                                        <ul key={key} style={{ textAlign: "left" }}>
+                                            <li style={{ padding: "5px 3px " }}>
+                                                {firstLetter + restOfsentence}
+                                            </li>
+                                        </ul>
+                                    )
+                                })}
+
                             </Card>
                         </Grid>
                     )

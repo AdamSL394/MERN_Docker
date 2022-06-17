@@ -5,9 +5,10 @@ import App from './App.js';
 import { Auth0Provider } from "@auth0/auth0-react";
 import config from './config/config.json'
 const enviroment = process.env.REACT_APP_HOST || 'development'
-
+console.log('current env',enviroment)
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+console.log('auth url',config[enviroment].logoutURL)  
 root.render(
   <Auth0Provider
     domain={"dev-07j15n0p.us.auth0.com"}

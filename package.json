@@ -1,0 +1,24 @@
+{
+  "name": "note-script",
+  "version": "1.0.0",
+  "description": "To Start this app in the root directory run      - docker compose -f docker-compose.yml up",
+  "main": "index.js",
+  "scripts": {
+    "web": "npm run start --prefix client",
+    "server":"cd server && nodemon server.js",
+    "dev": "concurrently -n 'server,client' \"npm run server\" \"npm run web\"",
+    "prestart": "npm run build --prefix client",
+    "start": "cd server && node server.js"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdamSL394/MERN_Docker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AdamSL394/MERN_Docker/issues"
+  },
+  "homepage": "."
+}

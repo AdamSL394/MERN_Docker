@@ -9,7 +9,7 @@ export default function Home() {
         <div>
             <Nav></Nav>
             <HomeView></HomeView>
-            <Footer></Footer>
+            {/* <Footer></Footer> */}
         </div>
     )
 

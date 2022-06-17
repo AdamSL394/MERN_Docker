@@ -25,6 +25,7 @@
     justify-content: right;
     width: 1%;
     min-width: 0px;
+    margin-left: 8px;
 }
 
 .modalButtons {
@@ -38,4 +39,12 @@
 #Orderby{
     border: 1px solid  lightgrey;
     float:right;
+    font-weight: bolder;
+}
+#noNotes{
+    width:30%;
+    text-align:center;
+    margin-top:3%;
+    color:#005fcc;
+    
 }
