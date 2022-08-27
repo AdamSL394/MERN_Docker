@@ -53,7 +53,14 @@ export default {
             "text": note.text,
             "date": note.date,
             "star": note.star,
-            "edit": note.edit
+            "edit": note.edit,
+            "look": note.look || false,
+            "gym": note.gym || false,
+            "weed": note.weed || false,
+            "code": note.code || false,
+            "read": note.read || false,
+            "eatOut": note.eatOut || false,
+            "basketball": note.basketball || false
         });
 
         var requestOptions = {
@@ -113,7 +120,6 @@ export default {
             .then(response => response.text())
             .then(results => {
                 const orderedNotes = JSON.parse(results)
-                console.log((orderedNotes.length))
                 if (orderedNotes < 1) {
                     return []
                 } else {
@@ -145,7 +151,6 @@ export default {
     },
 
     getNoteRange: (userId, todaysDate, lastWeeksDate) => {
-        console.log(userId, todaysDate, lastWeeksDate)
         var myHeaders = new Headers();
         myHeaders.append("X-Requested-With", "XMLHttpRequest");
         myHeaders.append("origin", enviromentAPI.api_url);
@@ -200,7 +205,6 @@ export default {
         return fetch(`${enviromentAPI.api_url}/users/upload`, requestOptions)
             .then(response => response.text())
             .then(result => {
-                console.log(result)
                 return result
 
             })

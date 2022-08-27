@@ -1,0 +1,9 @@
+.bubbles{
+    background-color: "lightgrey";
+    margin-right: ".4rem"; 
+    border: "2px lightgrey";
+    border-radius: "10px 10px 10px 10px";
+    cursor: "pointer";
+    font-size: "20px";
+    cursor:"pointer"
+}

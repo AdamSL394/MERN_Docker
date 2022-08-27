@@ -3,16 +3,15 @@ const mongoose = require('mongoose')
 const client = require("../database/redis_connect")
 
 
-const postNotes = async (text, date, star, edit, userId) => {
-    let correctlength = userId + "000";
-    let newNote = new Note({ text: text, date: date, star: star, edit: edit, userId: correctlength })
+const postNotes = async (text, date, star, edit, userId,look, gym, weed, code, read, eatOut, basketball) => {
+    let newNote = new Note({ text: text, date: date, star: star, edit: edit, userId: userId,look: look, gym:gym,  weed:weed, code:code, read:read, eatOut:eatOut, basketball:basketball})
     let errorMessage;
     await newNote.save(async (err) => {
         if (err) {
             errorMessage = err.message
             return err
         }
-        client.lPush(correctlength,JSON.stringify({ text: text, date: date, star: star, edit: edit, userId: correctlength }))
+        // client.lPush(correctlength,JSON.stringify({ text: text, date: date, star: star, edit: edit, userId: correctlength }))
     }) 
     if (errorMessage) {
         return `${errorMessage}`
@@ -32,9 +31,7 @@ const getAllNotesOrdered = async (ids) => {
 }
 
 const getAllNotes = async (ids) => {
-    console.log("here",ids)
-     let a = await client.lRange(ids,0,-1)
-    console.log("a",a)
+    //  let a = await client.lRange(ids,0,-1)
 
     const id = mongoose.Types.ObjectId(ids.trim());
     const notes = await Note.find({ userId: id }).exec()
@@ -48,7 +45,7 @@ const getRangeNotes = async (ids, start, end) => {
             "$gte": end,
             "$lt": start
         }
-    })
+    }).sort({ date: 1 })
     return notes
 }
 
@@ -57,14 +54,14 @@ const deleteNotes = async (id) => {
     return "note deleted"
 }
 
-const updateNote = async (id, edit, text, date, star,) => {
-    const updated = await Note.findByIdAndUpdate(id, { $set: { edit: edit, text: text, date: date, star: star } }, { new: true })
+const updateNote = async (id, edit, text, date, star, look, gym, weed, code, read, eatOut, basketball) => {
+    const updated = await Note.findByIdAndUpdate(id, { $set: { edit: edit, text: text, date: date, star: star,look: look, gym:gym,  weed:weed, code:code, read:read, eatOut:eatOut, basketball:basketball } }, { new: true })
     return (updated)
-}
+} 
 
 const searchNotes = async (id, user) => {
     const ids = mongoose.Types.ObjectId(user.trim());
-    const notes = await Note.find({ "text": { $regex: id, "$options": "i" } }).where({ userId: ids });
+    const notes = await Note.find({ "text": { $regex: '^\\($', "$options": "i" } }).where({ userId: ids });
     return (notes)
 }
 

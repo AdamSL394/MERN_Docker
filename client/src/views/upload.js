@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import Navbar from "../components/nav.js";
-import Footer from "../components/footer.js";
-import "./allNotes.css"
+import "./upload.css"
 import Container from "@mui/material/Container/index.js"
-import enviromentAPI from '../config/config.js'
 import { useAuth0 } from '@auth0/auth0-react'
 import Card from "@mui/material/Card/index.js"
 import Button from "@mui/material/Button/index.js"
 import Grid from "@mui/material/Grid/index.js"
 import NoteRoutes from "../router/noteRoutes.js"
+
+
+
 
 const UploadNotes = () => {
     const [array, setArray] = useState([]);
@@ -18,16 +19,44 @@ const UploadNotes = () => {
     const { user } = useAuth0();
     const userId = user.sub.split("|")[1];
     const [fileButtontext, setFileButtontext] = useState("Preview Notes");
+    const data = `11/19/21
+    Nose Piercing
+    Bryce Ronak Show up
+    Get a table super drunk
+    
+    
+    11/20/21
+    Sleep most the day 
+    Drinks strip of bars
+    Drop phone crack screen
+    Whore house no hot girls
+    
+    
+    11/21/21
+    Drop bags at Bryce/Ronaks
+    Chill at beach get coffee
+    Check into hostel
+    Meet up with kazakhstan girl
+    Ronak smooshed in bathroom`
+
+
+    
 
     const handleOnChange = (e) => {
         setIsFile(true)
+        setFile()
         setFile(e.target.files[0]);
+
+        setFileButtontext("Preview Notes")
+        setArray([])
+        e.target.value = null;
     };
 
     const switchOperation = (e, file) => {
         e.preventDefault();
         setArray([])
         if (fileButtontext === "Import Notes") {
+            e.target.value = null;
             handleOnSubmit(e)
         }
         else {
@@ -66,7 +95,7 @@ const UploadNotes = () => {
 
     const previewFileTXT = (string) => {
         let notes = string.split('\n')
-
+        let date;
         let arrayOfNotes = [];
 
         let note = {
@@ -76,23 +105,19 @@ const UploadNotes = () => {
         }
 
         for (let i = 0; i <= notes.length - 1;) {
-            let date;
             let text = '';
 
             let noteDate = new Date(notes[i]);
-            if (noteDate != "Invalid Date") {
+            if (noteDate !== "Invalid Date") {
                 date = noteDate
                 note['date'] = noteDate.toISOString().split("T")[0]
                 i++
             }
-            if(noteDate == "Invalid Date" ){
-                console.log("Invalid Date")
-            }
-
-            while (notes[i] != "\n" && (notes[i] != "undefined" || notes[i] != undefined) && i < notes.length) {
+            
+            while (notes[i] !== "\n" && (notes[i] !== "undefined" || notes[i] !== undefined) && i < notes.length) {
                 if (notes[i] === "\r" || notes[i].length === 0) {
                     if (i +1 < notes.length && (notes[i + 1] === "\r" || notes[i + 1].length === 0)) {
-                        while (notes[i + 1] === "\r" || notes[i + 1].length == 0) {
+                        while (notes[i + 1] === "\r" || notes[i + 1].length === 0) {
 
                             i++
                         }
@@ -140,9 +165,15 @@ const UploadNotes = () => {
 
 
     const storeNewNote = async (value) => {
-        let response = await NoteRoutes.uploadNotes(value,userId)
+        await NoteRoutes.uploadNotes(value,userId)
         setFileButtontext("Preview Notes")
-        console.log(response)
+    }
+
+    const download = (e) => {
+        e.preventDefault()
+        const blob = new Blob ([data],{type:"text/plain"})
+        const href = URL.createObjectURL(blob)
+        URL.revokeObjectURL(href)
     }
 
     return (
@@ -152,22 +183,28 @@ const UploadNotes = () => {
                 <form>
                     <input
                         type={"file"}
-                        id={"csvFileInput"}
+                        id="csvFileInput"
                         accept={[".csv", ".txt"]}
                         onChange={handleOnChange}
                     />
 
-                    <button
+                    <Button
                         onClick={(e) => {
                             switchOperation(e, file, fileButtontext);
                         }}
+                        id="upload"
+                        style={{ marginRight: "3%" }}
                     >
                         {fileButtontext}
-                    </button>
+                    </Button>
 
-                    <button>
+                    <Button
+                    id="example"
+                    
+                    onClick={(e)=> {download(e)}}
+                    >
                         Example .txt File
-                    </button>
+                    </Button>
 
                 </form>
 

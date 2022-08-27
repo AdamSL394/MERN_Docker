@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-    tokenId:{type:String}
+    tokenId: { type: String },
+    settings: { type: Array },
+    email: { type: String }
 })
 
 const User = mongoose.model('User', UserSchema)

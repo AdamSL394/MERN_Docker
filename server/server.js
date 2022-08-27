@@ -7,14 +7,14 @@ const mongoose = require("mongoose")
 const userRouter = require("./routes/users")
 const config = require("./config/config.json")
 
-const path = require("path")
+const path = require("path") 
 
-let enviorment = process.env.NODE_ENV || "development"
+let enviorment = process.env.NODE_ENV || "production"
 
 console.log("Host Enviorment", process.env.NODE_ENV)
 console.log(enviorment)
 main().catch(err => console.log(err));
-
+ 
 async function main() {
     const connect = await mongoose.connect(config[enviorment].mongodb, {
         useNewUrlParser: true,
@@ -33,6 +33,7 @@ app.use(bodyParser.json())
 // research
 app.use(cors());
 
+app.use("/users", userRouter);
 
 if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "production") {
     const root = require('path').join(__dirname,'..','client', 'build')
@@ -43,7 +44,7 @@ if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "producti
     });
 }
 
-app.use("/users", userRouter);
+
 
 app.listen((process.env.PORT || 5000), () => {
     console.log(`App listening on port ${PORT}`)

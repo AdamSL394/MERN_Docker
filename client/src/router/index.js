@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import Login from '../views/login.js'
 import Home from '../views/home.js'
 import { ProtectedRoute } from '../hooks/protectedRoute.js';

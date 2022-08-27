@@ -5,7 +5,14 @@ const NoteSchema = new mongoose.Schema({
     text: { type: String, required: true },
     date:{type : String, required: true},
     star:{type:String, default: false},
-    edit:{type:Boolean, default:false}
+    edit:{type:Boolean, default:false},
+    look:{type:Boolean, default:false},
+    gym:{type:Boolean, default:false},
+    weed:{type:Boolean, default:false},
+    code:{type:Boolean, default:false},
+    read:{type:Boolean, default:false},
+    eatOut:{type:Boolean, default:false},
+    basketball:{type:Boolean, default:false}
 })
 
 const Note = mongoose.model('Note', NoteSchema)

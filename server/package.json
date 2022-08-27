@@ -26,8 +26,9 @@
         "node": ">=14.13.0"
     },
     "scripts": {
+        "dev-client":"cd ../client && npm start",
+        "dev": "concurrently -n 'server,client' \"nodemon server.js\" \"npm run dev-client\"",
         "client": "cd client npm run start --prefix client",
-        "dev": "concurrently -n 'server,client' \"nodemon server.js\" \"npm run client\"",
         "prestart": "npm run build --prefix client",
         "start": "node server.js"
     }

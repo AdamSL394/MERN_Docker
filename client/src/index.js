@@ -4,7 +4,7 @@ import './index.css';
 import App from './App.js';
 import { Auth0Provider } from "@auth0/auth0-react";
 import config from './config/config.json'
-const enviroment = process.env.REACT_APP_HOST || 'development'
+const enviroment = process.env.REACT_APP_HOST || 'production'
 console.log('current env',enviroment)
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

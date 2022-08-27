@@ -12,7 +12,6 @@ function Search(props) {
         const userId = user.sub.split("|")[1];
         let searchValue = e.target.value
         if (searchValue === "#" || searchValue === "%" || searchValue === "\\"){
-            console.log(searchValue)
             return
         }
         e.preventDefault()

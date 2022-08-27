@@ -16,7 +16,7 @@ const LogOut = () => {
 
     return (
         isAuthenticated &&(
-            <Button className="logoutButton" onClick={() => logouts()}style={{color:"#000000",float:"right",background:"#e9d8c2",margin:".5%",font:"300 normal .9em 'tahoma'", fontFamily:"cursive",position:"relative"}}>
+            <Button className="logoutButton" onClick={() => logouts()}style={{color:"#000000",float:"right",background:"#e9d8c2",margin:".5%",font:"300 normal .9em 'tahoma'",fontFamily:"Times,Times New Roman,serif",position:"relative"}}>
                 Sign Out
             </Button>  
         )

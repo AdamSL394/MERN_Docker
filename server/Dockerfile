@@ -3,19 +3,7 @@ FROM node as prod
 
 WORKDIR /app
 
-# COPY package*.json ./
-
-# RUN npm install
-
-# WORKDIR /app/client
-
 COPY ./package*.json ./
-
-# WORKDIR /app/server
-
-# COPY ./package*.json ./
-
-# WORKDIR /app
 
 COPy . .
 

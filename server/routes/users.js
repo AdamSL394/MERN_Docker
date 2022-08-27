@@ -61,15 +61,19 @@ router.delete('/delete/:id', async (req, res) => {
 })
 
 router.patch('/update/:id', async (req, res) => {
-    let { edit, text, date, star } = req.body
-    let response = await noteController.updateNote(req.params.id, edit, text, date, star, res)
+    let { edit, text, date, star, look, gym, weed, code, read, eatOut, basketball } = req.body
+    let response = await noteController.updateNote(req.params.id, edit, text, date, star, look, gym, weed, code, read, eatOut, basketball)
     res.json(response)
     return
 })
 
 router.post("/note", async (req, res) => {
-    const { text, date, star, edit, userId } = req.body
-    let response = await noteController.postNotes(text, date, star, edit, userId)
+    const { text, date, star, edit, userId, look, gym, weed, code, read, eatOut, basketball} = req.body
+    let correctlength;
+    if (userId != 24) {
+        correctlength =userId + "000"
+    }
+    let response = await noteController.postNotes( text, date, star, edit, correctlength, look, gym, weed, code, read, eatOut, basketball )
     res.send(response)
     return
 })
@@ -100,4 +104,8 @@ router.get("/lastyear/:userid/:tdYearAgo/:lwYearAgo", async (req,res) => {
     res.send(response)
 })
 
-module.exports = router;
+router.get('/ping',(req,res) => {
+    res.send("Pong")
+})
+
+module.exports = router; 
