@@ -3,11 +3,17 @@ const mongoose = require('mongoose')
 const client = require("../database/redis_connect")
 
 
-const postNotes = async (text, date, star, edit, userId,look, gym, weed, code, read, eatOut, basketball) => {
-    let newNote = new Note({ text: text, date: date, star: star, edit: edit, userId: userId,look: look, gym:gym,  weed:weed, code:code, read:read, eatOut:eatOut, basketball:basketball})
+const postNotes = async (req) => {
+    if (req["userId"].length != 24) {
+        req["userId"] = req["userId"] + "000"
+    }
+
+    console.log(req)
+    let newNote = new Note(req)
     let errorMessage;
-    await newNote.save(async (err) => {
+    newNote.save(async (err) => {
         if (err) {
+            console.log(err.message)
             errorMessage = err.message
             return err
         }

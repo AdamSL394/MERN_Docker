@@ -68,13 +68,8 @@ router.patch('/update/:id', async (req, res) => {
 })
 
 router.post("/note", async (req, res) => {
-    const { text, date, star, edit, userId, look, gym, weed, code, read, eatOut, basketball} = req.body
-    let correctlength;
-    if (userId != 24) {
-        correctlength =userId + "000"
-    }
-    let response = await noteController.postNotes( text, date, star, edit, correctlength, look, gym, weed, code, read, eatOut, basketball )
-    res.send(response)
+    let response = await noteController.postNotes(req.body)
+    res.send(response)  
     return
 })
 

@@ -12,6 +12,9 @@ const NoteSchema = new mongoose.Schema({
     code:{type:Boolean, default:false},
     read:{type:Boolean, default:false},
     eatOut:{type:Boolean, default:false},
+    medal:{type:Boolean, default:false},
+    king:{type:Boolean, default:false},
+    'date/smoosh':{type:Boolean, default:false},
     basketball:{type:Boolean, default:false}
 })
 

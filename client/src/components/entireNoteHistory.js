@@ -45,7 +45,7 @@ function NoteHistory() {
     const [modalText, setmodalText] = useState("");
     const [numberOfPages, setNumberOfPages] = useState(0);
     let [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostsPerPage] = useState(20);
+    const [postPerPage, setPostsPerPage] = useState(30);
     const [startDate, setStartDate] = useState(startingSearchDate.toISOString().split("T")[0])
     const [endDate, setEndDate] = useState()
     const [readOnly, setReadyOnly] = useState(false)
@@ -705,7 +705,7 @@ function NoteHistory() {
                     {(notes).map((note, i) => {
                         if (!note.edit) {
                             return (
-                                <Grid key={i + 100} item xs={12} sm={6} md={4} lg={3}>
+                                <Grid key={i + 100} item xs={12} sm={12} md={4} lg={3}>
                                     <Card
                                         style={{ marginBottom: "2%" }}
                                         key={i + 110}

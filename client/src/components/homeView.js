@@ -12,7 +12,6 @@ import Grid from "@mui/material/Grid/index.js"
 import Alert from '@mui/material/Alert/index.js';
 import NoteRoutes from "../router/noteRoutes.js";
 import { useAuth0 } from '@auth0/auth0-react'
-import enviromentAPI from '../config/config.js'
 import Switch from '@mui/material/Switch/index.js';
 
 const HomeView = () => {
@@ -21,6 +20,7 @@ const HomeView = () => {
     const [noteError, setNoteError] = useState();
     const [text, setText] = useState()
     const [date, setDate] = useState()
+    const [leetcode, setLeetcode] = useState("")
     const [star, setStar] = useState(false)
     const [successFlag, setSuccessFlag] = useState("hidden")
     const [errorFlag, setErrorFlag] = useState("hidden")
@@ -30,123 +30,116 @@ const HomeView = () => {
     const [successMessage, setSuccessMessage] = useState("")
     const [notes, setNotes] = useState([])
     const [checked, setChecked] = useState(true);
-    const [noteview, setNoteView] = useState("weeks")
-    const [look, setLook] = useState(false)
-    const [gym, setGym] = useState(false)
-    const [weed, setWeed] = useState(false)
-    const [code, setCode] = useState(false)
-    const [read, setRead] = useState(false)
-    const [eatOut, setEatOut] = useState(false)
-    const [basketball, setBasketball] = useState(false)
-    const [clickedLooked, setClickLooked] = useState("hidden")
-    const [clickedGym, setClickGym] = useState("hidden")
-    const [clickedWeed, setClickWeed] = useState("hidden")
-    const [clickedCode, setClickCode] = useState("hidden")
-    const [clickedRead, setClickRead] = useState("hidden")
-    const [clickedEatOut, setClickEatOut] = useState("hidden")
-    const [clickedBasketball, setClickBasketball] = useState("hidden")
+    const [noteview, setNoteView] = useState("week")
+    const [selected, setSelected] = useState([]);
+    const [timePeriod, setTimePeriod] = useState("1")
+    const [emojiList, setEmojiList] = useState([{ "icon": "🥇", "name": "medal", "visible": "hidden" }, { "icon": "👀", "name": "look", "visible": "hidden" }, { "icon": "💪🏼", "name": "gym", "visible": "hidden" }, { "icon": "🍁", "name": "weed", "visible": "hidden" }, { "icon": "👨🏻‍💻", "name": "code", "visible": "hidden" }, { "icon": "⛹🏻‍♂️", "name": "basketball", "visible": "hidden" }, { "icon": "📚", "name": "read", "visible": "hidden" }, { "icon": "🍕", "name": "eatOut", "visible": "hidden" }, { "icon": "🤴🏻", "name": "king", "visible": "hidden" }, { "icon": "👫", "name": "date/smoosh", "visible": "hidden" }, { "icon": "🌟", "name": "star", "visible": "hidden" }])
+    const [trackedStats, setTrackedStats] = useState([])
+    const uniqueIds = []
+    const withoutDups = trackedStats.filter(element => {
+        const isDuplicate = uniqueIds.includes(element.name);
+        if (!isDuplicate) {
+            uniqueIds.push(element.name);
+            return true
+        }
+        return false
+    })
 
-    const storeNewNote = (userId) => {
+
+    const storeNewNote = async (userId, withoutDups) => {
         setDisabled(true)
-        var myHeaders = new Headers();
-        myHeaders.append("origin", enviromentAPI.api_url);
-        myHeaders.append("X-Requested-With", "XMLHttpRequest");
-        myHeaders.append("Content-Type", "application/json");
-        var raw = JSON.stringify({
+
+
+        var raw = {
             "text": text,
             "date": date,
-            "star": star,
-            "look": look,
-            "gym": gym,
-            "weed": weed,
-            "code": code,
-            "read": read,
-            "eatOut": eatOut,
-            "basketball": basketball,
             "userId": userId
-        });
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            redirect: 'follow',
-            requireHeader: ['origin', 'x-requested-with'],
-            body: raw
         };
-        fetch(`${enviromentAPI.api_url}/users/note`, requestOptions)
-            .then(response => response.text())
-            .then(result => {
-                if (result.toString().includes("failed")) {
-                    setErrorMessage(result)
-                    setErrorFlag("visible")
-                    setTimeout(() => { setErrorFlag("hidden") }, 1500);
-                    setTimeout(() => { setDisabled(false) }, 1500);
-                } else {
-                    setText(" ");
-                    setStar("None")
-                    setSuccessMessage(result)
-                    setSuccessFlag("visible")
-                    setTimeout(() => { setSuccessFlag("hidden") }, 1500);
-                    setTimeout(() => { setDisabled(false) }, 1500);
-                    if(gym){
-                        setCodeIcon("Gym")
-                    }
-                    if(weed){
-                        setCodeIcon("Smoke")
-                    }
-                    if(code){
-                        setCodeIcon("Code")
-                    }
-                    if(read){
-                        setCodeIcon("Read")
-                    }
-                    if(eatOut){
-                        setCodeIcon("Eat Out")
-                    }
-                    if(basketball){
-                        setCodeIcon("Basketball")
-                    }
-                    if(look){
-                        setCodeIcon("Look")
-                    }
+        if (text === undefined || text.length < 1) {
+            setErrorMessage("Please set a message & date")
+            setErrorFlag("visible")
+            setTimeout(() => {
+                setErrorFlag("hidden")
+                setDisabled(false)
+            }, 2000);
+
+            return
+        }
+        if (date === undefined) {
+            setErrorMessage("Please set a message & date")
+            setErrorFlag("visible")
+            setTimeout(() => {
+                setErrorFlag("hidden")
+                setDisabled(false)
+            }, 2000);
+
+            return
+        }
+
+
+        for (let stat of withoutDups) {
+            if (stat.visible === "visible") {
+                raw[stat.name] = true
+            }
+        }
+
+        const res = await NoteRoutes.postNote(raw)
+
+        if (res && res.toString().includes("failed")) {
+            setErrorMessage(res)
+            setErrorFlag("visible")
+            setTimeout(() => { setErrorFlag("hidden") }, 1500);
+            setTimeout(() => { setDisabled(false) }, 1500);
+        } else {
+            setText("");
+            setStar("None")
+            setSuccessMessage(res)
+            setSuccessFlag("visible")
+            onNumericChange(checked, timePeriod)
+            for (let stat of withoutDups) {
+                if (stat.visible === "visible") {
+                    stat.visible = "hidden"
                 }
-            })
-            .catch(error => {
-                setErrorMessage(error)
-                setErrorFlag("visible")
-                setTimeout(() => { setErrorFlag("hidden") }, 1500);
-                setTimeout(() => { setDisabled(false) }, 1500);
-            });
+            }
+            setTimeout(() => { setSuccessFlag("hidden") }, 1500);
+            setTimeout(() => { setDisabled(false) }, 1500);
+        }
+        return
     }
 
     useEffect(() => {
         const userid = user.sub.split("|")[1]
         let todaysDate = new Date().toISOString().split("T")[0]
-
         var myCurrentDate = new Date();
         var myPastDate = new Date(myCurrentDate);
         myPastDate.setDate(myPastDate.getDate() - 7)
-
         let lastWeeksDate = myPastDate.toISOString().split("T")[0];
         getNoteRanges(userid, todaysDate, lastWeeksDate)
+        getUserInformation(user)
+        // let a = await NoteRoutes.Leetcode_stats()
+        // console.log(a)
+        // setLeetcode(a.totalSolved)
     }, [])
 
     const handleChange = (event) => {
+        let numericValue = event.target.checked
         setChecked(event.target.checked);
-        if (!checked) {
-            const userid = user.sub.split("|")[1]
-            let todaysDate = new Date().toISOString().split("T")[0]
 
-            var myCurrentDate = new Date();
-            var myPastDate = new Date(myCurrentDate);
-            myPastDate.setDate(myPastDate.getDate() - 7)
-
-            let lastWeeksDate = myPastDate.toISOString().split("T")[0];
-            getNoteRanges(userid, todaysDate, lastWeeksDate)
-            setNoteView("weeks")
-        }
-        if (checked) {
-            getNoteRangeYear()
+        if (!numericValue) {
+            onNumericChange(numericValue, timePeriod)
+            if (timePeriod > 1) {
+                setNoteView("years")
+                return
+            }
             setNoteView("year")
+        }
+        if (numericValue) {
+            onNumericChange(numericValue, timePeriod)
+            if (timePeriod > 1) {
+                setNoteView("weeks")
+                return
+            }
+            setNoteView("week")
         }
     };
 
@@ -154,7 +147,6 @@ const HomeView = () => {
         try {
             const res = await NoteRoutes.getNoteRange(userid, todaysDate, lastWeeksDate)
             let cast = JSON.parse(res)
-            console.log("sdkjfsdf")
             if (cast.length < 1) {
                 setNotes(cast)
                 setnoNotes("No Notes for last week.")
@@ -173,25 +165,29 @@ const HomeView = () => {
         const userid = user.sub.split("|")[1]
         const date = new Date();
         const futureDay = date.getDate() + 7;
-        const day = date.getDate()
+        let day = date.getDate()
         const year = date.getFullYear() - 1;
+
         let month = date.getMonth() + 1;
         if (month < 10) {
             month = '0' + month
         }
+        if (day < 10) {
+            day = '0' + day
+        }
+
+
         const weekAheadLastYear = year + '-' + month + '-' + futureDay
         const todayLastYear = year + '-' + month + '-' + day
         try {
-
-
             const res = await NoteRoutes.getNoteRangeYear(userid, weekAheadLastYear, todayLastYear)
             if (res) {
                 const cast = JSON.parse(res)
-                // let a = cast.sort((a, b) => {
-                //     console.log(a.date,b.date)
-                //     return a.date < b.date
-                // })
-                // console.log(a)
+                if (cast.length < 1) {
+                    setNotes(cast)
+                    setnoNotes("No Notes for last year.")
+                    return
+                }
                 setNoteError("")
                 setnoNotes("")
                 setNotes(cast)
@@ -202,225 +198,207 @@ const HomeView = () => {
         }
     }
 
-    const setCodeIcon = (iconType) => {
-        switch (iconType) {
-            case "Look":
-                if (look) {
-                    setClickLooked("hidden")
-                    setLook(false)
+    const setCodeIcon = (iconType, trackedStats) => {
 
-                } else {
-                    setClickLooked("visible")
-                    setLook(true)
-                }
-                break;
-            case "Gym":
-                if (gym) {
-                    setClickGym("hidden")
-                    setGym(false)
+        if (iconType.visible === "visible") {
+            iconType.visible = "hidden"
+            setTrackedStats([...trackedStats])
+            return
+        }
+        if (iconType.visible === "hidden") {
+            iconType.visible = "visible"
+            setTrackedStats([...trackedStats])
+            return
+        }
 
-                } else {
-                    setClickGym("visible")
-                    setGym(true)
-                }
-                break;
-            case "Smoke":
-                if (weed) {
-                    setClickWeed("hidden")
-                    setWeed(false)
 
-                } else {
-                    setClickWeed("visible")
-                    setWeed(true)
-                }
-                break;
-            case "Code":
-                if (code) {
-                    setClickCode("hidden")
-                    setCode(false)
+    }
 
-                } else {
-                    setClickCode("visible")
-                    setCode(true)
-                }
-                break;
-            case "Basketball":
-                if (basketball) {
-                    setClickBasketball("hidden")
-                    setBasketball(false)
+    const getUserInformation = async (user) => {
+        const res = await NoteRoutes.getUserInfomation(user)
+        if (res) {
+            let userInfo = JSON.parse(res)
+            setTrackedStats(userInfo.searchedUser.settings)
+        }
 
-                } else {
-                    setClickBasketball("visible")
-                    setBasketball(true)
-                }
-                break;
-            case "Eat Out":
-                if (eatOut) {
-                    setClickEatOut("hidden")
-                    setEatOut(false)
-                } else {
-                    setClickEatOut("visible")
-                    setEatOut(true)
-                }
-                break;
-            case "Read":
-                if (read) {
-                    setClickRead("hidden")
-                    setRead(false)
+    }
 
-                } else {
-                    setClickRead("visible")
-                    setRead(true)
+    const addToEmojiList = (value, emojiList, user) => {
+
+        let emojiName = ''
+        let visible = "hidden"
+        for (let item of emojiList) {
+            if (item.icon === value) {
+                emojiName = item.name
+                visible = item.visible
+            }
+        }
+
+        let trackedStat = { "icon": `${value}`, "name": `${emojiName}`, "visible": `${visible}` }
+        for (let stat of trackedStats) {
+            if (stat.name === trackedStat.name) {
+                return
+            }
+        }
+        setTrackedStats([...trackedStats, trackedStat])
+        NoteRoutes.postUserStats(user, trackedStat)
+    }
+
+    const onNumericChange = async (checked, value) => {
+        setTimePeriod(value)
+        if (checked) {
+            if (value === "1") {
+                setNoteView("week")
+                const userid = user.sub.split("|")[1]
+                let todaysDate = new Date().toISOString().split("T")[0]
+                var myCurrentDate = new Date();
+                var myPastDate = new Date(myCurrentDate);
+                myPastDate.setDate(myPastDate.getDate() - 7)
+                let lastWeeksDate = myPastDate.toISOString().split("T")[0];
+                getNoteRanges(userid, todaysDate, lastWeeksDate)
+            }
+            if (value === "2") {
+                setNoteView("weeks")
+                const userid = user.sub.split("|")[1]
+                //let todaysDate = new Date().toISOString().split("T")[0]
+                var myCurrentDate = new Date();
+                var myPastDate = new Date(myCurrentDate);
+                myPastDate.setDate(myPastDate.getDate() - 8)
+                let eightDaysago = myPastDate.toISOString().split("T")[0];
+                var pastDate = new Date(myCurrentDate);
+                pastDate.setDate(pastDate.getDate() - 14)
+                let fourteenDaysAgo = pastDate.toISOString().split("T")[0];
+                getNoteRanges(userid, eightDaysago, fourteenDaysAgo)
+            }
+            if (value === "3") {
+                setNoteView("weeks")
+                const userid = user.sub.split("|")[1]
+                //let todaysDate = new Date().toISOString().split("T")[0]
+                var myCurrentDate = new Date();
+                var myPastDate = new Date(myCurrentDate);
+                myPastDate.setDate(myPastDate.getDate() - 15)
+                let eightDaysago = myPastDate.toISOString().split("T")[0];
+                var pastDate = new Date(myCurrentDate);
+                pastDate.setDate(pastDate.getDate() - 22)
+                let fourteenDaysAgo = pastDate.toISOString().split("T")[0];
+                getNoteRanges(userid, eightDaysago, fourteenDaysAgo)
+            }
+
+        }
+        //year
+        if (!checked) {
+            if (value == 1) {
+                setNoteView("year")
+                getNoteRangeYear()
+            }
+            if (value == 2) {
+                setNoteView("years")
+                const userid = user.sub.split("|")[1]
+                const date = new Date();
+                const futureDay = date.getDate() + 7;
+
+                let day = date.getDate()
+                const year = date.getFullYear() - 2;
+                let month = date.getMonth() + 1;
+                if (month < 10) {
+                    month = '0' + month
                 }
-                break;
-            default:
-                break;
+                if (day < 10) {
+                    day = '0' + day
+                }
+                const weekAheadLastYear = year + '-' + month + '-' + futureDay
+                const todayLastYear = year + '-' + month + '-' + day
+                const res = await NoteRoutes.getNoteRangeYear(userid, weekAheadLastYear, todayLastYear)
+                if (res) {
+                    const cast = JSON.parse(res)
+                    if (cast.length < 1) {
+                        setNotes(cast)
+                        setnoNotes("No Notes for last year.")
+                        return
+                    }
+                    setNoteError("")
+                    setnoNotes("")
+                    setNotes(cast)
+                }
+            }
+            if (value == 3) {
+                setNoteView("years")
+                const userid = user.sub.split("|")[1]
+                const date = new Date();
+                const futureDay = date.getDate() + 7;
+                let day = date.getDate()
+                const year = date.getFullYear() - 3;
+                let month = date.getMonth() + 1;
+                if (month < 10) {
+                    month = '0' + month
+                }
+                if (day < 10) {
+                    day = '0' + day
+                }
+                const weekAheadLastYear = year + '-' + month + '-' + futureDay
+                const todayLastYear = year + '-' + month + '-' + day
+                const res = await NoteRoutes.getNoteRangeYear(userid, weekAheadLastYear, todayLastYear)
+                if (res) {
+                    const cast = JSON.parse(res)
+                    if (cast.length < 1) {
+                        setNotes(cast)
+                        setnoNotes("No Notes for last year.")
+                        return
+                    }
+                    setNoteError("")
+                    setnoNotes("")
+                    setNotes(cast)
+                }
+            }
         }
     }
 
     return (
         <Container id="container">
             <div className="formButtons">
-                <Grid container spacing={1} justifyContent="space-between">
-                    <Grid item xs={11} s={11} m={11} l={11} style={{ margin: "0" }}>
-                        <TextField
-                            autoFocus={true}
-                            multiline rows={7}
-                            label="Note"
-                            id="fullWidth"
-                            color="primary"
-                            placeholder="Note"
-                            value={text}
-                            onChange={e => setText(e.target.value)}
-                            style={{ overflowY: "auto", overflow: "visible" }}
-                        >
-                        </TextField>
-                    </Grid>
-                    <Grid item xs={12} s={12} m={12} l={12} style={{ margin: "auto" }}>
-                        <span>
-                            <span
-                                style={{ cursor: "pointer", marginBottom: "1rem", fontSize: "30px", marginRight: ".5rem" }}
-                                onClick={() => setCodeIcon('Look')}
-                                role="img"
-                                aria-label="eyes"
-                            >
-                                👀
-                            </span>
-                            <span
-                                role="img"
-                                aria-label="checkmark"
-                                style={{ visibility: clickedLooked, marginRight: ".5rem" }}
-                            >✅</span>
-                        </span>
-                        <span>
-                            <span
-                                role="img"
-                                aria-label="arm"
-                                style={{ cursor: "pointer", marginBottom: "1rem", fontSize: "30px", marginRight: ".5rem" }}
-                                onClick={() => setCodeIcon('Gym')}
-                            >
-                                💪🏼
-                            </span>
-                            <span
-                                role="img"
-                                aria-label="checkmark"
-                                style={{ visibility: clickedGym, marginRight: ".5rem" }}
-                            >✅</span>
-                        </span>
-                        <span>
-                            <span
-                                role="img"
-                                aria-label="leaf"
-                                style={{ cursor: "pointer", marginBottom: "1rem", fontSize: "30px", marginRight: ".5rem" }}
-                                onClick={() => setCodeIcon('Smoke')}
-                            >
-                                🍁
-                            </span>
-                            <span
-                                role="img"
-                                aria-label="checkmark"
-                                style={{ visibility: clickedWeed, marginRight: ".5rem" }}
-                            >✅</span>
-                        </span>
-
-                        <span>
-                            <span
-                                style={{ cursor: "pointer", marginBottom: "1rem", fontSize: "30px", marginRight: ".5rem" }}
-                                onClick={() => setCodeIcon('Code')}
-                                role="img"
-                                aria-label="computer guy"
-                            >
-                                👨🏻‍💻
-                            </span>
-                            <span
-                                role="img"
-                                aria-label="checkmark"
-                                style={{ visibility: clickedCode, marginRight: ".5rem" }}
-                            >✅</span>
-                        </span>
-
-                        <span>
-                            <span
-                                style={{ cursor: "pointer", marginBottom: "1rem", fontSize: "30px", marginRight: ".5rem" }}
-                                onClick={() => setCodeIcon('Basketball')}
-                                role="img"
-                                aria-label="basketball"
-                            >
-                                ⛹🏻‍♂️
-                            </span>
-                            <span
-                                role="img"
-                                aria-label="checkmark"
-                                style={{ visibility: clickedBasketball, marginRight: ".5rem" }}
-                            >✅</span>
-                        </span>
-                        <span>
-                            <span
-                                role="img"
-                                aria-label="pizza"
-                                style={{ cursor: "pointer", marginBottom: "1rem", fontSize: "30px", marginRight: ".5rem" }}
-                                onClick={() => setCodeIcon('Eat Out')}
-                            >
-                                🍕
-                            </span>
-                            <span
-                                role="img"
-                                aria-label="checkmark"
-                                style={{ visibility: clickedEatOut, marginRight: ".5rem" }}
-                            >✅</span>
-                        </span>
-
-                        <span>
-                            <span
-                                role="img"
-                                aria-label="books"
-                                style={{ cursor: "pointer", marginBottom: "1rem", fontSize: "30px", marginRight: ".5rem" }}
-                                onClick={() => setCodeIcon('Read')}
-                            >
-                                📚
-                            </span>
-                            <span
-                                role="img"
-                                aria-label="checkmark"
-                                style={{ visibility: clickedRead, marginRight: ".5rem" }}
-                            >✅</span>
-                            <span
-                                role="img"
-                                aria-label="checkmark"
-                                style={{ cursor: "pointer", marginBottom: "1rem", fontSize: "30px", marginRight: ".5rem" }}
-                                onClick ={() => {alert("Dropdown")}}
-                            >➕</span>
-                        </span>
-                    </Grid>
+                <Grid item xs={6} s={6} m={6} l={6} style={{ margin: "0" }}>
+                    <TextField
+                        autoFocus={true}
+                        multiline rows={7}
+                        label="Note"
+                        id="fullWidth"
+                        color="primary"
+                        placeholder="Note"
+                        value={text}
+                        onChange={e => setText(e.target.value)}
+                        style={{ overflowY: "auto", overflow: "visible" }}
+                    >
+                    </TextField>
+                    <div style={{ width: "20rem", marginLeft: "12px" }}>
+                        {withoutDups.map((i, key) => {
+                            return (
+                                <span key = {key + 300}>
+                                    <span
+                                    key = {key}
+                                    value={i.icon}
+                                        onClick={() => {
+                                            setCodeIcon(i, withoutDups)
+                                        }}
+                                    >
+                                        {i.icon}
+                                    </span>
+                                    <span
+                                        key = {key + 200}
+                                        role="img"
+                                        aria-label="checkmark"
+                                        style={{ visibility: `${i.visible}`, marginRight: ".5rem" }}
+                                    >✔️</span>
+                                </span >)
+                        })}
+                    </div>
                 </Grid>
-                <Grid container rowSpacing={1} justifyContent="space-between">
-                    <Grid item xs={6} s={6} m={6} l={6} style={{ marginTop: "0" }}>
-                        <input
-                            id="date"
-                            type="date" placeholder="Date" defaultValue={date} onChange={e => setDate(e.target.value)}
-                            style={{ alignSelf: "center" }}>
-                        </input>
-                        <FormControl
+                <Grid item xs={6} s={6} m={6} l={6} style={{ marginTop: "0" }}>
+                    <input
+                        id="date"
+                        type="date" placeholder="Date" defaultValue={date} onChange={e => setDate(e.target.value)}
+                        style={{ alignSelf: "center", position: "absolute" }}>
+                    </input>
+                    {/* <FormControl
                             sx={{ m: 1, minWidth: 120 }}
                             size="medium"
                             style={{ alignSelf: "center", borderRadius: "5px 5px 5px 5px" }}>
@@ -471,20 +449,36 @@ const HomeView = () => {
                                     </span>
                                 </MenuItem>
                             </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={8} s={8} m={8} l={8} style={{ margin: "0" }}>
-                        <Button
-                            disabled={disabled}
-                            style={{ alignSelf: "center" }}
-                            variant="contained"
-                            value="save"
-                            color="primary"
-                            onClick={() => storeNewNote(userId)}>
-                            Save Note
-                        </Button>
-                    </Grid>
+
+                        </FormControl> */}
+                    <Button
+                        disabled={disabled}
+                        style={{ alignSelf: "center", position: "absolute", marginTop: "140px", marginLeft: "7px" }}
+                        variant="contained"
+                        value="save"
+                        color="primary"
+                        onClick={() => storeNewNote(userId, withoutDups)}>
+                        Save Note
+                    </Button>
+                    <FormControl sx={{ m: 1 }} style={{ position: "absolute", marginTop: "59px", width: "7rem" }}>
+                        <InputLabel id="demo-simple-select-label">Icons</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selected}
+                            // label="Age"
+                            onChange={(e) => { addToEmojiList(e.target.value, emojiList, user) }}
+                        >
+                            {emojiList.map((i, key) => {
+                                return (
+                                    <MenuItem key={key+100} value={i.icon}>
+                                        <span key = {key}>{i.icon}</span>
+                                    </MenuItem >)
+                            })}
+                        </Select>
+                    </FormControl>
                 </Grid>
+                {/*<div>Leetcode Problems Solved: {leetcode}</div> */}
             </div>
             <Alert
                 severity="success"
@@ -509,7 +503,17 @@ const HomeView = () => {
                     label="Label"
                 />
             </span>
-            <h2 id="pastNoteHeader">Last {noteview} notes</h2>
+            <h2 id="pastNoteHeader">
+                <span>
+                    <form action="#" onChange={(e) => onNumericChange(checked, e.target.value)} style={{ marginRight: "12rem" }}>
+                        <select name="languages" id="lang" style={{ position: "absolute", marginTop: ".4rem" }}>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </form>
+                </span>
+                <span>{noteview} ago</span></h2>
             <h3 id="pastNoteHeader">{noNotes}</h3>
             <h3 id="pastNoteError">{noteError}</h3>
             <Grid
@@ -557,15 +561,12 @@ const HomeView = () => {
                                     style={{ borderTop: "1px solid #cbcbcb" }}
                                 >
                                     <span  >{note.look ? <span role="img"
-                                        aria-label="Eyes" style={{ backgroundColor: "lightgrey", marginRight: ".4rem", border: "2px lightgrey", borderRadius: "10px 10px 10px 10px",paddingLeft: "4px" }}> 👀 </span> : null}</span>
+                                        aria-label="Eyes" style={{ backgroundColor: "lightgrey", marginRight: ".4rem", border: "2px lightgrey", borderRadius: "10px 10px 10px 10px", paddingLeft: "4px" }}> 👀 </span> : null}</span>
                                     <span>{note.gym ? <span role="img"
                                         aria-label="arm" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >💪🏼 </span> : null} </span>
 
-
                                     <span>{note.weed ? <span role="img"
                                         aria-label="Leaf" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >🍁 </span> : null} </span>
-
-
 
                                     <span >{note.code ? <span role="img"
                                         aria-label="Computer guy" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >👨🏻‍💻 </span> : null} </span>
@@ -579,6 +580,15 @@ const HomeView = () => {
 
                                     <span >{note.basketball ? <span role="img"
                                         aria-label="Basketball" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >⛹🏻‍♂️ </span> : null} </span>
+
+                                    <span >{note.king ? <span role="img"
+                                        aria-label="Basketball" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >🤴🏻 </span> : null} </span>
+
+                                    <span >{note.medal ? <span role="img"
+                                        aria-label="Basketball" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >🥇 </span> : null} </span>
+
+                                    <span >{note["date/smoosh"] ? <span role="img"
+                                        aria-label="Basketball" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >👫</span> : null} </span>
 
                                 </div>
                             </Card>
