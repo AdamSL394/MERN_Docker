@@ -26,9 +26,9 @@ function Navbar() {
   }
   return (
     <div className='xl12 l12 m12 s12 xs12' id='navbar'>
-      <span className="tabs" id="home" onClick={handleClick} > Home |</span>
-      <span className="tabs" id="all" onClick={routeChanges} > View All Notes |</span>
-      <span className="tabs" id="all" onClick={upload} > Upload Notes |</span>
+      <span className="tabs" id="home" onClick={handleClick} > Home \</span>
+      <span className="tabs" id="all" onClick={routeChanges} > View All Notes \</span>
+      <span className="tabs" id="all" onClick={upload} > Upload Notes \</span>
       <i className="tabs" id="userName" onClick={userSettings}>  <i className='userInfo' style={{ fontFamily: "font-family:Times, Times New Roman, serif !important" }} >Hi <span role="img" aria-label="Star">👋🏼 &nbsp;</span> {user.name ? user.name : ""}</i> </i>
       <img id='userInfo' style={{ height: "25px", width: "25px" }} src={user.picture} referrerPolicy="no-referrer" alt="User Profile"></img>
       <LogOut></LogOut>

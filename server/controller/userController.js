@@ -35,9 +35,8 @@ const updateUserStats = async (id,userDetails,stats) => {
         user = await saveNewUser(id,userDetails)
     }
     let user_settings = user[0].settings
-    console.log(user_settings)
+
     for (let setting of user_settings){
-        console.log(setting)
         if (setting.name == stats.name){ 
             arr = user_settings.filter(function(item) {
                 return item.name != stats.name
@@ -47,7 +46,6 @@ const updateUserStats = async (id,userDetails,stats) => {
             return userWithUpdatedStats
         }
     }
-    console.log("hit here")
     user_settings.push(stats)
     const updatedUser = { settings: user_settings}
     let userWithUpdatedStats = await User.findOneAndUpdate( filter , updatedUser, {new:true})

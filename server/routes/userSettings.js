@@ -28,7 +28,6 @@ router.post('/user/trackedstats/:id', async (req, res) => {
     }
     const userDetails = req.body['user']
     let user = await userController.updateUserStats(id, userDetails, stats)
-    console.log(user)
     res.send(user)
     return user
 })

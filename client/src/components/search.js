@@ -2,7 +2,6 @@ import React,{useState} from "react"
 import Notes from '../router/noteRoutes.js'
 import { useAuth0 } from '@auth0/auth0-react'
 
-
 function Search(props) {
 
     const [searchTeam, setSearchTerm] = useState("")
@@ -19,7 +18,6 @@ function Search(props) {
         const searchedNotes = await Notes.searchNote(searchValue,userId);
         props.parentCallback(searchedNotes,searchValue)
      }
-
 
     return (
         <> 

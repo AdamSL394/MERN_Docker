@@ -103,4 +103,15 @@ router.get('/ping',(req,res) => {
     res.send("Pong")
 })
 
+router.post("/aggregateNoteyears", async (req,res) => {
+    let id  = (req.body.id)
+    console.log(id)
+    if (id.length != 24) {
+        id = req.body.id + "000"
+    }
+
+let response = await noteController.getallNoteYearsAggregate(id)
+res.send([response[response.length -1]])
+})
+
 module.exports = router; 

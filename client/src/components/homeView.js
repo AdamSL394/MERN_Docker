@@ -34,8 +34,9 @@ const HomeView = () => {
     const [selected, setSelected] = useState([]);
     const [timePeriod, setTimePeriod] = useState("1")
     const [emojiList, setEmojiList] = useState([{ "icon": "🥇", "name": "medal", "visible": "hidden" }, { "icon": "👀", "name": "look", "visible": "hidden" }, { "icon": "💪🏼", "name": "gym", "visible": "hidden" }, { "icon": "🍁", "name": "weed", "visible": "hidden" }, { "icon": "👨🏻‍💻", "name": "code", "visible": "hidden" }, { "icon": "⛹🏻‍♂️", "name": "basketball", "visible": "hidden" }, { "icon": "📚", "name": "read", "visible": "hidden" }, { "icon": "🍕", "name": "eatOut", "visible": "hidden" }, { "icon": "🤴🏻", "name": "king", "visible": "hidden" }, { "icon": "👫", "name": "date/smoosh", "visible": "hidden" }, { "icon": "🌟", "name": "star", "visible": "hidden" }])
-    const [trackedStats, setTrackedStats] = useState([])
+    const [trackedStats, setTrackedStats] = useState([{ "icon": "🥇", "name": "medal", "visible": "hidden" }])
     const uniqueIds = []
+   
     const withoutDups = trackedStats.filter(element => {
         const isDuplicate = uniqueIds.includes(element.name);
         if (!isDuplicate) {

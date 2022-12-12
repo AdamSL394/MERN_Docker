@@ -4,6 +4,7 @@ import Button from "@mui/material/Button/index.js"
 import Grid from "@mui/material/Grid/index.js"
 import Box from "@mui/material/Box/index.js"
 import Modal from "@mui/material/Modal/index.js"
+import Stack from '@mui/material/Stack/index.js'
 import FormControl from "@mui/material/FormControl/index.js"
 import Select from "@mui/material/Select/index.js"
 import InputLabel from "@mui/material/InputLabel/index.js"
@@ -13,10 +14,8 @@ import { useAuth0 } from '@auth0/auth0-react'
 import NoteRoutes from "../router/noteRoutes.js"
 import Search from './search.js'
 import Pagination from '@mui/material/Pagination/index.js'
-import Stack from '@mui/material/Stack/index.js'
 import './entireNoteHistory.css'
-
-
+import NoteYears from "./noteYears.js";
 
 function NoteHistory() {
 
@@ -49,7 +48,6 @@ function NoteHistory() {
     const [startDate, setStartDate] = useState(startingSearchDate.toISOString().split("T")[0])
     const [endDate, setEndDate] = useState()
     const [readOnly, setReadyOnly] = useState(false)
-
     const [noteEditId, setNoteEditId] = useState()
     const [trackingCharacterDeletions, setTrackingCharacterDeletions] = useState()
     const [noteId, setNoteId] = useState()
@@ -136,7 +134,7 @@ function NoteHistory() {
                 else { setDisabled(false) }
             }
 
-            const indexOfLastPost = currentPage * postPerPage; 
+            const indexOfLastPost = currentPage * postPerPage;
             const indexOfFirstPost = indexOfLastPost - postPerPage;
             const currentPosts = getNotes.slice(indexOfFirstPost, indexOfLastPost);
 
@@ -649,42 +647,53 @@ function NoteHistory() {
         }
         sessionStorage.setItem(note._id, JSON.stringify(newNote));
     }
+
+    const setNotesBasedOnYear = (year) => {
+        console.log("clicked",year)
+        NoteRoutes.getNoteRangeYear
+    }
+
     return (
         <>
-            <Container style={{ paddingBottom: "3%", marginTop: ".5%" }}>
-                <Search style={{ alignItems: "center" }} parentCallback={handleCallBack}>
-                </Search>
-                <input type="date" defaultValue={startDate} onChange={e => setStartSearch(e)}
-                    style={{ height: "1.4rem", marginLeft: "2rem" }}
-                ></input>
-                <input type="date"
-                    defaultValue={endDate} onChange={e => runDateSearch(e)}
-                    style={{ height: "1.4rem", marginLeft: "2rem" }}
-                ></input>
 
-                <Button
-                    disabled={disabled}
-                    id="Orderby"
-                    onClick={() => { getOrderedNotes() }}
-                >
-                    Order By Date
-                </Button>
-                <Stack spacing={2} style={{ alignItems: "center", margin: "1rem" }}>
-                    <Pagination
-                        page={currentPage}
-                        count={numberOfPages}
-                        onChange={handleChange}
-                        defaultPage={1}
-                        color="primary"
-                    ></Pagination>
-                </Stack>
+            <Container style={{ paddingBottom: "3%", marginTop: ".5%" }}
+                maxWidth={false}
+            >
+                <Container>
+                    <Search style={{ alignItems: "center" }} parentCallback={handleCallBack}>
+                    </Search>
+                    <input type="date" defaultValue={startDate} onChange={e => setStartSearch(e)}
+                        style={{ height: "1.4rem", marginLeft: "2rem" }}
+                    ></input>
+                    <input type="date"
+                        defaultValue={endDate} onChange={e => runDateSearch(e)}
+                        style={{ height: "1.4rem", marginLeft: "2rem" }}
+                    ></input>
+
+                    <Button
+                        disabled={disabled}
+                        id="Orderby"
+                        onClick={() => { getOrderedNotes() }}
+                    >
+                        Order By Date
+                    </Button>
+                    <Stack spacing={2} style={{ alignItems: "center", margin: "1rem" }}>
+                        <Pagination
+                            page={currentPage}
+                            count={numberOfPages}
+                            onChange={handleChange}
+                            defaultPage={1}
+                            color="primary"
+                        ></Pagination>
+                    </Stack>
+                </Container>
                 <div id="noNotes" style={{ textAlign: "center", width: "100%", fontSize: "x-large" }}>
                     {noNotes}
                 </div>
+
                 <Grid
                     style={{ width: "90% !important" }}
-                    container spacing={2}
-                    direction="row"
+                    container spacing={1}
                     justifyContent="center"
                     alignItems="flex-start"
                 >
@@ -701,12 +710,15 @@ function NoteHistory() {
                             <Button style={{ color: "red" }} onClick={() => handleClose(modelNoteId)}>{modalText}</Button>
                         </Box>
                     </Modal>
-
+                    <NoteYears setNotesBasedOnYear={setNotesBasedOnYear}></NoteYears>
                     {(notes).map((note, i) => {
                         if (!note.edit) {
                             return (
-                                <Grid key={i + 100} item xs={12} sm={12} md={4} lg={3}>
+                                <Grid xs={8} sm={5} md={5} lg={2.55}
+                                    style={{ margin: ".5%" }}
+                                >
                                     <Card
+                                        item={4}
                                         style={{ marginBottom: "2%" }}
                                         key={i + 110}
                                         id="Card"
@@ -754,13 +766,13 @@ function NoteHistory() {
                                             style={{ borderTop: "1px solid #cbcbcb" }}
                                         >
                                             <span>{note.look ? <span role="img"
-                                                aria-label="eyes" style={{ backgroundColor: "lightgrey", marginRight: ".4rem", border: "2px lightgrey", borderRadius: "10px 10px 10px 10px" ,paddingLeft: "4px"}}> 👀 </span> : null}</span>
+                                                aria-label="eyes" style={{ backgroundColor: "lightgrey", marginRight: ".4rem", border: "2px lightgrey", borderRadius: "10px 10px 10px 10px", paddingLeft: "4px" }}> 👀 </span> : null}</span>
                                             <span>{note.gym ? <span role="img"
                                                 aria-label="arm" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >💪🏼 </span> : null} </span>
 
 
                                             <span>{note.weed ? <span role="img"
-                                               aria-labelledby="leaf" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >🍁 </span> : null} </span>
+                                                aria-labelledby="leaf" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >🍁 </span> : null} </span>
 
 
                                             <span>{note.code ? <span role="computer guy"
@@ -787,135 +799,133 @@ function NoteHistory() {
                                 note.textLength = note.textLength
                             }
                             return (
-                                <Grid key={i + 1} item xs={12} sm={6} md={4} lg={3}>
-                                    <Card
-                                        key={i + 2}
-                                        value={note.id}
-                                        variant="outlined"
-                                        id="Card"
+                                <Card
+                                    key={i + 2}
+                                    value={note.id}
+                                    variant="outlined"
+                                    id="Card"
+                                >
+                                    <Button
+                                        key={i + 3}
+                                        onClick={() => handleOpen(note)}
+                                        color="primary"
+                                        id="deleteButton"
                                     >
+                                        <strong>X</strong>
+                                    </Button>
+
+                                    <div
+                                        style={{
+                                            marginLeft: "5%",
+
+                                        }}
+                                        id="dateInput">
+                                        <input
+                                            onChange={e => { onChangeTextArea(e, note) }}
+                                            key={i + 5}
+                                            type="date"
+                                            defaultValue={note.date}
+                                            style={{ marginTop: "4%", borderRadius: "5px 5px 5px 5px", border: '1px solid #cbcbcb' }}
+                                        >
+                                        </input>
+
+                                        <FormControl sx={{ m: 1, minWidth: 90 }} size="medium" style={{ alignSelf: "center", }}>
+                                            <InputLabel id="demo-select-small" style={{ alignSelf: "center" }}></InputLabel>
+                                            <Select
+                                                labelId="demo-select-small"
+                                                id="demo-select-small"
+                                                onChange={e => onStarValueChange(e, note)}
+                                                defaultValue={note.star}
+                                                style={{ height: ' 1.3rem' }}
+                                            >
+                                                <MenuItem value={"None"} >
+                                                    <em>None</em>
+                                                </MenuItem>
+                                                <MenuItem value={"1"}><span role="img" aria-label="Star">🌟</span></MenuItem>
+                                                <MenuItem value={"2"}><span role="img" aria-label="Star">🌟🌟</span></MenuItem>
+                                                <MenuItem value={"3"}><span role="img" aria-label="Star">🌟🌟🌟 </span></MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                    <div
+                                        key={i + 105}
+                                        style={{ borderTop: "1px solid #cbcbcb" }}
+                                    >
+                                        <span role="img"
+                                            aria-label="eyes" style={{ marginRight: ".4rem", border: "2px lightgrey", borderRadius: "10px 10px 10px 10px", cursor: "pointer", paddingLeft: "4px" }} onClick={() => noteLook(note)}> 👀 </span>
+
+                                        <span role="img"
+                                            aria-label="arm" style={{ marginRight: ".4rem", cursor: "pointer" }} onClick={() => noteGym(note)} >💪🏼 </span>
+
+                                        <span role="img"
+                                            aria-label="leaf" style={{ marginRight: ".4rem", cursor: "pointer" }} onClick={() => noteWeed(note)} >🍁 </span>
+
+                                        <span role="img"
+                                            aria-label="computer guy" style={{ marginRight: ".4rem", cursor: "pointer" }} onClick={() => noteCode(note)} >👨🏻‍💻  </span>
+
+                                        <span role="img"
+                                            aria-label="books" style={{ marginRight: ".4rem", cursor: "pointer" }} onClick={() => noteRead(note)}  >📚 </span>
+
+                                        <span role="img"
+                                            aria-label="pizza" style={{ marginRight: ".4rem", cursor: "pointer" }} onClick={() => noteEatOut(note)}  >🍕  </span>
+
+                                        <span role="img"
+                                            aria-label="basketball" style={{ marginRight: ".4rem", cursor: "pointer" }} onClick={() => noteBasketball(note)} >⛹🏻‍♂️ </span>
+
+                                    </div>
+                                    <textarea
+                                        style={{ width: "94%", fontSize: "medium", borderRadius: "5px 5px 5px 5px", height: '13rem' }}
+                                        key={i + 4}
+                                        id="editCard"
+                                        autoFocus={true}
+                                        readOnly={readOnly}
+                                        onChange={
+                                            (e) => onChangeTextArea(e, note)
+                                        }
+                                        onKeyDown={(e) => checkfordelete(e, note)}
+                                        onPaste={(e) => onChangeTextArea(e, note)}
+                                    >
+                                        {note.text}
+                                    </textarea>
+
+                                    <div>
                                         <Button
-                                            key={i + 3}
-                                            onClick={() => handleOpen(note)}
-                                            color="primary"
-                                            id="deleteButton"
+                                            key={i + 6}
+                                            onClick={() => saveNote(note)}
                                         >
-                                            <strong>X</strong>
+                                            <strong>Save Me</strong>
                                         </Button>
+                                    </div>
+                                    <>{note.textLength}</>
+                                    <div>
 
-                                        <div
-                                            style={{
-                                                marginLeft: "5%",
+                                        <span>{note.look ? <span role="img"
+                                            aria-label="eyes" style={{ backgroundColor: "lightgrey", marginRight: ".4rem", border: "2px lightgrey", borderRadius: "10px 10px 10px 10px", paddingLeft: "4px" }}> 👀 </span> : null}</span>
 
-                                            }}
-                                            id="dateInput">
-                                            <input
-                                                onChange={e => { onChangeTextArea(e, note) }}
-                                                key={i + 5}
-                                                type="date"
-                                                defaultValue={note.date}
-                                                style={{ marginTop: "4%", borderRadius: "5px 5px 5px 5px", border: '1px solid #cbcbcb' }}
-                                            >
-                                            </input>
-
-                                            <FormControl sx={{ m: 1, minWidth: 90 }} size="medium" style={{ alignSelf: "center", }}>
-                                                <InputLabel id="demo-select-small" style={{ alignSelf: "center" }}></InputLabel>
-                                                <Select
-                                                    labelId="demo-select-small"
-                                                    id="demo-select-small"
-                                                    onChange={e => onStarValueChange(e, note)}
-                                                    defaultValue={note.star}
-                                                    style={{ height: ' 1.3rem' }}
-                                                >
-                                                    <MenuItem value={"None"} >
-                                                        <em>None</em>
-                                                    </MenuItem>
-                                                    <MenuItem value={"1"}><span role="img" aria-label="Star">🌟</span></MenuItem>
-                                                    <MenuItem value={"2"}><span role="img" aria-label="Star">🌟🌟</span></MenuItem>
-                                                    <MenuItem value={"3"}><span role="img" aria-label="Star">🌟🌟🌟 </span></MenuItem>
-                                                </Select>
-                                            </FormControl>
-                                        </div>
-                                        <div
-                                            key={i + 105}
-                                            style={{ borderTop: "1px solid #cbcbcb" }}
-                                        >
-                                            <span role="img"
-                                                aria-label="eyes" style={{ marginRight: ".4rem", border: "2px lightgrey", borderRadius: "10px 10px 10px 10px", cursor: "pointer",paddingLeft: "4px" }} onClick={() => noteLook(note)}> 👀 </span>
-
-                                            <span role="img"
-                                                aria-label="arm" style={{ marginRight: ".4rem", cursor: "pointer" }} onClick={() => noteGym(note)} >💪🏼 </span>
-
-                                            <span role="img"
-                                                aria-label="leaf" style={{ marginRight: ".4rem", cursor: "pointer" }} onClick={() => noteWeed(note)} >🍁 </span>
-
-                                            <span role="img"
-                                                aria-label="computer guy" style={{ marginRight: ".4rem", cursor: "pointer" }} onClick={() => noteCode(note)} >👨🏻‍💻  </span>
-
-                                            <span role="img"
-                                                aria-label="books" style={{ marginRight: ".4rem", cursor: "pointer" }} onClick={() => noteRead(note)}  >📚 </span>
-
-                                            <span role="img"
-                                                aria-label="pizza" style={{ marginRight: ".4rem", cursor: "pointer" }} onClick={() => noteEatOut(note)}  >🍕  </span>
-
-                                            <span role="img"
-                                                aria-label="basketball" style={{ marginRight: ".4rem", cursor: "pointer" }} onClick={() => noteBasketball(note)} >⛹🏻‍♂️ </span>
-
-                                        </div>
-                                        <textarea
-                                            style={{ width: "94%", fontSize: "medium", borderRadius: "5px 5px 5px 5px", height: '13rem' }}
-                                            key={i + 4}
-                                            id="editCard"
-                                            autoFocus={true}
-                                            readOnly={readOnly}
-                                            onChange={
-                                                (e) => onChangeTextArea(e, note)
-                                            }
-                                            onKeyDown={(e) => checkfordelete(e, note)}
-                                            onPaste={(e) => onChangeTextArea(e, note)}
-                                        >
-                                            {note.text}
-                                        </textarea>
-
-                                        <div>
-                                            <Button
-                                                key={i + 6}
-                                                onClick={() => saveNote(note)}
-                                            >
-                                                <strong>Save Me</strong>
-                                            </Button>
-                                        </div>
-                                        <>{note.textLength}</>
-                                        <div>
-
-                                            <span>{note.look ? <span role="img"
-                                                aria-label="eyes" style={{ backgroundColor: "lightgrey", marginRight: ".4rem", border: "2px lightgrey", borderRadius: "10px 10px 10px 10px",paddingLeft: "4px" }}> 👀 </span> : null}</span>
-
-                                            <span>{note.gym ? <span role="img"
-                                                aria-label="arm" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >💪🏼 </span> : null} </span>
+                                        <span>{note.gym ? <span role="img"
+                                            aria-label="arm" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >💪🏼 </span> : null} </span>
 
 
-                                            <span>{note.weed ? <span role="img"
-                                                aria-label="leaf" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >🍁 </span> : null} </span>
+                                        <span>{note.weed ? <span role="img"
+                                            aria-label="leaf" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >🍁 </span> : null} </span>
 
 
 
-                                            <span>{note.code ? <span role="img"
-                                                aria-label="computer guy" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >👨🏻‍💻 </span> : null} </span>
+                                        <span>{note.code ? <span role="img"
+                                            aria-label="computer guy" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >👨🏻‍💻 </span> : null} </span>
 
 
-                                            <span>{note.read ? <span role="img"
-                                                aria-label="books" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >📚 </span> : null} </span>
+                                        <span>{note.read ? <span role="img"
+                                            aria-label="books" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >📚 </span> : null} </span>
 
-                                            <span>{note.eatOut ? <span role="img"
-                                                aria-label="pizza" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >🍕 </span> : null} </span>
+                                        <span>{note.eatOut ? <span role="img"
+                                            aria-label="pizza" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >🍕 </span> : null} </span>
 
-                                            <span>{note.basketball ? <span role="img"
-                                                aria-label="basketball" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >⛹🏻‍♂️ </span> : null} </span>
+                                        <span>{note.basketball ? <span role="img"
+                                            aria-label="basketball" style={{ backgroundColor: "#ffffff", marginRight: ".4rem", cursor: "pointer" }} >⛹🏻‍♂️ </span> : null} </span>
 
-                                        </div>
-                                    </Card>
-                                </Grid>
+                                    </div>
+                                </Card>
                             )
                         }
                     }

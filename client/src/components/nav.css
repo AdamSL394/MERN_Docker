@@ -3,8 +3,8 @@
 
 }
 #navbar{
-    border-bottom: 1px solid  lightgrey;
-    height: 3rem;
+    /* border-bottom: 1px solid  lightgrey; */
+    height: 5rem;
     width: 100%;
     background: white;
     position: relative;
@@ -27,7 +27,7 @@
     cursor: pointer;
     color:black;
     margin-top: 115px;
-    font-size: 100%;
+    font-size: 1.2rem;
     font-family:Times, Times New Roman, serif;
 }
 .tabs:hover{

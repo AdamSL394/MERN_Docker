@@ -323,12 +323,35 @@ export default {
             requireHeader: ['origin', 'x-requested-with'],
             body: raw
         };
-        
+
         return fetch(`${enviromentAPI.api_url}/api/users/user/trackedstats/${userid}`, requestOptions)
-        .then(response => response.text())
-        .then(result => {
-            return result
-        })
-        .catch(error => console.log('error', error));
+            .then(response => response.text())
+            .then(result => {
+                return result
+            })
+            .catch(error => console.log('error', error));
+    },
+
+    getNoteYears: async (id) => {
+        var myHeaders = new Headers();
+        myHeaders.append("origin", enviromentAPI.api_url);
+        myHeaders.append("X-Requested-With", "XMLHttpRequest");
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            "id": id
+        });
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        return fetch(`${enviromentAPI.api_url}/notes/aggregateNoteyears`, requestOptions)
+            .then(response => response.text())
+            .then(result => {return (result)})
+            .catch(error => console.log('error', error));
     }
 }
