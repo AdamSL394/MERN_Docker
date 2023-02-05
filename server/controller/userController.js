@@ -1,59 +1,63 @@
-const User = require("../models/user")
-const mongoose = require ('mongoose')
+/* eslint-disable max-len */
+const User = require('../models/user');
+const mongoose = require('mongoose');
 
 
-const getSingleUser = async (id,userDetails) => {
-    const mongoose_id = mongoose.Types.ObjectId(id);
-    let user = await User.find({ _id: mongoose_id }).exec()
+const getSingleUser = async (id, userDetails) => {
+    // eslint-disable-next-line new-cap
+    const mongooseId = mongoose.Types.ObjectId(id);
+    let user = await User.find({_id: mongooseId}).exec();
     if (user.length< 1 || user == undefined) {
-        user = await saveNewUser(id,userDetails)
+        user = await saveNewUser(id, userDetails);
     }
-    return user
-}
+    return user;
+};
 
-const saveNewUser = async (id,userDetails) => {
-    const mongoose_id = mongoose.Types.ObjectId(id);
-    const newUser = new User ({_id : mongoose_id, email: userDetails.email})
+const saveNewUser = async (id, userDetails) => {
+    // eslint-disable-next-line new-cap
+    const mongooseId = mongoose.Types.ObjectId(id);
+    const newUser = new User({_id: mongooseId, email: userDetails.email});
     let errorMessage;
-    newUser.save(async(err) => {
+    newUser.save(async (err) => {
         if (err) {
-            errorMessage = err.message
-            return err
+            errorMessage = err.message;
+            return err;
         }
-    })
+    });
     if (errorMessage) {
-        return `${errorMessage}`
+        return `${errorMessage}`;
     }
-    return "Success" 
-}
+    return 'Success';
+};
 
-const updateUserStats = async (id,userDetails,stats) => {
-    const mongoose_id = mongoose.Types.ObjectId(id);
-    const filter = {_id:mongoose_id}
-    let user = await User.find(filter).exec()
+const updateUserStats = async (id, userDetails, stats) => {
+    // eslint-disable-next-line new-cap
+    const mongooseId = mongoose.Types.ObjectId(id);
+    const filter = {_id: mongooseId};
+    let user = await User.find(filter).exec();
     if (user.length< 1 || user == undefined) {
-        user = await saveNewUser(id,userDetails)
+        user = await saveNewUser(id, userDetails);
     }
-    let user_settings = user[0].settings
+    const userSettings = user[0].settings;
 
-    for (let setting of user_settings){
-        if (setting.name == stats.name){ 
-            arr = user_settings.filter(function(item) {
-                return item.name != stats.name
-            })
-            const filteredUserStats = { settings: arr}
-            let userWithUpdatedStats = await User.findOneAndUpdate( filter , filteredUserStats, {new:true})
-            return userWithUpdatedStats
+    for (const setting of userSettings) {
+        if (setting.name == stats.name) {
+            const arr = userSettings.filter(function(item) {
+                return item.name != stats.name;
+            });
+            const filteredUserStats = {settings: arr};
+            const userWithUpdatedStats = await User.findOneAndUpdate( filter, filteredUserStats, {new: true});
+            return userWithUpdatedStats;
         }
     }
-    user_settings.push(stats)
-    const updatedUser = { settings: user_settings}
-    let userWithUpdatedStats = await User.findOneAndUpdate( filter , updatedUser, {new:true})
-    return userWithUpdatedStats
-}
+    userSettings.push(stats);
+    const updatedUser = {settings: userSettings};
+    const userWithUpdatedStats = await User.findOneAndUpdate( filter, updatedUser, {new: true});
+    return userWithUpdatedStats;
+};
 module.exports = {
     getSingleUser,
     saveNewUser,
-    updateUserStats
-    
-}
+    updateUserStats,
+
+};

@@ -1,117 +1,124 @@
+/* eslint-disable max-len */
 const express = require('express');
-const noteController = require("../controller/noteController")
+const noteController = require('../controller/noteController');
+// eslint-disable-next-line new-cap
 const router = express.Router();
-const ParseNotes = require("../middleware/upload.js")
+const parseNotes = require('../middleware/upload.js');
 
 router.get('/all', async (req, res) => {
     let correctlength;
     if (req.query.id.length != 24) {
-        correctlength = req.query.id + "000"
-    }
-    else correctlength = req.query.id
-    let response = await noteController.getAllNotes(correctlength)
+        correctlength = req.query.id + '000';
+    } else correctlength = req.query.id;
+    const response = await noteController.getAllNotes(correctlength);
     res.send(response);
-    return
+    return;
 });
 
 router.get('/note/:id', async (req, res) => {
-    let response = await noteController.getSingleNote(req.params.id)
-    res.send(response)
-    return
-})
+    const response = await noteController.getSingleNote(req.params.id);
+    res.send(response);
+    return;
+});
 
 router.get('/all/order/:id', async (req, res) => {
     let correctlength;
     if (req.params.id.length != 24) {
-        correctlength = req.params.id + "000"
-    }
-    else correctlength = req.params.id
-    let response = await noteController.getAllNotesOrdered(correctlength)
+        correctlength = req.params.id + '000';
+    } else correctlength = req.params.id;
+    const response = await noteController.getAllNotesOrdered(correctlength);
     res.send(response);
-    return
+    return;
 });
 
 router.get('/search/:id/:user', async (req, res) => {
-    let { id, user } = req.params
+    const {id, user} = req.params;
     let correctlength;
     if (user != 24) {
-        correctlength = user + "000"
-    }
-    else correctlength = user
-    let response = await noteController.searchNotes(id, correctlength);
-    res.send(response)
-    return
-})
+        correctlength = user + '000';
+    } else correctlength = user;
+    const response = await noteController.searchNotes(id, correctlength);
+    res.send(response);
+    return;
+});
 
 router.post('/noterange', async (req, res) => {
     let correctlength;
     if (req.body.userId.length != 24) {
-        correctlength = req.body.userId + "000"
+        correctlength = req.body.userId + '000';
     }
-    let { start, end } = req.body
-    let response = await noteController.getRangeNotes(correctlength, start, end)
+    const {start, end} = req.body;
+    const response = await noteController.getRangeNotes(correctlength, start, end);
     res.send(response);
-    return
+    return;
 });
 
 router.delete('/delete/:id', async (req, res) => {
-    let response = await noteController.deleteNotes(req.params.id)
-    res.json('Delete Notes')
-    return
-})
+    await noteController.deleteNotes(req.params.id);
+    res.json('Delete Notes');
+    return;
+});
 
 router.patch('/update/:id', async (req, res) => {
-    let { edit, text, date, star, look, gym, weed, code, read, eatOut, basketball } = req.body
-    let response = await noteController.updateNote(req.params.id, edit, text, date, star, look, gym, weed, code, read, eatOut, basketball)
-    res.json(response)
-    return
-})
+    const {edit, text, date, star, look, gym, weed, code, read, eatOut, basketball} = req.body;
+    const response = await noteController.updateNote(req.params.id, edit, text, date, star, look, gym, weed, code, read, eatOut, basketball);
+    res.json(response);
+    return;
+});
 
-router.post("/note", async (req, res) => {
-    let response = await noteController.postNotes(req.body)
-    res.send(response)  
-    return
-})
+router.post('/note', async (req, res) => {
+    const response = await noteController.postNotes(req.body);
+    res.send(response);
+    return;
+});
 
-router.post("/upload", async (req, res) => {
-    let { userId, note } = req.body
-    let data  = []
+router.post('/upload', async (req, res) => {
+    let {userId, note} = req.body;
+    const data = [];
     if (userId != 24) {
-        userId = userId+ "000"
+        userId = userId + '000';
     }
-    let arrayOfNotes = await ParseNotes(userId, note)
-    
-    arrayOfNotes.forEach(async (i)=>{
-         let ab = await noteController.uploadNotes(i).then((resp)=> {
-            data.push(resp)
-            return resp
-        })
-    })
-    res.send("Sucess")
-})
- 
-router.get("/lastyear/:userid/:tdYearAgo/:lwYearAgo", async (req,res) => {
-    let {userid, lwYearAgo,tdYearAgo} = (req.params)
+    const arrayOfNotes = await parseNotes(userId, note);
+
+    arrayOfNotes.forEach(async (i) => {
+        await noteController.uploadNotes(i).then((resp) => {
+            data.push(resp);
+            return resp;
+        });
+    });
+    res.send('Sucess');
+});
+
+router.get('/lastyear/:userid/:tdYearAgo/:lwYearAgo', async (req, res) => {
+    let {userid, lwYearAgo, tdYearAgo} = (req.params);
     if (userid != 24) {
-        userid = userid + "000"
+        userid = userid + '000';
     }
-    let response = await noteController.getRangeNotes(userid,tdYearAgo,lwYearAgo)
-    res.send(response)
-})
+    const response = await noteController.getRangeNotes(userid, tdYearAgo, lwYearAgo);
+    res.send(response);
+});
 
-router.get('/ping',(req,res) => {
-    res.send("Pong")
-})
+router.get('/ping', (req, res) => {
+    res.send('Pong');
+});
 
-router.post("/aggregateNoteyears", async (req,res) => {
-    let id  = (req.body.id)
-    console.log(id)
+router.post('/aggregateNoteyears', async (req, res) => {
+    let id = (req.body.id);
     if (id.length != 24) {
-        id = req.body.id + "000"
+        id = req.body.id + '000';
     }
 
-let response = await noteController.getallNoteYearsAggregate(id)
-res.send([response[response.length -1]])
-})
+    const response = await noteController.getallNoteYearsAggregate(id);
+    res.send([response[response.length - 1]]);
+});
 
-module.exports = router; 
+router.get('/recentlyUpdated/:id', async (req, res) => {
+    let correctlength;
+    if (req.params.id.length != 24) {
+        correctlength = req.params.id + '000';
+    } else correctlength = req.params.id;
+    const response = await noteController.getMostRecentlyUpdatedNotes(correctlength);
+    res.send(response);
+});
+
+module.exports = router;

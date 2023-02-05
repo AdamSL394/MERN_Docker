@@ -1,0 +1,8 @@
+.logoutButton{
+  color: #000000 !important;
+  float: right;
+  background-color: #e9d8c2 !important;
+  margin: .5%;
+  font: 300 normal .9em 'tahoma' !important;
+  position: relative
+}
