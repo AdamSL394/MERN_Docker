@@ -6,7 +6,7 @@ function NoteText(props) {
         <>
             {props.note.text.split('\n').map((i, key) => {
                 if (!i.length > 0) {
-                    return;
+                    return '';
                 }
                 const firstLetter = i[0].toUpperCase();
                 const restOfsentence = i.slice(1, i.length);

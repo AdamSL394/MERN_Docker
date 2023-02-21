@@ -1,13 +1,13 @@
 /* eslint-disable max-len */
 import React, { useState } from 'react';
-import Navbar from '../components/nav.js';
-import './upload.css';
+import Navbar from '../../components/Navbar/nav.js';
 import Container from '@mui/material/Container/index.js';
 import { useAuth0 } from '@auth0/auth0-react';
 import Card from '@mui/material/Card/index.js';
 import Button from '@mui/material/Button/index.js';
 import Grid from '@mui/material/Grid/index.js';
-import NoteRoutes from '../router/noteRoutes.js';
+import NoteRoutes from '../../router/noteRoutes.js';
+import './upload.css';
 
 
 const UploadNotes = () => {

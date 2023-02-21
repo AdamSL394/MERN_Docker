@@ -11,7 +11,7 @@ import Container from '@mui/material/Container/index.js';
 import Card from '@mui/material/Card/index.js';
 import Grid from '@mui/material/Grid/index.js';
 import Alert from '@mui/material/Alert/index.js';
-import NoteRoutes from '../router/noteRoutes.js';
+import NoteRoutes from '../../router/noteRoutes.js';
 import { useAuth0 } from '@auth0/auth0-react';
 import Switch from '@mui/material/Switch/index.js';
 

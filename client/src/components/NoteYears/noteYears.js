@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import NoteRoutes from '../router/noteRoutes.js';
+import NoteRoutes from '../../router/noteRoutes.js';
 import Link from '@mui/material/Link/index.js';
 import Grid from '@mui/material/Grid/index.js';
+
 
 function NoteYears(props) {
     const [noteYears, setNoteYears] = useState([]);
@@ -37,6 +38,9 @@ function NoteYears(props) {
             setNoteYears(years);
         } else return;
     };
+
+
+
 
     const notesYears = (props, year) => {
     // eslint-disable-next-line react/prop-types
@@ -111,5 +115,6 @@ function NoteYears(props) {
         </Grid>
     );
 }
+
 
 export default NoteYears;

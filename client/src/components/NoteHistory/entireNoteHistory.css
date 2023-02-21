@@ -50,3 +50,10 @@
 #search{
     align-items: center;
 }
+#noNotes{
+    margin: auto;
+    margin-top: 8rem;
+    font-weight: 200;
+    font-size: xx-large;
+    width: 47%;
+}

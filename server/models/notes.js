@@ -17,8 +17,12 @@ const NoteSchema = new mongoose.Schema({
     'date/smoosh': {type: Boolean, default: false},
     'basketball': {type: Boolean, default: false},
     'updatedAt': {type: Date, default: Date.now()},
+   
 });
 
+NoteSchema.index({name:'text', 'text': 'text'})
+
 const Note = mongoose.model('Note', NoteSchema);
+
 
 module.exports = Note;

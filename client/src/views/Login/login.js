@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import './login.css';
-import LoginButton from '../components/loginButton.js';
-import Footer from '../components/footer.js';
+import LoginButton from '../../components/LoginButton/loginButton.js';
+import Footer from '../../components/Footer/footer.js';
 import {useNavigate} from 'react-router-dom';
+import './login.css';
 
 function Login() {
     const [text, setText] = useState();

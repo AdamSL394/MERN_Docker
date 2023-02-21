@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import NoteRoutes from '../router/noteRoutes.js';
+import NoteRoutes from '../../router/noteRoutes.js';
 import Container from '@mui/material/Container/index.js';
 import Grid from '@mui/material/Grid/index.js';
 import './userSettings.css';

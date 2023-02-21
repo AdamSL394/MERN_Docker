@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react';
-import LogOut from '../components/logoutButton.js';
+import LogOut from '../LogoutButton/logoutButton.js';
 import './nav.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';

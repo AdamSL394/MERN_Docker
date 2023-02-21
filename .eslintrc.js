@@ -20,7 +20,8 @@ module.exports = {
             'jsx': true,
         },
         'babelOptions': {
-            'presets': ['@babel/preset-react',
+            'presets': [
+                '@babel/preset-react',
             ],
         },
     },
@@ -37,5 +38,9 @@ module.exports = {
         'react/jsx-uses-react': 'error',
         'react/jsx-uses-vars': 'error',
     },
+    "eslint.workingDirectories": [
+        "./client",
+        "./server"
+      ]
 };
 
