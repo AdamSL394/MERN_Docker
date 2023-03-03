@@ -32,7 +32,7 @@ router.get('/all/order/:id', async (req, res) => {
 });
 
 router.get('/search/:id/:user', async (req, res) => {
-    const {id, user} = req.params;
+    const { id, user } = req.params;
     let correctlength;
     if (user != 24) {
         correctlength = user + '000';
@@ -47,7 +47,7 @@ router.post('/noterange', async (req, res) => {
     if (req.body.userId.length != 24) {
         correctlength = req.body.userId + '000';
     }
-    const {start, end} = req.body;
+    const { start, end } = req.body;
     const response = await noteController.getRangeNotes(correctlength, start, end);
     res.send(response);
     return;
@@ -60,7 +60,7 @@ router.delete('/delete/:id', async (req, res) => {
 });
 
 router.patch('/update/:id', async (req, res) => {
-    const {edit, text, date, star, look, gym, weed, code, read, eatOut, basketball} = req.body;
+    const { edit, text, date, star, look, gym, weed, code, read, eatOut, basketball } = req.body;
     const response = await noteController.updateNote(req.params.id, edit, text, date, star, look, gym, weed, code, read, eatOut, basketball);
     res.json(response);
     return;
@@ -73,7 +73,7 @@ router.post('/note', async (req, res) => {
 });
 
 router.post('/upload', async (req, res) => {
-    let {userId, note} = req.body;
+    let { userId, note } = req.body;
     const data = [];
     if (userId != 24) {
         userId = userId + '000';
@@ -90,11 +90,11 @@ router.post('/upload', async (req, res) => {
 });
 
 router.get('/lastyear/:userid/:tdYearAgo/:lwYearAgo', async (req, res) => {
-    let {userid, lwYearAgo, tdYearAgo} = (req.params);
+    let { userid, lwYearAgo, tdYearAgo } = (req.params);
     if (userid != 24) {
         userid = userid + '000';
     }
-    const response = await noteController.getRangeNotes(userid, tdYearAgo, lwYearAgo);
+    const response = await noteController.getRangeNotes(userid, lwYearAgo, tdYearAgo);
     res.send(response);
 });
 

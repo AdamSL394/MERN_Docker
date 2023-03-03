@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 import enviromentAPI from '../config/config.js';
 
-
 export default {
     deleteNote: async (noteId) => {
         const myHeaders = new Headers();
@@ -15,7 +14,10 @@ export default {
         };
 
         try {
-            const response = await fetch(`${enviromentAPI.api_url}/notes/delete/${noteId}`, requestOptions);
+            const response = await fetch(
+                `${enviromentAPI.api_url}/notes/delete/${noteId}`,
+                requestOptions
+            );
             const result1 = await response.text();
             return result1;
         } catch (error) {
@@ -36,7 +38,10 @@ export default {
         };
 
         try {
-            const response = await fetch(`${enviromentAPI.api_url}/notes/all?id=${userid}`, requestOptions);
+            const response = await fetch(
+                `${enviromentAPI.api_url}/notes/all?id=${userid}`,
+                requestOptions
+            );
             const results = await response.text();
             return JSON.parse(results);
         } catch (error) {
@@ -57,7 +62,10 @@ export default {
         };
 
         try {
-            const response = await fetch(`${enviromentAPI.api_url}/notes/recentlyUpdated/${userid}`, requestOptions);
+            const response = await fetch(
+                `${enviromentAPI.api_url}/notes/recentlyUpdated/${userid}`,
+                requestOptions
+            );
             const results = await response.text();
             return JSON.parse(results);
         } catch (error) {
@@ -71,17 +79,17 @@ export default {
         myHeaders.append('X-Requested-With', 'XMLHttpRequest');
         myHeaders.append('Content-Type', 'application/json');
         const raw = JSON.stringify({
-            'text': note.text,
-            'date': note.date,
-            'star': note.star,
-            'edit': note.edit,
-            'look': note.look || false,
-            'gym': note.gym || false,
-            'weed': note.weed || false,
-            'code': note.code || false,
-            'read': note.read || false,
-            'eatOut': note.eatOut || false,
-            'basketball': note.basketball || false,
+            text: note.text,
+            date: note.date,
+            star: note.star,
+            edit: note.edit,
+            look: note.look || false,
+            gym: note.gym || false,
+            weed: note.weed || false,
+            code: note.code || false,
+            read: note.read || false,
+            eatOut: note.eatOut || false,
+            basketball: note.basketball || false,
         });
 
         const requestOptions = {
@@ -93,7 +101,10 @@ export default {
         };
 
         try {
-            const response = await fetch(`${enviromentAPI.api_url}/notes/update/${note._id}`, requestOptions);
+            const response = await fetch(
+                `${enviromentAPI.api_url}/notes/update/${note._id}`,
+                requestOptions
+            );
             const result1 = await response.text();
             return result1;
         } catch (error) {
@@ -112,14 +123,18 @@ export default {
             headers: myHeaders,
             redirect: 'follow',
         };
-
+        let query = encodeURIComponent(searchValue);
         try {
-            const response = await fetch(`${enviromentAPI.api_url}/notes/search/${searchValue}/${userId}`, requestOptions);
+            const response = await fetch(
+                `${enviromentAPI.api_url}/notes/search/${query}/${userId}`,
+                requestOptions
+            );
             const results = await response.text();
             const cast = JSON.parse(results);
             return cast;
         } catch (error) {
-            return console.log('error', error);
+            console.log('error', error);
+            return [];
         }
     },
 
@@ -129,14 +144,16 @@ export default {
         myHeaders.append('origin', enviromentAPI.api_url);
         myHeaders.append('Content-Type', 'application/json');
 
-
         const requestOptions = {
             method: 'GET',
             headers: myHeaders,
             redirect: 'follow',
         };
 
-        return fetch(`${enviromentAPI.api_url}/notes/all/order/${userId}`, requestOptions)
+        return fetch(
+            `${enviromentAPI.api_url}/notes/all/order/${userId}`,
+            requestOptions
+        )
             .then((response) => response.text())
             .then((results) => {
                 const orderedNotes = JSON.parse(results);
@@ -155,31 +172,33 @@ export default {
         myHeaders.append('origin', enviromentAPI.api_url);
         myHeaders.append('Content-Type', 'application/json');
 
-
         const requestOptions = {
             method: 'GET',
             headers: myHeaders,
             redirect: 'follow',
         };
 
-        return fetch(`${enviromentAPI.api_url}/notes/note/${noteId}`, requestOptions)
+        return fetch(
+            `${enviromentAPI.api_url}/notes/note/${noteId}`,
+            requestOptions
+        )
             .then((response) => response.text())
             .then((results) => {
-                return (results);
+                return results;
             })
             .catch((error) => console.log('error', error));
     },
 
-    getNoteRange: async (userId, todaysDate, lastWeeksDate) => {
+    getNoteRange: async (userId, start, end) => {
         const myHeaders = new Headers();
         myHeaders.append('X-Requested-With', 'XMLHttpRequest');
         myHeaders.append('origin', enviromentAPI.api_url);
         myHeaders.append('Content-Type', 'application/json');
 
         const raw = JSON.stringify({
-            'userId': userId,
-            'start': todaysDate,
-            'end': lastWeeksDate,
+            userId: userId,
+            start: start,
+            end: end,
         });
 
         const requestOptions = {
@@ -194,7 +213,7 @@ export default {
             .then((results) => {
                 if (results.length > 0) {
                     const dbresults = results;
-                    return (dbresults);
+                    return dbresults;
                 }
             })
             .catch((error) => console.log('error', error));
@@ -206,8 +225,8 @@ export default {
         myHeaders.append('X-Requested-With', 'XMLHttpRequest');
         myHeaders.append('Content-Type', 'application/json');
         const raw = JSON.stringify({
-            'userId': userId,
-            'note': value,
+            userId: userId,
+            note: value,
         });
         const requestOptions = {
             method: 'POST',
@@ -238,7 +257,10 @@ export default {
             redirect: 'follow',
             requireHeader: ['origin', 'x-requested-with'],
         };
-        return fetch(`${enviromentAPI.api_url}/notes/lastyear/${userid}/${tdYearAgo}/${lwYearAgo}`, requestOptions)
+        return fetch(
+            `${enviromentAPI.api_url}/notes/lastyear/${userid}/${tdYearAgo}/${lwYearAgo}`,
+            requestOptions
+        )
             .then((response) => response.text())
             .then((result) => {
                 return result;
@@ -260,7 +282,10 @@ export default {
             redirect: 'follow',
             requireHeader: ['origin', 'x-requested-with'],
         };
-        return fetch(`https://leetcode-stats-api.herokuapp.com/adamsl394`, requestOptions)
+        return fetch(
+            `https://leetcode-stats-api.herokuapp.com/adamsl394`,
+            requestOptions
+        )
             .then((response) => response.text())
             .then((result) => {
                 return JSON.parse(result);
@@ -278,7 +303,7 @@ export default {
         myHeaders.append('Content-Type', 'application/json');
 
         const raw = JSON.stringify({
-            'user': user,
+            user: user,
         });
 
         const requestOptions = {
@@ -289,10 +314,13 @@ export default {
             body: raw,
         };
 
-        return fetch(`${enviromentAPI.api_url}/api/users/user/${userid}`, requestOptions)
+        return fetch(
+            `${enviromentAPI.api_url}/api/users/user/${userid}`,
+            requestOptions
+        )
             .then((response) => response.text())
             .then((result) => {
-                return (result);
+                return result;
             })
             .catch((error) => console.log('error', error));
     },
@@ -315,6 +343,7 @@ export default {
                 return result;
             })
             .catch((error) => {
+                console.log(error);
             });
     },
 
@@ -326,8 +355,8 @@ export default {
         myHeaders.append('Content-Type', 'application/json');
 
         const raw = JSON.stringify({
-            'user': user,
-            'trackedStats': trackedStat,
+            user: user,
+            trackedStats: trackedStat,
         });
 
         const requestOptions = {
@@ -338,7 +367,10 @@ export default {
             body: raw,
         };
 
-        return fetch(`${enviromentAPI.api_url}/api/users/user/trackedstats/${userid}`, requestOptions)
+        return fetch(
+            `${enviromentAPI.api_url}/api/users/user/trackedstats/${userid}`,
+            requestOptions
+        )
             .then((response) => response.text())
             .then((result) => {
                 return result;
@@ -353,7 +385,7 @@ export default {
         myHeaders.append('Content-Type', 'application/json');
 
         const raw = JSON.stringify({
-            'id': id,
+            id: id,
         });
 
         const requestOptions = {
@@ -363,10 +395,13 @@ export default {
             redirect: 'follow',
         };
 
-        return fetch(`${enviromentAPI.api_url}/notes/aggregateNoteyears`, requestOptions)
+        return fetch(
+            `${enviromentAPI.api_url}/notes/aggregateNoteyears`,
+            requestOptions
+        )
             .then((response) => response.text())
             .then((result) => {
-                return (result);
+                return result;
             })
             .catch((error) => console.log('error', error));
     },

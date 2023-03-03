@@ -9,6 +9,7 @@ function Search(props) {
 
   const searchDataBase = async (e) => {
     const userId = user.sub.split('|')[1];
+
     const searchValue = e.target.value;
     if (searchValue === '#' || searchValue === '%' || searchValue === '\\'|| searchValue === '?' || searchValue === '/'|| searchValue === '//') {
       return;

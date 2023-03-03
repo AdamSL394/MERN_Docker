@@ -6,18 +6,20 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import NoteRoutes from '../../router/noteRoutes.js';
-import NoteYears from '../NoteYears/noteYears';
+import NoteYears from '../NoteYears/noteYears.js';
 import Pagination from '@mui/material/Pagination/index.js';
 import Stack from '@mui/material/Stack/index.js';
-import EditingNote from '../EditNote/editingNote';
-import ModalPop from '../Modal/index';
+import EditingNote from '../EditNote/editingNote.js';
+import ModalPop from '../Modal/index.js';
 import Search from '../Search/search.js';
 import Note from '../Note/index.js';
+import { DateRange } from '../DateRange/index.js';
+import { Box, Container } from '@mui/system';
 
 function Notes(props) {
   const postPerPage = 30;
   const characterCount = 200;
-  var readOnly = false;
+  let readOnly = false;
   let [currentPage, setCurrentPage] = useState(1);
   const [notes, setNotes] = useState([]);
   const { user } = useAuth0();
@@ -50,12 +52,10 @@ function Notes(props) {
     try {
       const userid = user.sub.split('|')[1];
       const getNotes = await NoteRoutes.getRecentlyUpdatedNotes(userid);
-      if (getNotes === undefined || getNotes.length < 1) {
-        props.setNoNotes('Get started... Upload or make your first Note!');
-        setNotes([]);
-        return;
+      if(!checkNoteApiResponse(getNotes)){
+        return
       }
-      props.setNoNotes('');
+      props.setNoNotes(' ');
 
       const currentPosts = handelPageNumer(value, getNotes);
       if (editingNote) {
@@ -87,13 +87,11 @@ function Notes(props) {
   const saveNote = (note, value) => {
     const updatedNote = JSON.parse(sessionStorage.getItem(note._id));
     if (updatedNote != null) {
-      console.log('1');
       updatedNote.edit = false;
       note.edit = false;
       sessionStorage.setItem(updatedNote._id, JSON.stringify(updatedNote));
       updateNote(updatedNote);
     } else {
-      console.log('2');
       note.edit = false;
       sessionStorage.setItem(note._id, JSON.stringify(note));
       updateNote(note);
@@ -107,13 +105,11 @@ function Notes(props) {
       year + '-12-' + '31',
       year + '-01-' + '01'
     );
+    console.log('noteYears',noteYears)
+    // if(!checkNoteApiResponse(noteYears)){
+    //   return
+    // }
     const currentPosts = handelPageNumer(value, JSON.parse(noteYears));
-    console.log(currentPosts, 'currentPosts');
-    if (currentPosts === undefined || currentPosts.length < 1) {
-      props.setNoNotes('Get started... Upload or make your first Note!');
-      setNotes([]);
-      return;
-    }
     setNotes(currentPosts);
     setNumberOfPages(Math.ceil(JSON.parse(noteYears).length / postPerPage));
   };
@@ -144,6 +140,7 @@ function Notes(props) {
         setNotes([]);
         return;
       }
+      props.setNoNotes('');
       const currentPosts = handelPageNumer(1, getNotes);
       setNotes(currentPosts);
       setNumberOfPages(Math.ceil(getNotes.length / postPerPage));
@@ -162,6 +159,7 @@ function Notes(props) {
       setNotes([]);
       return;
     }
+    props.setNoNotes('');
     setCurrentPage(value);
     if (value) {
       currentPage = value;
@@ -532,12 +530,49 @@ function Notes(props) {
   const searchNotes = (searchedNotes, searchTeam) => {
     console.log(searchedNotes);
     if (searchTeam.length === 0) {
-      //getRecentlyChangedNotes(currentPage);
+      // getRecentlyChangedNotes(currentPage);
       return;
     }
     setNotes(searchedNotes);
     return;
   };
+
+  const getNoteRange = async (userId, start, end) => {
+    if (start > end) {
+      return
+    }
+    if (!start || !end) {
+      return
+    }
+    const noteDateRange = await NoteRoutes.getNoteRange(userId, start, end);
+    setNotes(JSON.parse(noteDateRange));
+  };
+
+  const runDateSearch = (date1, date2) => {
+    const userId = user.sub.split('|')[1];
+    if (!date1 || !date2 ){
+      return
+    }
+    else {
+      getNoteRange(userId, date1, date2);
+    }
+  }
+
+  const checkNoteApiResponse = (notes) => {
+    if(typeof(notes) === 'string'){
+    notes = JSON.parse(notes)
+    }
+    if (notes.length < 1) {
+      props.setNoNotes('Get started... Upload or make your first Note!');
+      setNotes([]);
+      return false;
+    }
+    else {
+      console.log("we have notes!")
+      props.setNoNotes('')
+      return true
+    }
+  }
 
   return (
     <>
@@ -548,7 +583,14 @@ function Notes(props) {
         modelNoteId={modelNoteId}
         closeModal={closeModal}
       ></ModalPop>
-      <Search searchNotes={searchNotes}></Search>
+      <Box>
+        <Search searchNotes={searchNotes}></Search>
+        <DateRange
+          // runDateSearchStart={runDateSearchStart}
+          // runDateSearchEnd={runDateSearchEnd}
+          runDateSearch={runDateSearch}
+        ></DateRange>
+      </Box>
       <Stack className="stack" style={{ position: 'absolute', top: ' 19%' }}>
         <Pagination
           page={currentPage}
@@ -565,7 +607,12 @@ function Notes(props) {
       {notes.map((note, i) => {
         if (!note.edit) {
           return (
-            <Note note={note} openModal={openModal} editNote={editNote}></Note>
+            <Note
+              key={i}
+              note={note}
+              openModal={openModal}
+              editNote={editNote}
+            ></Note>
           );
         } else {
           if (note.textLength === undefined) {
@@ -573,6 +620,7 @@ function Notes(props) {
           }
           return (
             <EditingNote
+              key={i + 1}
               note={note}
               noteLook={noteLook}
               noteGym={noteGym}

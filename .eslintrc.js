@@ -1,4 +1,3 @@
-
 module.exports = {
     'env': {
         'browser': true,
@@ -7,11 +6,10 @@ module.exports = {
     },
     'extends': [
         'plugin:react/recommended',
-        'eslint:recommended',
-        'google',
+        'eslint:recommended'
     ],
     'overrides': [],
-    'parser': '@babel/eslint-parser',
+
     'parserOptions': {
         'ecmaVersion': 'latest',
         'requireConfigFile': false,
@@ -38,9 +36,5 @@ module.exports = {
         'react/jsx-uses-react': 'error',
         'react/jsx-uses-vars': 'error',
     },
-    "eslint.workingDirectories": [
-        "./client",
-        "./server"
-      ]
 };
 
