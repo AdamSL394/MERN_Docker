@@ -6,7 +6,8 @@ module.exports = {
     },
     'extends': [
         'plugin:react/recommended',
-        'eslint:recommended'
+        'eslint:recommended',
+        'google',
     ],
     'overrides': [],
 
@@ -24,7 +25,6 @@ module.exports = {
         },
     },
     'plugins': [
-        'react',
     ],
     'rules': {
         'object-curly-spacing': ['error', 'always',

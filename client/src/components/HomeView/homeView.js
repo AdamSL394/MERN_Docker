@@ -192,7 +192,7 @@ const HomeView = () => {
         const weekAheadLastYear = year + '-' + month + '-' + futureDay;
         const todayLastYear = year + '-' + month + '-' + day;
         try {
-            const res = await NoteRoutes.getNoteRangeYear(userid,  todayLastYear, weekAheadLastYear,);
+            const res = await NoteRoutes.getNoteRangeYear(userid, todayLastYear, weekAheadLastYear);
             if (res) {
                 const cast = JSON.parse(res);
                 if (cast.length < 1) {

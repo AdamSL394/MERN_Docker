@@ -1,10 +1,9 @@
-export default class TextChange{
-    constructor(){
-    
+export default class TextChange {
+    constructor() {
+
     }
 
-    changeText(note){
-        return 'hi'
+    changeText(note) {
+        return 'hi';
     }
-
 }

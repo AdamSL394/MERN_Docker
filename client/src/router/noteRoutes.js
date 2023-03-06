@@ -105,8 +105,8 @@ export default {
                 `${enviromentAPI.api_url}/notes/update/${note._id}`,
                 requestOptions
             );
-            const result1 = await response.text();
-            return result1;
+            const result = await response.text();
+            return JSON.parse(result);
         } catch (error) {
             // setErrorFlag("visible")
             console.log('error', error);
@@ -213,7 +213,7 @@ export default {
             .then((results) => {
                 if (results.length > 0) {
                     const dbresults = results;
-                    return dbresults;
+                    return JSON.parse(dbresults);
                 }
             })
             .catch((error) => console.log('error', error));
@@ -263,7 +263,7 @@ export default {
         )
             .then((response) => response.text())
             .then((result) => {
-                return result;
+                return JSON.parse(result);
             })
             .catch((error) => {
                 console.log(error);

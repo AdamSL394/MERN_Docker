@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function NoteText(props) {
     return (
@@ -22,3 +23,7 @@ function NoteText(props) {
     );
 }
 export default NoteText;
+
+NoteText.propTypes = {
+    note: PropTypes.object,
+};

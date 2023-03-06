@@ -1,18 +1,19 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 export const DateRange = (props) => {
     const [startDate, setStartDate] = useState();
     const [endDate, setEndDate] = useState();
 
-    
+
     const settingStartDate = (e, endDate) => {
-        setStartDate(e.target.value)
-        let dateSelectionStartDate =e.target.value
+        setStartDate(e.target.value);
+        const dateSelectionStartDate =e.target.value;
         props.runDateSearch(dateSelectionStartDate, endDate);
     };
-    
-    const settingEndDate = (startDate,e) => {
+
+    const settingEndDate = (startDate, e) => {
         setEndDate(e.target.value);
         const dateSelectionEndDate = e.target.value;
         props.runDateSearch(startDate, dateSelectionEndDate);
@@ -30,7 +31,7 @@ export const DateRange = (props) => {
             }}
         >
             <div style={{
-                display:'inline-flex'
+                display: 'inline-flex',
             }}>
                 <input
                     type="date"
@@ -39,10 +40,15 @@ export const DateRange = (props) => {
                 ></input>
                 <input
                     type="date"
-                    onChange={(e) => settingEndDate(startDate,e)}
+                    onChange={(e) => settingEndDate(startDate, e)}
                     className="date"
                 ></input>
             </div>
         </span>
     );
+};
+
+
+DateRange.propTypes = {
+    runDateSearch: PropTypes.func,
 };

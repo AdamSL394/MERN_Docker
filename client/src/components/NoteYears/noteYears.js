@@ -3,6 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import NoteRoutes from '../../router/noteRoutes.js';
 import Link from '@mui/material/Link/index.js';
 import Grid from '@mui/material/Grid/index.js';
+import PropTypes from 'prop-types';
 
 
 function NoteYears(props) {
@@ -17,7 +18,6 @@ function NoteYears(props) {
     const getNoteYears = async () => {
         const userid = user.sub.split('|')[1];
         const fullListOfNoteYears = await NoteRoutes.getNoteYears(userid);
-        // eslint-disable-next-line max-len
         if (
             fullListOfNoteYears !== undefined &&
       JSON.parse(fullListOfNoteYears)[0] !== null
@@ -40,10 +40,7 @@ function NoteYears(props) {
     };
 
 
-
-
     const notesYears = (props, year) => {
-    // eslint-disable-next-line react/prop-types
         props.setNotesBasedOnYear(props.currentpage, year);
         setCurrentDBCall(year);
     };
@@ -118,3 +115,8 @@ function NoteYears(props) {
 
 
 export default NoteYears;
+
+NoteYears.propTypes = {
+    setNotesBasedOnYear: PropTypes.func,
+    currentpage: PropTypes.number,
+};

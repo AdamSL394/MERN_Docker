@@ -1,5 +1,5 @@
+/* eslint-disable new-cap */
 const express = require('express');
-// eslint-disable-next-line new-cap
 const router = express.Router();
 const userController = require('../controller/userController');
 
@@ -15,8 +15,8 @@ router.post('/user/:id', async (req, res) => {
     const userDetails = req.body['user'];
     const user = await userController.getSingleUser(id, userDetails);
     const searchedUser = user[0];
-    res.status(201).json({'searchedUser': searchedUser});
-    return {searchedUser: 'searchedUser'};
+    res.status(201).json({ 'searchedUser': searchedUser });
+    return { searchedUser: 'searchedUser' };
 });
 
 router.post('/user/trackedstats/:id', async (req, res) => {

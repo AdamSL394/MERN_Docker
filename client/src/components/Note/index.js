@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid/index.js';
 import Card from '@mui/material/Card/index.js';
 import Button from '@mui/material/Button/index.js';
 import NoteText from '../NoteText/noteText.js';
+import PropTypes from 'prop-types';
 
 function Note(props) {
     return (
@@ -169,3 +170,13 @@ function Note(props) {
 }
 
 export default Note;
+
+Note.propTypes = {
+    openModal: PropTypes.func,
+    editNote: PropTypes.func,
+    note: PropTypes.arrayOf(PropTypes.shape({
+        text: PropTypes.string,
+        user: PropTypes.number,
+    }),
+    ),
+};
