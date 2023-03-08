@@ -7,6 +7,12 @@ import NoteText from '../NoteText/noteText.js';
 import PropTypes from 'prop-types';
 
 function Note(props) {
+    const editNote = (note) => {
+        note.textLength = 200 - note.text.length;
+        note.edit = true;
+        sessionStorage.setItem(note._id, JSON.stringify(note));
+        props.updateNote(note);
+    };
     return (
         <Grid xs={8} sm={5} md={5} lg={2} style={{ margin: '.5%' }} item={true}>
             <Card
@@ -25,7 +31,7 @@ function Note(props) {
                 </Button>
                 <span
                     style={{ float: 'left', cursor: 'pointer' }}
-                    onClick={() => props.editNote(props.note)}
+                    onClick={() => editNote(props.note)}
                 >
           🖊
                 </span>
@@ -174,9 +180,5 @@ export default Note;
 Note.propTypes = {
     openModal: PropTypes.func,
     editNote: PropTypes.func,
-    note: PropTypes.arrayOf(PropTypes.shape({
-        text: PropTypes.string,
-        user: PropTypes.number,
-    }),
-    ),
+    note: PropTypes.object,
 };

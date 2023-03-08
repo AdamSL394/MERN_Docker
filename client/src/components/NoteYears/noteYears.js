@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 function NoteYears(props) {
     const [noteYears, setNoteYears] = useState([]);
     const { user } = useAuth0();
-    const [currentDbCall, setCurrentDBCall] = useState('Recently Changed');
+    const [currentDbCall, setCurrentDBCall] = useState('All');
 
     useEffect(() => {
         getNoteYears();
@@ -34,7 +34,7 @@ function NoteYears(props) {
                 dateincrease = dateincrease + 1;
                 years.push(dateincrease);
             }
-            years.push('All', 'Recently Changed');
+            years.push( 'Recently Changed', 'All');
             setNoteYears(years);
         } else return;
     };

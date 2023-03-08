@@ -84,7 +84,7 @@ const deleteNotes = async (id) => {
 
 const updateNote = async (
     id,
-    edit,
+    switchEdit,
     text,
     date,
     star,
@@ -94,13 +94,13 @@ const updateNote = async (
     code,
     read,
     eatOut,
-    basketball
+    basketball,
 ) => {
     const updated = await Note.findByIdAndUpdate(
         id,
         {
             $set: {
-                edit: edit,
+                edit: switchEdit,
                 text: text,
                 date: date,
                 star: star,
@@ -114,8 +114,9 @@ const updateNote = async (
                 updatedAt: Date.now(),
             },
         },
-        { new: true }
+        { new: true },
     );
+    console.log(updated);
     return updated;
 };
 

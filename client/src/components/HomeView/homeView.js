@@ -403,59 +403,7 @@ const HomeView = () => {
                         type="date" placeholder="Date" defaultValue={date} onChange={(e) => setDate(e.target.value)}
                         style={{ alignSelf: 'center', position: 'absolute' }}>
                     </input>
-                    {/* <FormControl
-                            sx={{ m: 1, minWidth: 120 }}
-                            size="medium"
-                            style={{ alignSelf: "center", borderRadius: "5px 5px 5px 5px" }}>
-                            <span
-                                style={{ position: "absolute", margin: "2px", }}>
-                                <i>Star</i>
-                            </span>
-                            <InputLabel
-                                id="demo-select-small"
-                                style={{ alignSelf: "center" }}
-                            >
-                            </InputLabel>
-                            <Select
-                                defaultValue=""
-                                labelId="demo-select-small"
-                                id="demo-select-small"
-                                onChange={e => setStar(e.target.value)}
-                                style={{ width: "6.5rem", height: "3.2rem" }}
-                            >
-                                <MenuItem value={"None"} >
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem
-                                    value={"1"}>
-                                    <span
-                                        role="img"
-                                        aria-label="Star"
-                                    >
-                                        🌟
-                                    </span>
-                                </MenuItem>
-                                <MenuItem
-                                    value={"2"}>
-                                    <span
-                                        role="img"
-                                        aria-label="Star"
-                                    >
-                                        🌟🌟
-                                    </span>
-                                </MenuItem>
-                                <MenuItem
-                                    value={"3"}>
-                                    <span
-                                        role="img"
-                                        aria-label="Star"
-                                    >
-                                        🌟🌟🌟
-                                    </span>
-                                </MenuItem>
-                            </Select>
 
-                        </FormControl> */}
                     <Button
                         disabled={disabled}
                         style={{ alignSelf: 'center', position: 'absolute', marginTop: '140px', marginLeft: '7px' }}
@@ -470,7 +418,7 @@ const HomeView = () => {
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={selected}
+                            value={''}
                             // label="Age"
                             onChange={(e) => {
                                 addToEmojiList(e.target.value, emojiList, user);

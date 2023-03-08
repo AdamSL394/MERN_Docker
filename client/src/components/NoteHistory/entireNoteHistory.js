@@ -44,7 +44,7 @@ const NoteHistory = () => {
                     className="grid"
                     container
                     justifyContent="center"
-                    alignItems="flex-start"
+                    // alignItems="flex-start"
                 >
                     <Notes
                         setNoNotes={setNoNotes}

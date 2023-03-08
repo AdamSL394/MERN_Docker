@@ -17,8 +17,6 @@ import { Box } from '@mui/system';
 
 function Notes(props) {
     const postPerPage = 30;
-    const characterCount = 200;
-    const readOnly = false;
     let [currentPage, setCurrentPage] = useState(1);
     const [notes, setNotes] = useState([]);
     const { user } = useAuth0();
@@ -28,7 +26,7 @@ function Notes(props) {
     const [modelNoteId, setModelNoteId] = useState();
 
     useEffect(() => {
-        getRecentlyChangedNotes();
+        allNotes(1);
     }, []);
 
     const handelPageNumer = (getNotes, value) => {
@@ -40,42 +38,6 @@ function Notes(props) {
         const indexOfFirstPost = indexOfLastPost - postPerPage;
         const currentPosts = getNotes.slice(indexOfFirstPost, indexOfLastPost);
         return currentPosts;
-    };
-
-    const getRecentlyChangedNotes = async (value, editingNote) => {
-        try {
-            const userid = user.sub.split('|')[1];
-            const getNotes = await NoteRoutes.getRecentlyUpdatedNotes(userid);
-            if (!checkNoteApiResponse(getNotes)) {
-                return;
-            }
-
-            const currentPosts = handelPageNumer(getNotes, value);
-            if (editingNote) {
-                for (const list of currentPosts) {
-                    if (list._id === editingNote._id) {
-                        if (list.text.length === 0) {
-                            list.textLength = 200;
-                        } else {
-                            const numberUpdate = characterCount - list.text.length;
-                            list.textLength = numberUpdate;
-                        }
-                    }
-                }
-            }
-
-            setNotes(currentPosts);
-            setNumberOfPages(Math.ceil(getNotes.length / postPerPage));
-        } catch (e) {
-            console.log('error', e.message);
-        }
-    };
-
-    const editNote = (note) => {
-        note.textLength = 200 - note.text.length;
-        note.edit = true;
-        sessionStorage.setItem(note._id, JSON.stringify(note));
-        updateNote(note);
     };
 
     const saveNote = (note, value) => {
@@ -115,6 +77,7 @@ function Notes(props) {
     const allNotes = async (value) => {
         const userid = user.sub.split('|')[1];
         const getNotes = await NoteRoutes.getAllNotes(userid);
+
         if (!checkNoteApiResponse(getNotes)) {
             return;
         }
@@ -123,7 +86,7 @@ function Notes(props) {
         if (value) {
             currentPage = value;
         }
-        const currentPosts = handelPageNumer(currentPage, getNotes);
+        const currentPosts = handelPageNumer(getNotes, currentPage);
         setNotes(currentPosts);
         setNumberOfPages(Math.ceil(getNotes.length / postPerPage));
         return;
@@ -192,17 +155,10 @@ function Notes(props) {
         if (!checkNoteApiResponse(getNotes)) {
             return;
         }
-
-        for (const note of notes) {
-            if (note._id === getNotes._id) {
-                note.text = getNotes.text;
-                note.date = getNotes.date;
-                note.star = getNotes.star;
-                note.edit = false;
-                setNotes([...notes]);
-                return;
-            }
-        }
+        const updatedNotes = ((notes.map((note) => {
+            return (note);
+        })));
+        setNotes(updatedNotes);
     };
 
     const searchNotes = (searchedNotes, searchTeam) => {
@@ -321,21 +277,23 @@ function Notes(props) {
                             key={i}
                             note={note}
                             openModal={openModal}
-                            editNote={editNote}
+                            updateNote={updateNote}
                         ></Note>
                     );
-                } else {
+                } if (note.edit) {
                     if (note.textLength === undefined) {
                         note.textLength = 200 - note.text.length;
                     }
                     return (
                         <EditingNote
-                            key={i * 2}
+                            key={i * 102}
                             notes={notes}
                             note={note}
+                            currentPage={currentPage}
                             setNoteValue={setNoteValue}
                             saveNote={saveNote}
                             openModal={openModal}
+                            updateNote={updateNote}
                             onStarValueChange={props.onStarValueChange}
                         ></EditingNote>
                     );

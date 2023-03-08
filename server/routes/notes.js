@@ -61,6 +61,14 @@ router.delete('/delete/:id', async (req, res) => {
 
 router.patch('/update/:id', async (req, res) => {
     const { edit, text, date, star, look, gym, weed, code, read, eatOut, basketball } = req.body;
+
+    // console.log('edit', edit);
+    // let switchEdit;
+    // if (edit === true) {
+    //     switchEdit = false;
+    // } else {
+    //     switchEdit = true;
+    // }
     const response = await noteController.updateNote(req.params.id, edit, text, date, star, look, gym, weed, code, read, eatOut, basketball);
     res.json(response);
     return;

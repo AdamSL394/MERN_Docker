@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 import React from 'react';
@@ -14,6 +15,25 @@ import { TrackedEmojis } from '../TrackedEmojis/index.js';
 import { EditingTrackedEmojis } from '../EditingTrackedEmojis/index.js';
 
 function EditingNote(props) {
+    const saveNote = (note, value) => {
+        const updatedNote = JSON.parse(sessionStorage.getItem(note._id));
+        if (updatedNote != null) {
+            updatedNote.edit = false;
+            note.edit = false;
+            sessionStorage.setItem(updatedNote._id, JSON.stringify(updatedNote));
+            props.updateNote(note);
+        } else {
+            note.edit = false;
+            sessionStorage.setItem(note._id, JSON.stringify(note));
+            props.updateNote(note);
+        }
+    };
+
+    const editNote = (note) => {
+        note.edit = false;
+        props.updateNote(note);
+    };
+
     return (
         <Grid xs={8} sm={5} md={5} lg={2} style={{ margin: '.5%' }} item>
             <Card variant="outlined" id="Card">
@@ -57,7 +77,7 @@ function EditingNote(props) {
                             labelId="demo-select-small"
                             id="demo-select-small"
                             onChange={(e) => props.onStarValueChange(e, props.note)}
-                            defaultValue={props.note.star}
+                            defaultValue={''}
                             style={{ height: ' 1.3rem' }}
                         >
                             <MenuItem value={'None'}>
@@ -92,7 +112,7 @@ function EditingNote(props) {
                     setNoteValue={props.setNoteValue}
                 ></Textarea>
                 <div>
-                    <Button onClick={() => props.saveNote(props.note, props.currentPage)}>
+                    <Button onClick={() => editNote(props.note)}>
                         <strong>Save Me</strong>
                     </Button>
                 </div>
@@ -113,7 +133,7 @@ EditingNote.propTypes = {
     setNoteValue: PropTypes.func,
     closeModal: PropTypes.func,
     openModal: PropTypes.func,
-    note: PropTypes.array,
+    note: PropTypes.object,
     notes: PropTypes.arrayOf(PropTypes.shape({
         text: PropTypes.string,
         user: PropTypes.number,

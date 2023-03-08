@@ -16,7 +16,7 @@ export default {
         try {
             const response = await fetch(
                 `${enviromentAPI.api_url}/notes/delete/${noteId}`,
-                requestOptions
+                requestOptions,
             );
             const result1 = await response.text();
             return result1;
@@ -40,7 +40,7 @@ export default {
         try {
             const response = await fetch(
                 `${enviromentAPI.api_url}/notes/all?id=${userid}`,
-                requestOptions
+                requestOptions,
             );
             const results = await response.text();
             return JSON.parse(results);
@@ -64,7 +64,7 @@ export default {
         try {
             const response = await fetch(
                 `${enviromentAPI.api_url}/notes/recentlyUpdated/${userid}`,
-                requestOptions
+                requestOptions,
             );
             const results = await response.text();
             return JSON.parse(results);
@@ -103,7 +103,7 @@ export default {
         try {
             const response = await fetch(
                 `${enviromentAPI.api_url}/notes/update/${note._id}`,
-                requestOptions
+                requestOptions,
             );
             const result = await response.text();
             return JSON.parse(result);
@@ -123,11 +123,11 @@ export default {
             headers: myHeaders,
             redirect: 'follow',
         };
-        let query = encodeURIComponent(searchValue);
+        const query = encodeURIComponent(searchValue);
         try {
             const response = await fetch(
                 `${enviromentAPI.api_url}/notes/search/${query}/${userId}`,
-                requestOptions
+                requestOptions,
             );
             const results = await response.text();
             const cast = JSON.parse(results);
@@ -152,7 +152,7 @@ export default {
 
         return fetch(
             `${enviromentAPI.api_url}/notes/all/order/${userId}`,
-            requestOptions
+            requestOptions,
         )
             .then((response) => response.text())
             .then((results) => {
@@ -180,7 +180,7 @@ export default {
 
         return fetch(
             `${enviromentAPI.api_url}/notes/note/${noteId}`,
-            requestOptions
+            requestOptions,
         )
             .then((response) => response.text())
             .then((results) => {
@@ -259,7 +259,7 @@ export default {
         };
         return fetch(
             `${enviromentAPI.api_url}/notes/lastyear/${userid}/${tdYearAgo}/${lwYearAgo}`,
-            requestOptions
+            requestOptions,
         )
             .then((response) => response.text())
             .then((result) => {
@@ -284,7 +284,7 @@ export default {
         };
         return fetch(
             `https://leetcode-stats-api.herokuapp.com/adamsl394`,
-            requestOptions
+            requestOptions,
         )
             .then((response) => response.text())
             .then((result) => {
@@ -316,7 +316,7 @@ export default {
 
         return fetch(
             `${enviromentAPI.api_url}/api/users/user/${userid}`,
-            requestOptions
+            requestOptions,
         )
             .then((response) => response.text())
             .then((result) => {
@@ -369,7 +369,7 @@ export default {
 
         return fetch(
             `${enviromentAPI.api_url}/api/users/user/trackedstats/${userid}`,
-            requestOptions
+            requestOptions,
         )
             .then((response) => response.text())
             .then((result) => {
@@ -397,7 +397,7 @@ export default {
 
         return fetch(
             `${enviromentAPI.api_url}/notes/aggregateNoteyears`,
-            requestOptions
+            requestOptions,
         )
             .then((response) => response.text())
             .then((result) => {
