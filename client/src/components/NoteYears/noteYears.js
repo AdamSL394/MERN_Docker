@@ -1,49 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
-import NoteRoutes from '../../router/noteRoutes.js';
+import React from 'react';
 import Link from '@mui/material/Link/index.js';
 import Grid from '@mui/material/Grid/index.js';
 import PropTypes from 'prop-types';
 
 
 function NoteYears(props) {
-    const [noteYears, setNoteYears] = useState([]);
-    const { user } = useAuth0();
-    const [currentDbCall, setCurrentDBCall] = useState('All');
-
-    useEffect(() => {
-        getNoteYears();
-    }, []);
-
-    const getNoteYears = async () => {
-        const userid = user.sub.split('|')[1];
-        const fullListOfNoteYears = await NoteRoutes.getNoteYears(userid);
-        if (
-            fullListOfNoteYears !== undefined &&
-      JSON.parse(fullListOfNoteYears)[0] !== null
-        ) {
-            const parsedNotes = JSON.parse(fullListOfNoteYears)[0];
-            const oldestNoteDate = parsedNotes._id.split('T')[0];
-            const oldestNoteJustYear = oldestNoteDate.split('-')[0];
-            const currentYear = new Date().getFullYear();
-
-            const years = [parseInt(oldestNoteJustYear)];
-            let dateincrease = parseInt(oldestNoteJustYear);
-
-            while (dateincrease !== currentYear) {
-                dateincrease = dateincrease + 1;
-                years.push(dateincrease);
-            }
-            years.push( 'Recently Changed', 'All');
-            setNoteYears(years);
-        } else return;
-    };
-
-
-    const notesYears = (props, year) => {
-        props.setNotesBasedOnYear(props.currentpage, year);
-        setCurrentDBCall(year);
-    };
 
     return (
         <Grid
@@ -56,8 +17,8 @@ function NoteYears(props) {
                 width: '5%',
             }}
         >
-            {noteYears.map((year, key) => {
-                if (year === currentDbCall) {
+            {props.noteYears.map((year, key) => {
+                if (year === props.currentDbCall) {
                     return (
                         <Grid
                             item
@@ -96,7 +57,7 @@ function NoteYears(props) {
                         >
                             <Link
                                 key={key + 1}
-                                onClick={() => notesYears(props, year)}
+                                onClick={() => props.notesYears(props, year)}
                                 className='noteYears'
                                 style={{
                                     cursor: 'pointer',

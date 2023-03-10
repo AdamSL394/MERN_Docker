@@ -116,7 +116,6 @@ const updateNote = async (
         },
         { new: true },
     );
-    console.log(updated);
     return updated;
 };
 
@@ -134,8 +133,6 @@ const searchNotes = async (text, userId) => {
         .match({
             userId,
         });
-    console.log(notes);
-
     return notes;
 };
 
