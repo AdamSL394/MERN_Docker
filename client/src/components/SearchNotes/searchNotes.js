@@ -23,14 +23,11 @@ export const SearchNotes = (props) => {
       props.setNotesBasedOnYear(1, 'All');
       return;
     }
-    let pagenumber = props.currentPage
-    if(searchedNotes.length < 31){
-      props.setCurrentPage('1')
-      pagenumber = 1
-    }
+
     props.setCurrentCall('Search');
     setCurrentDBCall('');
-    const currentPosts = props.slicePosts(searchedNotes, pagenumber);
+    props.setCurrentPage(1);
+    const currentPosts = props.slicePosts(searchedNotes, 1);
     props.setSearchedNote(currentPosts);
     props.setNumberOfPages(Math.ceil(searchedNotes.length / 30));
     return;

@@ -15,7 +15,7 @@ const Router = () => {
                 <Route path="/" element={<ProtectedRoute />}>
                     <Route path="/" element={<Home />} />
                     <Route path="/all" element={<AllNotes />} />
-                    <Route path="/upload" element={<UploadNotes />} />
+                    {/* <Route path="/upload" element={<UploadNotes />} /> */}
                     <Route path="/userSettings" element={<UserSettings />} />
                 </Route>
             </Routes>

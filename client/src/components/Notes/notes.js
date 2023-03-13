@@ -10,8 +10,11 @@ import Stack from '@mui/material/Stack/index.js';
 import EditingNote from '../EditNote/editingNote.js';
 import ModalPop from '../Modal/index.js';
 import Note from '../Note/index.js';
+import './notes.css';
+
 import { Box } from '@mui/system';
 import { SearchNotes } from '../SearchNotes/searchNotes.js';
+import { Container } from '@mui/material';
 
 function Notes(props) {
   const postPerPage = 30;
@@ -175,12 +178,12 @@ function Notes(props) {
     setIsLoading(true);
     const noteDateRange = await NoteRoutes.getNoteRange(userId, start, end);
     setIsLoading(false);
-    setDateaRangeNoteResults(noteDateRange)
-    if(noteDateRange.length < 30){
-      currentPage = 1
+    setDateaRangeNoteResults(noteDateRange);
+    if (noteDateRange.length < 30) {
+      currentPage = 1;
     }
     setCurrentCall('Date Range');
-    const currentPosts = slicePosts(noteDateRange, currentPage);
+    const currentPosts = slicePosts(noteDateRange, 1);
     setNumberOfPages(Math.ceil(noteDateRange.length / postPerPage));
     setNotes(currentPosts);
   };
@@ -235,7 +238,9 @@ function Notes(props) {
       case 'Date Range': {
         const currentPosts = slicePosts(dateaRangeNotesResults, value);
         setNotes(currentPosts);
-        setNumberOfPages(Math.ceil(dateaRangeNotesResults.length / postPerPage));
+        setNumberOfPages(
+          Math.ceil(dateaRangeNotesResults.length / postPerPage)
+        );
         break;
       }
       default: {
@@ -249,10 +254,10 @@ function Notes(props) {
   const setNoteValue = () => {
     setNotes([...notes]);
   };
-  
+
   const setSearchedNote = (notes) => {
-    setNotes(notes)
-  }
+    setNotes(notes);
+  };
 
   return (
     <>
@@ -262,28 +267,31 @@ function Notes(props) {
         modelNoteId={modelNoteId}
         closeModal={closeModal}
       ></ModalPop>
-      <Box>
-        <SearchNotes
-        setCurrentPage={setCurrentPage}
-          getNoteRange={getNoteRange}
-          setCurrentCall={setCurrentCall}
-          slicePosts={slicePosts}
-          setSearchNoteResults={setSearchNoteResults}
-          setNumberOfPages={setNumberOfPages}
-          setSearchedNote={setSearchedNote}
-          currentPage={currentPage}
-          setNotesBasedOnYear={setNotesBasedOnYear}
-        ></SearchNotes>
-      </Box>
-      <Stack className="stack" style={{ position: 'absolute', top: ' 19%' }}>
-        <Pagination
-          page={currentPage}
-          count={numberOfPages}
-          onChange={handleChange}
-          defaultPage={1}
-          color="primary"
-        ></Pagination>
-      </Stack>
+      <Container style={{ maxWidth: '100%', marginBottom: '1rem' }}>
+        <Box id='searchStyle' style={{ maxWidth: '90%'}}>
+          <SearchNotes
+            setCurrentPage={setCurrentPage}
+            getNoteRange={getNoteRange}
+            setCurrentCall={setCurrentCall}
+            slicePosts={slicePosts}
+            setSearchNoteResults={setSearchNoteResults}
+            setNumberOfPages={setNumberOfPages}
+            setSearchedNote={setSearchedNote}
+            currentPage={currentPage}
+            setNotesBasedOnYear={setNotesBasedOnYear}
+          ></SearchNotes>
+        </Box>
+        <Stack className="stack">
+          <Pagination
+            page={currentPage}
+            count={numberOfPages}
+            onChange={handleChange}
+            defaultPage={1}
+            color="primary"
+          ></Pagination>
+        </Stack>
+      </Container>
+
       {isloading ? (
         <img
           src="https://media4.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif?cid=ecf05e47d78qz3v8umwss2cvzhgxw5siyk2sxf88n7leuzne&rid=giphy.gif&ct=g"

@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import './dateRange.css';
 
 export const DateRange = (props) => {
     const [startDate, setStartDate] = useState();
@@ -21,18 +22,21 @@ export const DateRange = (props) => {
 
     return (
         <span
+            id='dateInput'
             style={{
                 alignText: 'center',
                 width: '13rem',
                 height: '1.3rem',
-                position: 'absolute',
-                right: '12%',
-                top: '15%',
+                float  :'right',
+                
             }}
         >
             <div style={{
                 display: 'inline-flex',
-            }}>
+            }}
+            id='dateRange'
+            >
+               
                 <input
                     type="date"
                     onChange={(e) => settingStartDate(e, endDate)}

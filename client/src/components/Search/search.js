@@ -3,6 +3,7 @@ import React from 'react';
 import Notes from '../../router/noteRoutes.js';
 import { useAuth0 } from '@auth0/auth0-react';
 import PropTypes from 'prop-types';
+import './search.css';
 
 function Search(props) {
   const { user } = useAuth0();
@@ -39,14 +40,14 @@ function Search(props) {
   return (
     <>
       <input
+      id='smallScreen'
         autoComplete="new-password"
         style={{
+          borderRadius: '25px',
+          height: '30%',
           alignText: 'center',
           width: '13rem',
-          height: '1.3rem',
-          position: 'absolute',
-          left: '8%',
-          top: '15%',
+          marginLeft: '5%',
         }}
         type="text"
         placeholder="Search…"

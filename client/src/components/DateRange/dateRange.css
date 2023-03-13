@@ -1,0 +1,12 @@
+@media screen and (max-width: 758px) {
+    #dateRange{
+        flex-direction: column;
+        float: none;
+    }
+    #dateInput{
+        float: none !important;
+    }
+    .date{
+        margin-bottom: 12%;
+    }
+} 

@@ -1,5 +1,24 @@
-.emoji{
-  background-color: #ffffff;
-  margin-right: .4rem;
-  cursor: pointer;
+@media screen and (max-width: 1000px) {
+  #searchStyle {
+    max-width: 80% !important;
+    text-align: center;
+    /* margin: auto; */
+  }
+  .stack{
+    text-align: center;
+    margin-top: 6% !important;
+
+  }
+}
+  @media screen and (max-width: 758px) {
+    #searchStyle {
+      max-width: 80% !important;
+      text-align: center;
+      margin: auto;
+    }
+    .stack{
+      text-align: center;
+      margin-top: 6% !important;
+  
+    }
 }
