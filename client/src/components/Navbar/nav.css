@@ -50,5 +50,15 @@
     border-radius:  25px;
   }
 
+  #navItems{
+    width: 95%;
+}
 
 
+
+  @media screen and (max-width: 899px) {
+    #navItems{
+        visibility: hidden;
+        width: 50%;
+    }
+  }

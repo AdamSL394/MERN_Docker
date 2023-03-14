@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, {useState} from 'react';
 import LogOut from '../LogoutButton/logoutButton.js';
 import AppBar from '@mui/material/AppBar/AppBar.js';
 import Toolbar from '@mui/material/Toolbar/Toolbar.js';
@@ -16,16 +16,27 @@ import { useAuth0 } from '@auth0/auth0-react';
 function Navbar() {
   const { user } = useAuth0();
   const navigate = useNavigate();
+  const [anchorElNav, setAnchorElNav] = useState(null);
 
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
   const pages = ['Home', 'View All Notes', 'User'];
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (value) => {
+    console.log('value',value.target.innerHTML)
+    if(value.target.innerHTML === 'Home'){
+      navigate('/');
+    }
+    if(value.target.innerHTML === 'View All Notes'){
+      const path = `/all`;
+      navigate(path);
+    }
+    if(value.target.innerHTML === 'User'){
+      const path = `/userSettings`;
+      navigate(path);
+    }
     setAnchorElNav(null);
   };
 
@@ -56,13 +67,14 @@ function Navbar() {
             onClick={handleOpenNavMenu}
             color="inherit"
           >
-          <div>
-            <div className="menuIcon"></div>
-            <div className="menuIcon"></div>
-            <div className="menuIcon"></div>
-          </div>
+            <div>
+              <div className="menuIcon"></div>
+              <div className="menuIcon"></div>
+              <div className="menuIcon"></div>
+            </div>
           </IconButton>
           <Menu
+          style={{width: '28%'}}
             id="menu-appbar"
             anchorEl={anchorElNav}
             anchorOrigin={{
@@ -81,44 +93,52 @@ function Navbar() {
             }}
           >
             {pages.map((page) => (
-              <span key={page} onClick={handleCloseNavMenu} style={{width:"13%"}}>
-                <Typography textAlign="center" style={{cursor:"pointer"}} >{page}</Typography>
+              <span
+                key={page}
+                onClick={(e) => handleCloseNavMenu(e)}
+                style={{ width: '13%' }}
+              >
+                <Typography textAlign="center" style={{ cursor: 'pointer' }}>
+                  {page}
+                </Typography>
               </span>
             ))}
           </Menu>
         </Box>
-        <span className="tabs" id="home" onClick={handleClick}>
-          {' '}
-          Home \
+        <span id="navItems" >
+          <span className="tabs" id="home" onClick={handleClick}>
+            {' '}
+            Home \
+          </span>
+          <span className="tabs" id="all" onClick={routeChanges}>
+            {' '}
+            View All Notes \
+          </span>
+          {/* <span className="tabs" id="all" onClick={upload} > Upload Notes \</span> */}
+          <i className="tabs" id="userName" onClick={userSettings}>
+            {' '}
+            <i
+              className="userInfo"
+              style={{
+                fontFamily:
+                  'font-family:Times, Times New Roman, serif !important',
+              }}
+            >
+              Hi{' '}
+              <span role="img" aria-label="Star">
+                👋🏼 &nbsp;
+              </span>{' '}
+              {user.name ? user.name : ''}
+            </i>{' '}
+          </i>
+          <img
+            id="userInfo"
+            style={{ height: '25px', width: '25px' }}
+            src={user.picture}
+            referrerPolicy="no-referrer"
+            alt="User Profile"
+          ></img>
         </span>
-        <span className="tabs" id="all" onClick={routeChanges}>
-          {' '}
-          View All Notes \
-        </span>
-        {/* <span className="tabs" id="all" onClick={upload} > Upload Notes \</span> */}
-        <i className="tabs" id="userName" onClick={userSettings}>
-          {' '}
-          <i
-            className="userInfo"
-            style={{
-              fontFamily:
-                'font-family:Times, Times New Roman, serif !important',
-            }}
-          >
-            Hi{' '}
-            <span role="img" aria-label="Star">
-              👋🏼 &nbsp;
-            </span>{' '}
-            {user.name ? user.name : ''}
-          </i>{' '}
-        </i>
-        <img
-          id="userInfo"
-          style={{ height: '25px', width: '25px' }}
-          src={user.picture}
-          referrerPolicy="no-referrer"
-          alt="User Profile"
-        ></img>
         <LogOut></LogOut>
       </Toolbar>
     </AppBar>
