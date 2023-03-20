@@ -25,7 +25,6 @@ function Navbar() {
   };
 
   const handleCloseNavMenu = (value) => {
-    console.log('value',value.target.innerHTML)
     if(value.target.innerHTML === 'Home'){
       navigate('/');
     }
@@ -73,8 +72,7 @@ function Navbar() {
               <div className="menuIcon"></div>
             </div>
           </IconButton>
-          <Menu
-          style={{width: '28%'}}
+          <Menu          
             id="menu-appbar"
             anchorEl={anchorElNav}
             anchorOrigin={{
@@ -96,9 +94,9 @@ function Navbar() {
               <span
                 key={page}
                 onClick={(e) => handleCloseNavMenu(e)}
-                style={{ width: '13%' }}
+                style={{ width: '100% !important' }}
               >
-                <Typography textAlign="center" style={{ cursor: 'pointer' }}>
+                <Typography textAlign="center" style={{ cursor: 'pointer',padding:'10%' }}>
                   {page}
                 </Typography>
               </span>

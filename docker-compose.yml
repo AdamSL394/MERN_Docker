@@ -15,7 +15,7 @@ services:
     depends_on:
       - note_script-dev
     environment:
-      - MONGODB_URI=mongodb+srv://adam:notescript@cluster0.fepd2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+      # - MONGODB_URI=mongodb+srv://adam:notescript@cluster0.fepd2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 
     
   note_script-dev:

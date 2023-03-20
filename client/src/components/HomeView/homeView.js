@@ -15,6 +15,7 @@ import NoteRoutes from '../../router/noteRoutes.js';
 import { useAuth0 } from '@auth0/auth0-react';
 import Switch from '@mui/material/Switch/index.js';
 import { HomeNotes } from '../HomeComponents/NotesHomeView.js';
+import {CreateNote} from '../HomeComponents/CreateNote.js'
 
 const HomeView = () => {
   const { user } = useAuth0();
@@ -65,7 +66,8 @@ const HomeView = () => {
     return false;
   });
 
-  const storeNewNote = async (userId, withoutDups) => {
+  const storeNewNote = async () => {
+    const userId = user.sub.split('|')[1];
     setDisabled(true);
 
     const raw = {
@@ -396,94 +398,15 @@ const HomeView = () => {
   return (
     <Container id="container">
       <div className="formButtons">
-        <Grid item xs={6} s={6} m={6} l={6} style={{ margin: '0' }}>
-          <TextField
-            autoFocus={true}
-            multiline
-            rows={7}
-            label="Note"
-            id="fullWidth"
-            color="primary"
-            placeholder="Note"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            style={{ overflowY: 'auto', overflow: 'visible' }}
-          ></TextField>
-          <div style={{ width: '20rem', marginLeft: '12px' }}>
-            {withoutDups.map((i, key) => {
-              return (
-                <span key={key + 300}>
-                  <span
-                    key={key}
-                    value={i.icon}
-                    onClick={() => {
-                      setCodeIcon(i, withoutDups);
-                    }}
-                  >
-                    {i.icon}
-                  </span>
-                  <span
-                    key={key + 200}
-                    role="img"
-                    aria-label="checkmark"
-                    style={{ visibility: `${i.visible}`, marginRight: '.5rem' }}
-                  >
-                    ✔️
-                  </span>
-                </span>
-              );
-            })}
-          </div>
-        </Grid>
-        <Grid item xs={6} s={6} m={6} l={6} style={{ marginTop: '0' }}>
-          <input
-            id="date"
-            type="date"
-            placeholder="Date"
-            defaultValue={date}
-            onChange={(e) => setDate(e.target.value)}
-            style={{ alignSelf: 'center', position: 'absolute' }}
-          ></input>
-
-          <Button
-            disabled={disabled}
-            style={{
-              alignSelf: 'center',
-              position: 'absolute',
-              marginTop: '140px',
-              marginLeft: '7px',
-            }}
-            variant="contained"
-            value="save"
-            color="primary"
-            onClick={() => storeNewNote(userId, withoutDups)}
-          >
-            Save Note
-          </Button>
-          <FormControl
-            sx={{ m: 1 }}
-            style={{ position: 'absolute', marginTop: '59px', width: '7rem' }}
-          >
-            <InputLabel id="demo-simple-select-label">Icons</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={''}
-              // label="Age"
-              onChange={(e) => {
-                addToEmojiList(e.target.value, emojiList, user);
-              }}
-            >
-              {emojiList.map((i, key) => {
-                return (
-                  <MenuItem key={key + 100} value={i.icon}>
-                    <span key={key}>{i.icon}</span>
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-        </Grid>
+        <CreateNote
+          setText={setText}
+          setCodeIcon={setCodeIcon}
+          setDate={setDate}
+          storeNewNote={storeNewNote}
+          addToEmojiList={addToEmojiList}
+          emojiList={emojiList}
+          withoutDups={withoutDups}
+        ></CreateNote>
         {/* <div>Leetcode Problems Solved: {leetcode}</div> */}
       </div>
       <Alert

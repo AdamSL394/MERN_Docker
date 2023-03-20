@@ -1,0 +1,29 @@
+#mobileCreateNote {
+  display: none;
+}
+#desktopCreateNote {
+  display: flex;
+}
+.MuiPopover-paper{
+width: 25% !important;
+border-radius: 25px;
+}
+@media screen and (max-width: 700px) {
+  #mobileCreateNote {
+    display: inline-block;
+  }
+  #date {
+    position: relative !important;
+  }
+  #saveMe {
+    position: relative !important;
+    display:block;
+    margin-top: 1%;
+  }
+  #emoji {
+    position: relative !important;
+  }
+  #desktopCreateNote {
+    display: none;
+  }
+}
