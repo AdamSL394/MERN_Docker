@@ -39,4 +39,9 @@
 #id{
     float: right !important;
 }
+@media screen and (max-width: 400px) {
+    .word {
+      font-size: 4.5rem;
+    }
+}
 

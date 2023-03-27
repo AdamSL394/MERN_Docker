@@ -26,7 +26,7 @@ export const CreateNote = (props) => {
             id="fullWidth"
             color="primary"
             placeholder="Note"
-            value={text}
+            value={props.text}
             onChange={(e) => props.setText(e.target.value)}
             style={{ overflowY: 'auto', overflow: 'visible' }}
           ></TextField>
@@ -38,7 +38,7 @@ export const CreateNote = (props) => {
                     key={key}
                     value={i.icon}
                     onClick={() => {
-                      props.setCodeIcon(i, withoutDups);
+                      props.setCodeIcon(i, props.withoutDups);
                     }}
                   >
                     {i.icon}
@@ -86,7 +86,7 @@ export const CreateNote = (props) => {
                 value={''}
                 // label="Age"
                 onChange={(e) => {
-                  props.addToEmojiList(e.target.value, emojiList, user);
+                  props.addToEmojiList(e.target.value, props.emojiList, props.user);
                 }}
               >
                 {props.emojiList.map((i, key) => {
@@ -110,7 +110,7 @@ export const CreateNote = (props) => {
               variant="contained"
               value="save"
               color="primary"
-              onClick={() => props.storeNewNote(userId, withoutDups)}
+              onClick={() => props.storeNewNote(props.withoutDups)}
             >
               Save Note
             </Button>
@@ -127,7 +127,7 @@ export const CreateNote = (props) => {
             id="fullWidth"
             color="primary"
             placeholder="Note"
-            value={text}
+            value={props.text}
             onChange={(e) => props.setText(e.target.value)}
             style={{ overflowY: 'auto', overflow: 'visible' }}
           ></TextField>
@@ -139,7 +139,7 @@ export const CreateNote = (props) => {
                     key={key}
                     value={i.icon}
                     onClick={() => {
-                      props.setCodeIcon(i, withoutDups);
+                      props.setCodeIcon(i, props.withoutDups);
                     }}
                   >
                     {i.icon}
@@ -179,7 +179,7 @@ export const CreateNote = (props) => {
               variant="contained"
               value="save"
               color="primary"
-              onClick={() => props.storeNewNote(withoutDups)}
+              onClick={() => props.storeNewNote(props.withoutDups)}
             >
               Save Note
             </Button>
@@ -194,7 +194,7 @@ export const CreateNote = (props) => {
                 value={''}
                 // label="Age"
                 onChange={(e) => {
-                  props.addToEmojiList(e.target.value, emojiList, user);
+                  props.addToEmojiList(e.target.value, props.emojiList, props.user);
                 }}
               >
                 {props.emojiList.map((i, key) => {

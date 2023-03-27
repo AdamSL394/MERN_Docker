@@ -1,21 +1,14 @@
 /* eslint-disable max-len */
-import React, { useEffect, useState } from 'react';
-import TextField from '@mui/material/TextField/index.js';
-import FormControl from '@mui/material/FormControl/index.js';
-import Select from '@mui/material/Select/index.js';
-import InputLabel from '@mui/material/InputLabel/index.js';
-import MenuItem from '@mui/material/MenuItem/index.js';
-import Button from '@mui/material/Button/index.js';
-import './homeView.css';
-import Container from '@mui/material/Container/index.js';
-import Card from '@mui/material/Card/index.js';
-import Grid from '@mui/material/Grid/index.js';
-import Alert from '@mui/material/Alert/index.js';
-import NoteRoutes from '../../router/noteRoutes.js';
 import { useAuth0 } from '@auth0/auth0-react';
+import Alert from '@mui/material/Alert/index.js';
+import Container from '@mui/material/Container/index.js';
+import Grid from '@mui/material/Grid/index.js';
 import Switch from '@mui/material/Switch/index.js';
+import React, { useEffect, useState } from 'react';
+import NoteRoutes from '../../router/noteRoutes.js';
+import { CreateNote } from '../HomeComponents/CreateNote.js';
 import { HomeNotes } from '../HomeComponents/NotesHomeView.js';
-import {CreateNote} from '../HomeComponents/CreateNote.js'
+import './homeView.css';
 
 const HomeView = () => {
   const { user } = useAuth0();
@@ -57,6 +50,20 @@ const HomeView = () => {
   ]);
   const uniqueIds = [];
 
+  useEffect(() => {
+    const userid = user.sub.split('|')[1];
+    const todaysDate = new Date().toISOString().split('T')[0];
+    const myCurrentDate = new Date();
+    const myPastDate = new Date(myCurrentDate);
+    myPastDate.setDate(myPastDate.getDate() - 7);
+    const lastWeeksDate = myPastDate.toISOString().split('T')[0];
+    getNoteRanges(userid, todaysDate, lastWeeksDate);
+    getUserInformation(user);
+    // let a = await NoteRoutes.Leetcode_stats()
+    // console.log(a)
+    // setLeetcode(a.totalSolved)
+  }, []);
+
   const withoutDups = trackedStats.filter((element) => {
     const isDuplicate = uniqueIds.includes(element.name);
     if (!isDuplicate) {
@@ -66,7 +73,7 @@ const HomeView = () => {
     return false;
   });
 
-  const storeNewNote = async () => {
+  const storeNewNote = async (stats) => {
     const userId = user.sub.split('|')[1];
     setDisabled(true);
 
@@ -96,7 +103,7 @@ const HomeView = () => {
       return;
     }
 
-    for (const stat of withoutDups) {
+    for (const stat of stats) {
       if (stat.visible === 'visible') {
         raw[stat.name] = true;
       }
@@ -134,20 +141,6 @@ const HomeView = () => {
     return;
   };
 
-  useEffect(() => {
-    const userid = user.sub.split('|')[1];
-    const todaysDate = new Date().toISOString().split('T')[0];
-    const myCurrentDate = new Date();
-    const myPastDate = new Date(myCurrentDate);
-    myPastDate.setDate(myPastDate.getDate() - 7);
-    const lastWeeksDate = myPastDate.toISOString().split('T')[0];
-    getNoteRanges(userid, todaysDate, lastWeeksDate);
-    getUserInformation(user);
-    // let a = await NoteRoutes.Leetcode_stats()
-    // console.log(a)
-    // setLeetcode(a.totalSolved)
-  }, []);
-
   const handleChange = (event) => {
     const numericValue = event.target.checked;
     setChecked(event.target.checked);
@@ -171,16 +164,15 @@ const HomeView = () => {
   };
 
   const getNoteRanges = async (userid, todaysDate, lastWeeksDate) => {
-    
     try {
       const res = await NoteRoutes.getNoteRange(
         userid,
         lastWeeksDate,
-        todaysDate,
+        todaysDate
       );
 
       if (res.length === 0) {
-        console.log('ere')
+        console.log('ere');
         setNotes([]);
         setnoNotes('No Notes for last week.');
         return;
@@ -194,7 +186,7 @@ const HomeView = () => {
   };
 
   const getNoteRangeYear = async () => {
-    console.log('here')
+    console.log('here');
     const userid = user.sub.split('|')[1];
     const date = new Date();
     const futureDay = date.getDate() + 7;
@@ -217,8 +209,8 @@ const HomeView = () => {
         weekAheadLastYear,
         todayLastYear
       );
-      console.log('here',res)
-      if (res) {;
+      console.log('here', res);
+      if (res) {
         if (res.length < 1) {
           setNotes(res);
           setnoNotes('No Notes for last year.');
@@ -255,6 +247,7 @@ const HomeView = () => {
   };
 
   const addToEmojiList = (value, emojiList, user) => {
+    console.log('user', user);
     let emojiName = '';
     let visible = 'hidden';
     for (const item of emojiList) {
@@ -320,9 +313,9 @@ const HomeView = () => {
     }
     // year
     if (!checked) {
-        console.log('here',value)
+      console.log('here', value);
       if (value === '1') {
-        console.log('here')
+        console.log('here');
         setNoteView('year');
         getNoteRangeYear();
       }
@@ -349,7 +342,6 @@ const HomeView = () => {
           todayLastYear
         );
         if (res) {
-          
           if (res.length < 1) {
             setNotes(res);
             setnoNotes('No Notes for last year.');
@@ -379,7 +371,7 @@ const HomeView = () => {
         const res = await NoteRoutes.getNoteRangeYear(
           userid,
           weekAheadLastYear,
-          todayLastYear,
+          todayLastYear
         );
         if (res) {
           if (res.length < 1) {
@@ -399,7 +391,9 @@ const HomeView = () => {
     <Container id="container">
       <div className="formButtons">
         <CreateNote
+          user={user}
           setText={setText}
+          text={text}
           setCodeIcon={setCodeIcon}
           setDate={setDate}
           storeNewNote={storeNewNote}
