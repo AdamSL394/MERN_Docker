@@ -46,7 +46,7 @@ const HomeView = () => {
     { icon: '🌟', name: 'star', visible: 'hidden' },
   ]);
   const [trackedStats, setTrackedStats] = useState([
-    { icon: '🥇', name: 'medal', visible: 'hidden' },
+    {},
   ]);
   const uniqueIds = [];
 
@@ -172,7 +172,6 @@ const HomeView = () => {
       );
 
       if (res.length === 0) {
-        console.log('ere');
         setNotes([]);
         setnoNotes('No Notes for last week.');
         return;
@@ -186,7 +185,6 @@ const HomeView = () => {
   };
 
   const getNoteRangeYear = async () => {
-    console.log('here');
     const userid = user.sub.split('|')[1];
     const date = new Date();
     const futureDay = date.getDate() + 7;
@@ -209,7 +207,7 @@ const HomeView = () => {
         weekAheadLastYear,
         todayLastYear
       );
-      console.log('here', res);
+
       if (res) {
         if (res.length < 1) {
           setNotes(res);
@@ -247,7 +245,6 @@ const HomeView = () => {
   };
 
   const addToEmojiList = (value, emojiList, user) => {
-    console.log('user', user);
     let emojiName = '';
     let visible = 'hidden';
     for (const item of emojiList) {
@@ -313,9 +310,7 @@ const HomeView = () => {
     }
     // year
     if (!checked) {
-      console.log('here', value);
       if (value === '1') {
-        console.log('here');
         setNoteView('year');
         getNoteRangeYear();
       }

@@ -191,6 +191,7 @@ function Notes(props) {
   const checkNoteApiResponse = (notes) => {
     if (notes.length < 1) {
       props.setNoNotes('Get started... Upload or make your first Note!');
+      setIsLoading(false);
       setNotes([]);
       return false;
     } else {
