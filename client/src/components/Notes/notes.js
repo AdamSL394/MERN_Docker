@@ -1,20 +1,19 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { useAuth0 } from '@auth0/auth0-react';
-import NoteRoutes from '../../router/noteRoutes.js';
+import { Container } from '@mui/material';
 import Pagination from '@mui/material/Pagination/index.js';
 import Stack from '@mui/material/Stack/index.js';
+import { Box } from '@mui/system';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import NoteRoutes from '../../router/noteRoutes.js';
 import EditingNote from '../EditNote/editingNote.js';
 import ModalPop from '../Modal/index.js';
 import Note from '../Note/index.js';
-import './notes.css';
-
-import { Box } from '@mui/system';
 import { SearchNotes } from '../SearchNotes/searchNotes.js';
-import { Container } from '@mui/material';
+import './notes.css';
 
 function Notes(props) {
   const postPerPage = 30;
@@ -102,43 +101,6 @@ function Notes(props) {
   const handleChange = async (e, value) => {
     setCurrentPage(value);
     await determineApiCall(currentCall, value);
-  };
-
-  const setNote = (note) => {
-    const updatedNote = JSON.parse(sessionStorage.getItem(note._id));
-    let newNote;
-    if (updatedNote) {
-      newNote = {
-        text: updatedNote.text,
-        date: updatedNote.date,
-        star: updatedNote.star,
-        _id: updatedNote._id,
-        edit: updatedNote.edit,
-        look: note.look,
-        gym: note.gym,
-        weed: note.weed,
-        code: note.code,
-        read: note.read,
-        eatOut: note.eatOut,
-        basketball: note.basketball,
-      };
-    } else {
-      newNote = {
-        text: note.text,
-        date: note.date,
-        star: note.star,
-        _id: note._id,
-        edit: note.edit,
-        look: note.look,
-        gym: note.gym,
-        weed: note.weed,
-        code: note.code,
-        read: note.read,
-        eatOut: note.eatOut,
-        basketball: note.basketball,
-      };
-    }
-    sessionStorage.setItem(note._id, JSON.stringify(newNote));
   };
 
   const openModal = (note) => {
@@ -260,6 +222,15 @@ function Notes(props) {
     setNotes(notes);
   };
 
+  const setDateNote = (e, note) => {
+    const storedNote = JSON.parse(sessionStorage.getItem(note._id))
+    if(storedNote){
+    }
+    note['date'] = e.target.value
+    sessionStorage.setItem(note._id, JSON.stringify(note));
+    setNotes([...notes]);
+  }
+
   return (
     <>
       <ModalPop
@@ -320,6 +291,7 @@ function Notes(props) {
                   key={i * 102}
                   notes={notes}
                   note={note}
+                  setDateNote={setDateNote}
                   currentPage={currentPage}
                   setNoteValue={setNoteValue}
                   saveNote={saveNote}

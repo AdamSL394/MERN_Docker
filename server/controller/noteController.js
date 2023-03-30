@@ -3,7 +3,7 @@
 const Note = require('../models/notes');
 const mongoose = require('mongoose');
 // const client = require('../database/redis_connect');
-
+ 
 const postNotes = async (req) => {
     if (req['userId'].length != 24) {
         req['userId'] = req['userId'] + '000';
@@ -116,6 +116,7 @@ const updateNote = async (
         },
         { new: true },
     );
+    console.log("updated",updated)
     return updated;
 };
 

@@ -3,193 +3,54 @@
 import React, { useState } from 'react';
 
 const Textarea = (props) => {
+  const characterCount = 200;
+  const [noteId, setNoteId] = useState();
+  const [readOnly, setReadOnly] = useState(false);
+  const [postContent, setPostContent] = useState(props.note.text);
   const [trackingCharacterDeletions, setTrackingCharacterDeletions] =
     useState();
-  const characterCount = 200;
-  // let readOnly = false;
-  const [noteId, setNoteId] = useState();
-  const [postContent, setPostContent] = useState(props.note.text);
 
   const onChangeTextArea = (e, note) => {
+    disableTextField(e, note);
     setTrackingCharacterDeletions(e.target.value);
-    let editNoteIt;
-    for (const list of props.notes) {
-      if (list._id === note._id) {
-        editNoteIt = list._id;
-        if (e.target.value.length > characterCount) {
-          e.target.value = e.target.value.slice(0, characterCount);
-        }
-        if (
-          editNoteIt === note._id &&
-          characterCount - e.target.value.length <= 0 &&
-          e.nativeEvent.inputType !== 'deleteContentBackward'
-        ) {
-          const numberUpdate = characterCount - e.target.value.length;
-          list.textLength = numberUpdate;
-          // readOnly = true;
-          return;
-        }
 
-        if (e.nativeEvent.inputType === 'historyUndo') {
-          if (note.textLength === characterCount) {
-            list.textLength = note.textLength - e.target.value.length;
-            props.setNoteValue();
-          } else {
-            const numberUpdate = characterCount - e.target.value.length;
-            list.textLength = numberUpdate;
-          }
-          props.setNoteValue();
-        }
+    if (e.target.value.length > characterCount) {
+      e.target.value = e.target.value.slice(0, characterCount);
+    }
 
-        if (e.nativeEvent.inputType === 'historyRedo') {
-          if (note.textLength === characterCount) {
-            list.textLength = note.textLength - e.target.value.length;
-            props.setNoteValue();
-          } else {
-            const numberUpdate = characterCount - e.target.value.length;
-            list.textLength = numberUpdate;
-          }
-          props.setNoteValue();
-        }
+    insertText(e, note);
+    historyUndo(e, note);
+    historyRedo(e, note);
+    deleteByCut(e, note);
+    onPaste(e, note);
+    insertFromPaste(e, note);
+    deleteContentBackward(e, note);
 
-        if (e.nativeEvent.inputType === 'deleteByCut') {
-          if (note.textLength === characterCount) {
-            list.textLength = note.textLength - e.target.value.length;
-            props.setNoteValue();
-          } else {
-            const numberUpdate = characterCount - e.target.value.length;
-            list.textLength = numberUpdate;
-          }
-          props.setNoteValue();
-        }
+    note['text'] = e.target.value;
 
-        if (e.nativeEvent.type === 'onPaste') {
-          if (note.textLength === characterCount) {
-            list.textLength = note.textLength - e.target.value.length;
-            props.setNoteValue();
-          } else {
-            const numberUpdate = characterCount - e.target.value.length;
-            list.textLength = numberUpdate;
-          }
-          props.setNoteValue();
-        }
+    sessionStorage.setItem(note._id, JSON.stringify(note));
 
-        if (e.nativeEvent.inputType === 'insertFromPaste') {
-          if (note.textLength === characterCount) {
-            list.textLength = note.textLength - e.target.value.length;
-            props.setNoteValue();
-          } else {
-            const numberUpdate = characterCount - e.target.value.length;
-            list.textLength = numberUpdate;
-          }
-          props.setNoteValue();
-        }
+    return;
+  };
 
-        if (e.nativeEvent.inputType === 'deleteContentBackward') {
-          if (!trackingCharacterDeletions) {
-            const firstDeletion = e.target.value;
-            const numberUpdate =
-              note.textLength + (note.text.length - firstDeletion.length);
-            list.textLength = numberUpdate;
-          }
-
-          if (trackingCharacterDeletions) {
-            if (trackingCharacterDeletions.length - e.target.value.length > 1) {
-              const numberUpdate =
-                note.textLength +
-                (trackingCharacterDeletions.length - e.target.value.length);
-              list.textLength = numberUpdate;
-            } else {
-              const numberUpdate = note.textLength + 1;
-              list.textLength = numberUpdate;
-            }
-          }
-          props.setNoteValue();
-        }
-
-        if (e.nativeEvent.inputType === 'insertText') {
-          if (note.textLength === characterCount) {
-            list.textLength = note.textLength - e.target.value.length;
-            props.setNoteValue();
-          } else {
-            const numberUpdate = characterCount - e.target.value.length;
-            list.textLength = numberUpdate;
-            props.setNoteValue();
-          }
-          props.setNoteValue();
-        }
+  const disableTextField = (e, note) => {
+    setReadOnly(false);
+    if (readOnly) {
+      if (e.nativeEvent.inputType === 'deleteContentBackward') {
+        setReadOnly(false);
       }
     }
 
-    const updatedNote = JSON.parse(sessionStorage.getItem(note._id));
-    let newNote;
-    if (e.target.localName === 'input') {
-      if (updatedNote) {
-        newNote = {
-          text: updatedNote.text,
-          date: e.target.value,
-          star: updatedNote.star,
-          _id: updatedNote._id,
-          edit: updatedNote.edit,
-          look: updatedNote.look,
-          gym: updatedNote.gym,
-          weed: updatedNote.weed,
-          code: updatedNote.code,
-          read: updatedNote.read,
-          eatOut: updatedNote.eatOut,
-          basketball: updatedNote.basketball,
-        };
-      } else {
-        newNote = {
-          text: note.text,
-          date: e.target.value,
-          star: note.star,
-          _id: note._id,
-          edit: note.edit,
-          look: note.look,
-          gym: note.gym,
-          weed: note.weed,
-          code: note.code,
-          read: note.read,
-          eatOut: note.eatOut,
-          basketball: note.basketball,
-        };
-      }
-      window.sessionStorage.setItem(note._id, JSON.stringify(newNote));
-    } else {
-      if (updatedNote) {
-        newNote = {
-          text: e.target.value,
-          date: updatedNote.date,
-          star: updatedNote.star,
-          _id: updatedNote._id,
-          edit: updatedNote.edit,
-          look: updatedNote.look,
-          gym: updatedNote.gym,
-          weed: updatedNote.weed,
-          code: updatedNote.code,
-          read: updatedNote.read,
-          eatOut: updatedNote.eatOut,
-          basketball: updatedNote.basketball,
-        };
-      } else {
-        newNote = {
-          text: e.target.value,
-          date: note.date,
-          star: note.star,
-          _id: note._id,
-          edit: note.edit,
-          look: note.look,
-          gym: note.gym,
-          weed: note.weed,
-          code: note.code,
-          read: note.read,
-          eatOut: note.eatOut,
-          basketball: note.basketball,
-        };
-      }
-      window.sessionStorage.setItem(note._id, JSON.stringify(newNote));
+    if (
+      characterCount - e.target.value.length <= 0 &&
+      e.nativeEvent.inputType !== 'deleteContentBackward'
+    ) {
+      const numberUpdate = characterCount - e.target.value.length;
+      note.textLength = numberUpdate;
+      setReadOnly(true);
+      return;
     }
+    return;
   };
 
   const checkfordelete = (e, note) => {
@@ -202,9 +63,118 @@ const Textarea = (props) => {
     }
   };
 
+  const insertText = (e, note) => {
+    if (e.nativeEvent.inputType === 'insertText') {
+      if (note.textLength === characterCount) {
+        note.textLength = note.textLength - e.target.value.length;
+        props.setNoteValue();
+      } else {
+        const numberUpdate = characterCount - e.target.value.length;
+        note.textLength = numberUpdate;
+        props.setNoteValue();
+      }
+    }
+    return;
+  };
+
+  const historyUndo = (e, note) => {
+    if (e.nativeEvent.inputType === 'historyUndo') {
+      if (note.textLength === characterCount) {
+        note.textLength = note.textLength - e.target.value.length;
+        props.setNoteValue();
+      } else {
+        const numberUpdate = characterCount - e.target.value.length;
+        note.textLength = numberUpdate;
+        props.setNoteValue();
+      }
+    }
+    return;
+  };
+
+  const historyRedo = (e, note) => {
+    if (e.nativeEvent.inputType === 'historyRedo') {
+      if (note.textLength === characterCount) {
+        note.textLength = note.textLength - e.target.value.length;
+        props.setNoteValue();
+      } else {
+        const numberUpdate = characterCount - e.target.value.length;
+        note.textLength = numberUpdate;
+        props.setNoteValue();
+      }
+    }
+    return;
+  };
+
+  const deleteByCut = (e, note) => {
+    if (e.nativeEvent.inputType === 'deleteByCut') {
+      if (note.textLength === characterCount) {
+        note.textLength = note.textLength - e.target.value.length;
+        props.setNoteValue();
+      } else {
+        const numberUpdate = characterCount - e.target.value.length;
+        note.textLength = numberUpdate;
+      }
+      props.setNoteValue();
+    }
+  };
+
+  const onPaste = (e, note) => {
+    if (e.nativeEvent.type === 'onPaste') {
+      if (note.textLength === characterCount) {
+        note.textLength = note.textLength - e.target.value.length;
+        props.setNoteValue();
+      } else {
+        const numberUpdate = characterCount - e.target.value.length;
+        note.textLength = numberUpdate;
+        props.setNoteValue();
+      }
+    }
+    return;
+  };
+
+  const insertFromPaste = (e, note) => {
+    if (e.nativeEvent.inputType === 'insertFromPaste') {
+      if (note.textLength === characterCount) {
+        note.textLength = note.textLength - e.target.value.length;
+        props.setNoteValue();
+      } else {
+        const numberUpdate = characterCount - e.target.value.length;
+        note.textLength = numberUpdate;
+        props.setNoteValue();
+      }
+    }
+    return;
+  };
+
+  const deleteContentBackward = (e, note) => {
+    if (e.nativeEvent.inputType === 'deleteContentBackward') {
+      if (!trackingCharacterDeletions) {
+        const firstDeletion = e.target.value;
+        const numberUpdate =
+          note.textLength + (note.text.length - firstDeletion.length);
+        note.textLength = numberUpdate;
+      }
+
+      if (trackingCharacterDeletions) {
+        if (trackingCharacterDeletions.length - e.target.value.length > 1) {
+          const numberUpdate =
+            note.textLength +
+            (trackingCharacterDeletions.length - e.target.value.length);
+          note.textLength = numberUpdate;
+        } else {
+          const numberUpdate = note.textLength + 1;
+          note.textLength = numberUpdate;
+        }
+      }
+      props.setNoteValue();
+    }
+    return;
+  };
+
   return (
     <>
       <textarea
+        disabled={readOnly}
         style={{
           width: '94%',
           fontSize: 'medium',
@@ -212,15 +182,14 @@ const Textarea = (props) => {
           height: '13rem',
         }}
         id="editCard"
-        // autoFocus={true}
-        // readOnly={readOnly}
         value={postContent}
         onChange={(e) => {
-            setPostContent(e.target.value, props.note)
-            onChangeTextArea(e, props.note)
+          setPostContent(e.target.value, props.note);
+          onChangeTextArea(e, props.note);
         }}
         onKeyDown={(e) => checkfordelete(e, props.note)}
         onPaste={(e) => onChangeTextArea(e, props.note)}
+        onClick={(e) => onChangeTextArea(e, props.note)}
       />
     </>
   );

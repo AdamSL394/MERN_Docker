@@ -91,7 +91,6 @@ export default {
             eatOut: note.eatOut || false,
             basketball: note.basketball || false,
         });
-
         const requestOptions = {
             method: 'PATCH',
             headers: myHeaders,
