@@ -41,11 +41,11 @@ const NoteHistory = () => {
         style={{ marginTop: "4rem"}}
       >
         <Grid className="grid" container justifyContent="center">
-          <span id="noNotes" style={{ marginTop: "7rem"}}>
+          {/* <span id="noNotes" style={{ marginTop: "7rem"}}>
             {noNotes}
-          </span>
+          </span> */}
           <Notes
-            setNoNotes={setNoNotes}
+            // setNoNotes={setNoNotes}
             onStarValueChange={onStarValueChange}
           ></Notes>
         </Grid>

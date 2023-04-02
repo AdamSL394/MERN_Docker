@@ -27,6 +27,7 @@ function Notes(props) {
   const [isloading, setIsLoading] = useState(false);
   const [searchedNotesResults, setSearchNoteResults] = useState([]);
   const [dateaRangeNotesResults, setDateaRangeNoteResults] = useState();
+  const [noNotes, setNoNotes] = useState();
 
   useEffect(() => {
     allNotes(1);
@@ -152,12 +153,12 @@ function Notes(props) {
 
   const checkNoteApiResponse = (notes) => {
     if (notes.length < 1) {
-      props.setNoNotes('Get started... Upload or make your first Note!');
+      setNoNotes('Get started... Upload or make your first Note!');
       setIsLoading(false);
       setNotes([]);
       return false;
     } else {
-      props.setNoNotes('');
+      setNoNotes('');
       return true;
     }
   };
@@ -263,7 +264,7 @@ function Notes(props) {
           ></Pagination>
         </Stack>
       </Container>
-
+      <Box id="noNotes">{noNotes}</Box>
       {isloading ? (
         <img
           src="https://media4.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif?cid=ecf05e47d78qz3v8umwss2cvzhgxw5siyk2sxf88n7leuzne&rid=giphy.gif&ct=g"

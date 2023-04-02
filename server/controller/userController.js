@@ -12,7 +12,7 @@ const getSingleUser = async (id, userDetails) => {
     }
     return user;
 };
-
+ 
 const saveNewUser = async (id, userDetails) => {
     // eslint-disable-next-line new-cap
     const mongooseId = mongoose.Types.ObjectId(id);

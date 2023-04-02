@@ -1,5 +1,0 @@
-build:
-  docker: 
-    app : Dockerfile
-  config: 
-    NODE_ENV: development

@@ -30,7 +30,7 @@ router.get('/all/order/:id', async (req, res) => {
     res.send(response);
     return;
 });
-
+ 
 router.get('/search/:id/:user', async (req, res) => {
     const { id, user } = req.params;
     let correctlength;
@@ -46,6 +46,8 @@ router.post('/noterange', async (req, res) => {
     let correctlength;
     if (req.body.userId.length != 24) {
         correctlength = req.body.userId + '000';
+    }else {
+        correctlength = req.body.userId
     }
     const { start, end } = req.body;
     const response = await noteController.getRangeNotes(correctlength, start, end);

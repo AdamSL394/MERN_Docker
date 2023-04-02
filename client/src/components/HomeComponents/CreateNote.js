@@ -6,13 +6,62 @@ import MenuItem from '@mui/material/MenuItem/index.js';
 import Select from '@mui/material/Select/index.js';
 import InputLabel from '@mui/material/InputLabel/index.js';
 import Button from '@mui/material/Button/index.js';
+import NoteRoutes from '../../router/noteRoutes.js';
 import './createNote.css';
 
 export const CreateNote = (props) => {
-  const [text, setText] = useState();
   const [date, setDate] = useState();
-  const [disabled, setDisabled] = useState(false);
-  
+
+  const emojiList = [
+    { icon: '🥇', name: 'medal', visible: 'hidden' },
+    { icon: '👀', name: 'look', visible: 'hidden' },
+    { icon: '💪🏼', name: 'gym', visible: 'hidden' },
+    { icon: '🍁', name: 'weed', visible: 'hidden' },
+    { icon: '👨🏻‍💻', name: 'code', visible: 'hidden' },
+    { icon: '⛹🏻‍♂️', name: 'basketball', visible: 'hidden' },
+    { icon: '📚', name: 'read', visible: 'hidden' },
+    { icon: '🍕', name: 'eatOut', visible: 'hidden' },
+    { icon: '🤴🏻', name: 'king', visible: 'hidden' },
+    { icon: '👫', name: 'date/smoosh', visible: 'hidden' },
+    { icon: '🌟', name: 'star', visible: 'hidden' },
+  ];
+
+  const setCodeIcon = (iconType, trackedStats) => {
+    if (iconType.visible === 'visible') {
+      iconType.visible = 'hidden';
+      props.setTrackedStats([...trackedStats]);
+      return;
+    }
+    if (iconType.visible === 'hidden') {
+      iconType.visible = 'visible';
+      props.setTrackedStats([...trackedStats]);
+      return;
+    }
+  };
+
+  const addToEmojiList = (value, emojiList, user) => {
+    let emojiName = '';
+    let visible = 'hidden';
+    for (const item of emojiList) {
+      if (item.icon === value) {
+        emojiName = item.name;
+        visible = item.visible;
+      }
+    }
+    const trackedStat = {
+      icon: `${value}`,
+      name: `${emojiName}`,
+      visible: `${visible}`,
+    };
+    for (const stat of props.trackedStats) {
+      if (stat.name === trackedStat.name) {
+        return;
+      }
+    }
+    props.setTrackedStats([...props.trackedStats, trackedStat]);
+    NoteRoutes.postUserStats(user, trackedStat);
+    return;
+  };
 
   return (
     <>
@@ -31,14 +80,14 @@ export const CreateNote = (props) => {
             style={{ overflowY: 'auto', overflow: 'visible' }}
           ></TextField>
           <div style={{ width: '20rem', marginLeft: '12px' }}>
-            {props.withoutDups.map((i, key) => {
-              return (
+            {props.trackedStats?.map((i, key) => {
+              return i ? (
                 <span key={key + 300}>
                   <span
                     key={key}
                     value={i.icon}
                     onClick={() => {
-                      props.setCodeIcon(i, props.withoutDups);
+                      setCodeIcon(i, props.trackedStats);
                     }}
                   >
                     {i.icon}
@@ -47,11 +96,16 @@ export const CreateNote = (props) => {
                     key={key + 200}
                     role="img"
                     aria-label="checkmark"
-                    style={{ visibility: `${i.visible}`, marginRight: '.5rem' }}
+                    style={{
+                      visibility: i.visible ? `${i.visible}` : 'hidden',
+                      marginRight: '.5rem',
+                    }}
                   >
                     ✔️
                   </span>
                 </span>
+              ) : (
+                <></>
               );
             })}
           </div>
@@ -70,8 +124,12 @@ export const CreateNote = (props) => {
               type="date"
               placeholder="Date"
               defaultValue={date}
-              onChange={(e) => props.setDate(e.target.value)}
-              style={{ alignSelf: 'center', position: 'absolute',marginTop: '2.5rem' }}
+              onChange={(e) => setDate(e.target.value)}
+              style={{
+                alignSelf: 'center',
+                position: 'absolute',
+                marginTop: '2.5rem',
+              }}
             ></input>
 
             <FormControl
@@ -86,10 +144,10 @@ export const CreateNote = (props) => {
                 value={''}
                 // label="Age"
                 onChange={(e) => {
-                  props.addToEmojiList(e.target.value, props.emojiList, props.user);
+                  addToEmojiList(e.target.value, emojiList, props.user);
                 }}
               >
-                {props.emojiList.map((i, key) => {
+                {emojiList.map((i, key) => {
                   return (
                     <MenuItem key={key + 100} value={i.icon}>
                       <span key={key}>{i.icon}</span>
@@ -101,7 +159,7 @@ export const CreateNote = (props) => {
 
             <Button
               id="saveMe"
-              disabled={disabled}
+              disabled={props.disabled}
               style={{
                 alignSelf: 'center',
                 position: 'absolute',
@@ -110,7 +168,7 @@ export const CreateNote = (props) => {
               variant="contained"
               value="save"
               color="primary"
-              onClick={() => props.storeNewNote(props.withoutDups)}
+              onClick={() => props.storeNewNote(props.trackedStats, date)}
             >
               Save Note
             </Button>
@@ -132,14 +190,14 @@ export const CreateNote = (props) => {
             style={{ overflowY: 'auto', overflow: 'visible' }}
           ></TextField>
           <div style={{ width: '20rem', marginLeft: '12px' }}>
-            {props.withoutDups.map((i, key) => {
-              return (
+            {props.trackedStats?.map((i, key) => {
+              return i ? (
                 <span key={key + 300}>
                   <span
                     key={key}
                     value={i.icon}
                     onClick={() => {
-                      props.setCodeIcon(i, props.withoutDups);
+                      setCodeIcon(i, props.trackedStats);
                     }}
                   >
                     {i.icon}
@@ -148,11 +206,16 @@ export const CreateNote = (props) => {
                     key={key + 200}
                     role="img"
                     aria-label="checkmark"
-                    style={{ visibility: `${i.visible}`, marginRight: '.5rem' }}
+                    style={{
+                      visibility: i.visible ? `${i.visible}` : 'hidden',
+                      marginRight: '.5rem',
+                    }}
                   >
                     ✔️
                   </span>
                 </span>
+              ) : (
+                <></>
               );
             })}
           </div>
@@ -164,12 +227,12 @@ export const CreateNote = (props) => {
               type="date"
               placeholder="Date"
               defaultValue={date}
-              onChange={(e) => props.setDate(e.target.value)}
+              onChange={(e) => setDate(e.target.value)}
               style={{ alignSelf: 'center', position: 'absolute' }}
             ></input>
 
             <Button
-              disabled={disabled}
+              disabled={props.disabled}
               style={{
                 alignSelf: 'center',
                 position: 'absolute',
@@ -179,7 +242,11 @@ export const CreateNote = (props) => {
               variant="contained"
               value="save"
               color="primary"
-              onClick={() => props.storeNewNote(props.withoutDups)}
+              onClick={() =>
+                { 
+                props.storeNewNote(props.trackedStats, date)
+
+              }}
             >
               Save Note
             </Button>
@@ -194,10 +261,10 @@ export const CreateNote = (props) => {
                 value={''}
                 // label="Age"
                 onChange={(e) => {
-                  props.addToEmojiList(e.target.value, props.emojiList, props.user);
+                  addToEmojiList(e.target.value, emojiList, props.user);
                 }}
               >
-                {props.emojiList.map((i, key) => {
+                {emojiList.map((i, key) => {
                   return (
                     <MenuItem key={key + 100} value={i.icon}>
                       <span key={key}>{i.icon}</span>
