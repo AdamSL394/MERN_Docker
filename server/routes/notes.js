@@ -43,12 +43,14 @@ router.get('/search/:id/:user', async (req, res) => {
 });
 
 router.post('/noterange', async (req, res) => {
+
     let correctlength;
     if (req.body.userId.length != 24) {
         correctlength = req.body.userId + '000';
     }else {
         correctlength = req.body.userId
     }
+
     const { start, end } = req.body;
     const response = await noteController.getRangeNotes(correctlength, start, end);
     res.send(response);
@@ -93,7 +95,7 @@ router.post('/upload', async (req, res) => {
 
 router.get('/lastyear/:userid/:tdYearAgo/:lwYearAgo', async (req, res) => {
     let { userid, lwYearAgo, tdYearAgo } = (req.params);
-    if (userid != 24) {
+    if (userid.length != 24) {
         userid = userid + '000';
     }
     const response = await noteController.getRangeNotes(userid, lwYearAgo, tdYearAgo);
