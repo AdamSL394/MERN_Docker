@@ -15,6 +15,7 @@
 
 #Card {
     text-align: center;
+    box-shadow: 1px 1px lightgrey, -0.7em 0 0.5em lightgrey;
 }
 
 #deleteButton {
@@ -46,5 +47,5 @@
     text-align:center;
     margin-top:3%;
     color:#005fcc;
-    
+    display:none;
 }

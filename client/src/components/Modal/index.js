@@ -14,15 +14,17 @@ function ModalPop(props) {
                 aria-labelledby="parent-modal-title"
                 aria-describedby="parent-modal-description"
             >
-                <Box className="style">
-                    <div>Would you like to :</div>
+                <Box className="style" style={{fontWeight:'bold'}}>
+                    <div style={{marginTop:'4%'}}>Would you like to :</div>
                     <Button
+                        style={{fontWeight:'bold',fontSize: '1.2em'}}
                         className={'closeButton'}
                         onClick={() => props.closeModal('Cancel')}
                     >
             Close
                     </Button>
                     <Button
+                        style={{fontWeight:'bold', fontSize: '1.2em'}}
                         className={'closeButton'}
                         onClick={() => props.closeModal(props.modelNoteId)}
                     >

@@ -76,6 +76,11 @@ const HomeView = () => {
     }
 
     const res = await NoteRoutes.postNote(raw);
+    const todaysDate = new Date().toISOString().split('T')[0];
+    const myCurrentDate = new Date();
+    const myPastDate = new Date(myCurrentDate);
+    myPastDate.setDate(myPastDate.getDate() - 7);
+    const lastWeeksDate = myPastDate.toISOString().split('T')[0];
 
     if (res && res.toString().includes('failed')) {
       setErrorMessage(res);
@@ -86,7 +91,28 @@ const HomeView = () => {
       setTimeout(() => {
         setDisabled(false);
       }, 1500);
-    } else {
+    } 
+    if (date >= lastWeeksDate && date <= todaysDate  ){
+      const userid = user.sub.split('|')[1];
+      setText('');
+      setSuccessMessage(res);
+      setSuccessFlag('visible');
+      //onNumericChange(checked, timePeriod);
+      for (const stat of trackedStats) {
+        if (stat.visible === 'visible') {
+          stat.visible = 'hidden';
+        }
+      }
+      setTimeout(() => {
+        setSuccessFlag('hidden');
+      }, 1500);
+      setTimeout(() => {
+        setDisabled(false);
+      }, 1500);
+      getNoteRanges(userid, todaysDate, lastWeeksDate);
+      return
+    }
+    else{
       setText('');
       setSuccessMessage(res);
       setSuccessFlag('visible');

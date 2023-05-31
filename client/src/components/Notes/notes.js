@@ -153,11 +153,16 @@ function Notes(props) {
 
   const checkNoteApiResponse = (notes) => {
     if (notes.length < 1) {
+      let noNotesElement = document.getElementById('noNotes');
+      noNotesElement.style.display = "grid"
       setNoNotes('Get started... Upload or make your first Note!');
       setIsLoading(false);
       setNotes([]);
       return false;
     } else {
+      let noNotesElement = document.getElementById('noNotes');
+      noNotesElement.style.display = "none"
+      setNoNotes('Get started... Upload or make your first Note!');
       setNoNotes('');
       return true;
     }

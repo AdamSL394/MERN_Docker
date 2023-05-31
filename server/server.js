@@ -1,25 +1,21 @@
-/* eslint-disable max-len */
 require('dotenv').config();
 const express = require('express');
 const app = express();
-// eslint-disable-next-line spaced-comment
-//const PORT = process.env.PORT || 5000;
 const cors = require('cors');
 const mongoose = require('mongoose');
 const notesRouter = require('./routes/notes');
 const userRouter = require('./routes/userSettings');
 const config = require('./config/config.json');
 
-// const path = require('path');
 
-const enviorment = process.env.NODE_ENV || 'production';
+const environment = process.env.NODE_ENV || 'production';
 
-console.log('Host Enviorment', process.env.NODE_ENV);
+console.log('Host environment', process.env.NODE_ENV);
 
 main().catch((err) => console.log(err));
 
 async function main() {
-    const connect = await mongoose.connect(config[enviorment].mongodb, {
+    const connect = await mongoose.connect(config[environment].mongodb, {
         useNewUrlParser: true,
         useCreateIndex: true,
         useUnifiedTopology: true,
@@ -29,12 +25,12 @@ async function main() {
     return;
 }
 
-// Research
+
 const bodyParser = require('body-parser');
-const { connect } = require('http2');
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// research
+
 app.use(cors());
 
 app.use('/notes', notesRouter);
@@ -50,7 +46,6 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'producti
     });
 }
 
-app.set('port', (process.env.PORT || 5000));
 app.listen((process.env.PORT || 5000), () => {
     console.log(`App listening on port ${process.env.port || 5000}`);
 });
